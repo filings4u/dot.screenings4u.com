@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Complete Account Setup | screenings4u DOT</title>
+<meta name="theme-color" content="#24467f">
+<style>
+:root{--navy:#24467f;--orange:#ff6b00;--ink:#122033;--muted:#657286;--line:#dbe3ec;--bg:#f5f7fa;--ok:#17764a;--bad:#a72d2d}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:980px;margin:0 auto;padding:28px 18px 60px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}
+.brand{font-size:22px;font-weight:900;color:var(--navy)}.secure{font-size:12px;color:var(--muted)}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 16px 45px rgba(15,23,42,.08);overflow:hidden}
+.hero{padding:28px 30px;border-bottom:1px solid var(--line)}.eyebrow{font-size:11px;font-weight:900;letter-spacing:.1em;color:var(--orange);text-transform:uppercase}
+h1{margin:8px 0 8px;font-size:32px;line-height:1.12}.sub{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.plan{display:inline-flex;margin-top:14px;padding:8px 11px;border-radius:999px;background:#eef3fa;color:var(--navy);font-size:12px;font-weight:800}
+form{padding:28px 30px}.section{padding:0 0 24px;margin:0 0 24px;border-bottom:1px solid var(--line)}.section:last-of-type{border-bottom:0;margin-bottom:10px}
+.section h2{margin:0 0 6px;font-size:18px}.section p{margin:0 0 16px;color:var(--muted);font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.full{grid-column:1/-1}
+label{display:block;font-size:12px;font-weight:800;color:#2a3748}input,select{width:100%;margin-top:6px;padding:12px 13px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:var(--ink);font:inherit;outline:none}
+input:focus,select:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(36,70,127,.12)}
+.check{display:flex;align-items:center;gap:9px;font-weight:700}.check input{width:auto;margin:0}
+.actions{display:flex;align-items:center;justify-content:space-between;gap:16px}.status{font-size:12px;color:var(--muted);min-height:18px}
+button{border:0;border-radius:10px;background:var(--orange);color:#fff;font-weight:900;padding:13px 20px;cursor:pointer}button[disabled]{opacity:.6;cursor:not-allowed}
+.hidden{display:none!important}.success{padding:44px 30px;text-align:center}.success h2{font-size:26px;margin:0 0 10px}.success p{color:var(--muted);line-height:1.55}.success a{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;text-decoration:none;font-weight:900;padding:13px 18px;border-radius:10px}
+@media(max-width:680px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.hero,form{padding:22px 18px}h1{font-size:26px}.actions{align-items:stretch;flex-direction:column}.actions button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="brand">screenings4u DOT</div><div class="secure">Secure post-payment account setup</div></div>
+  <div class="card" id="card">
+    <div class="hero">
+      <div class="eyebrow">Payment complete</div>
+      <h1>Finish setting up your account</h1>
+      <p class="sub">Your payment is complete. Tell us about your company so we can create the correct DOT management account and send your portal invitation.</p>
+      <div class="plan" id="plan">Loading purchase…</div>
+    </div>
+    <form id="form" class="hidden">
+      <section class="section">
+        <h2>Account administrator</h2>
+        <p>This person will receive the first portal invitation and manage access for the company.</p>
+        <div class="grid">
+          <label>First name<input name="first_name" required></label>
+          <label>Last name<input name="last_name" required></label>
+          <label>Phone<input name="contact_phone" required></label>
+          <label>Email<input id="email" disabled></label>
+        </div>
+      </section>
+      <section class="section">
+        <h2>Company information</h2>
+        <div class="grid">
+          <label class="full">Legal company name<input name="legal_name" required></label>
+          <label>DBA / trade name<input name="dba_name"></label>
+          <label>EIN<input name="ein"></label>
+          <label>Business type<input name="business_type" placeholder="LLC, Corporation, Sole Proprietor…"></label>
+          <label>Website<input name="website" placeholder="https://"></label>
+          <label id="agencyWrap" class="hidden">DOT agency<select name="agency_code"><option value="">Choose agency</option><option>FMCSA</option><option>FAA</option><option>FRA</option><option>FTA</option><option>PHMSA</option><option>USCG</option></select></label>
+          <label id="dotWrap">USDOT number<input name="dot_number"></label>
+          <label>MC number<input name="mc_number"></label>
+        </div>
+      </section>
+      <section class="section">
+        <h2>Company address</h2>
+        <div class="grid">
+          <label class="full">Address<input name="address_line1" required></label>
+          <label class="full">Address line 2<input name="address_line2"></label>
+          <label>City<input name="city" required></label>
+          <label>State<input name="state" required></label>
+          <label>ZIP / postal code<input name="postal_code" required></label>
+          <label>Country<input name="country" value="US" required></label>
+        </div>
+      </section>
+      <section class="section">
+        <h2>Billing contact</h2>
+        <label class="check"><input id="same" type="checkbox" checked> Billing address is the same as company address</label>
+        <div class="grid" style="margin-top:14px">
+          <label>Billing email<input name="billing_contact_email"></label>
+          <label>Billing phone<input name="billing_contact_phone"></label>
+          <label class="full billing-extra hidden">Billing address<input name="billing_address_line1"></label>
+          <label class="billing-extra hidden">Billing city<input name="billing_city"></label>
+          <label class="billing-extra hidden">Billing state<input name="billing_state"></label>
+          <label class="billing-extra hidden">Billing ZIP<input name="billing_postal_code"></label>
+        </div>
+      </section>
+      <div class="actions">
+        <div class="status" id="status"></div>
+        <button id="submit" type="submit">Create My Account</button>
+      </div>
+    </form>
+    <div id="success" class="success hidden">
+      <h2>Your account is ready</h2>
+      <p>Your company account and portal access were created. We also sent your sign-in/activation email.</p>
+      <a id="portalLink" href="#">Open Your Portal</a>
+    </div>
+  </div>
+</div>
+<script>
+(()=>{
+const BASE='https://wyezpseboxbmkedvbmyx.supabase.co/functions/v1/workforce-checkout-status';
+const KEY='sb_publishable__BLewZS6h2V4yUczky-BTQ_EemiOdDL';
+const token=new URLSearchParams(location.search).get('token')||'';
+const $=s=>document.querySelector(s), form=$('#form'), status=$('#status'), submit=$('#submit');
+let state=null;
+async function api(body){
+ const r=await fetch(BASE,{method:'POST',headers:{'Content-Type':'application/json','apikey':KEY},body:JSON.stringify(body)});
+ const d=await r.json().catch(()=>({}));
+ if(!r.ok||d.error)throw new Error(d.error||'Unable to continue.');
+ return d;
+}
+async function load(){
+ if(!token){status.textContent='This account setup link is missing or invalid.';return}
+ try{
+  state=await api({token,action:'intake_status'});
+  if(state.completed){showSuccess(state);return}
+  $('#plan').textContent=(state.plan?.name||'DOT Management Plan')+' · '+(state.email||'');
+  $('#email').value=state.email||'';
+  if(state.requirements?.agency_select)$('#agencyWrap').classList.remove('hidden');
+  if(!state.requirements?.dot_number_required)$('#dotWrap').querySelector('input').removeAttribute('required');
+  else $('#dotWrap').querySelector('input').setAttribute('required','');
+  form.classList.remove('hidden');
+ }catch(e){$('#plan').textContent='Account setup unavailable';status.textContent=e.message;status.style.color='var(--bad)'}
+}
+$('#same').addEventListener('change',e=>document.querySelectorAll('.billing-extra').forEach(x=>x.classList.toggle('hidden',e.target.checked)));
+form.addEventListener('submit',async e=>{
+ e.preventDefault();submit.disabled=true;status.textContent='Creating your company account and portal invitation…';status.style.color='var(--muted)';
+ const fd=new FormData(form), intake=Object.fromEntries(fd.entries());
+ intake.billing_same_as_company=$('#same').checked;
+ try{const d=await api({token,action:'complete_intake',intake});showSuccess(d)}
+ catch(err){status.textContent=err.message||'Unable to create account.';status.style.color='var(--bad)';submit.disabled=false}
+});
+function showSuccess(d){form.classList.add('hidden');document.querySelector('.hero').classList.add('hidden');$('#success').classList.remove('hidden');$('#portalLink').href=d.portal_url||'#'}
+load();
+})();
+</script>
+</body>
+</html>
