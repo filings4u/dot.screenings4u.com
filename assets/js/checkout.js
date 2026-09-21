@@ -1,0 +1,12 @@
+(()=>{
+const API='https://wyezpseboxbmkedvbmyx.supabase.co/functions/v1';
+const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5ZXpwc2Vib3hibWtlZHZibXl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxNzI4NjIsImV4cCI6MjEwNDc0ODg2Mn0.2K26FfRMPBcgIvLw-DKq74zgGEWfWUIgd9ni913Nbag';
+const p=new URLSearchParams(location.search),type=(p.get('type')||'employer').toLowerCase(),plan=(p.get('plan')||'essential').toLowerCase(),agency=(p.get('agency')||(type==='ctpa'?'CTPA':'FMCSA')).toUpperCase();
+const status=document.getElementById('checkout-status');
+const accountLabel=type==='ctpa'?'C/TPA':'DOT Employer';
+document.getElementById('order-account').textContent=accountLabel;document.getElementById('order-agency').textContent=agency==='CTPA'?'Multiple / managed programs':agency;
+const code=type==='ctpa'?`dot_ctpa_${plan}`:`dot_${agency.toLowerCase()}_${plan}`;
+async function api(path,opts={}){const r=await fetch(API+path,{...opts,headers:{'Content-Type':'application/json','apikey':ANON,'Authorization':'Bearer '+ANON,...(opts.headers||{})}});const d=await r.json().catch(()=>({}));if(!r.ok||d.error)throw Error(d.error||'Unable to continue checkout.');return d}
+async function start(){try{const cat=await api(`/workforce-checkout?surface=dot_marketing&agency=${encodeURIComponent(type==='ctpa'?'CTPA':agency)}`,{method:'GET'});const selected=(cat.plans||[]).find(x=>x.code===code);if(!selected)throw Error('The selected plan is not currently available.');document.getElementById('order-plan').textContent=selected.name;document.getElementById('order-price').textContent=`$${Number(selected.monthly_price||0).toFixed(0)} / month`;status.textContent='Secure payment powered by Stripe.';const session=await api('/workforce-checkout',{method:'POST',body:JSON.stringify({surface:'dot_marketing',embedded:true,plan_code:code})});if(!session.stripe_publishable_key||!session.client_secret)throw Error('Secure checkout is not configured for this plan.');const stripe=Stripe(session.stripe_publishable_key);const checkout=await stripe.initEmbeddedCheckout({fetchClientSecret:async()=>session.client_secret});checkout.mount('#stripe-checkout')}catch(e){status.textContent=e.message;status.classList.add('checkout-error')}}
+start();
+})();
