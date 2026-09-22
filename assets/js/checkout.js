@@ -1,12 +1,103 @@
 (()=>{
 const API='https://wyezpseboxbmkedvbmyx.supabase.co/functions/v1';
-const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5ZXpwc2Vib3hibWtlZHZibXl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxNzI4NjIsImV4cCI6MjEwNDc0ODg2Mn0.2K26FfRMPBcgIvLw-DKq74zgGEWfWUIgd9ni913Nbag';
-const p=new URLSearchParams(location.search),type=(p.get('type')||'employer').toLowerCase(),plan=(p.get('plan')||'essential').toLowerCase(),agency=(p.get('agency')||(type==='ctpa'?'CTPA':'FMCSA')).toUpperCase();
+const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBiYXNlIiwicmVmIjoid3llemVzZWJveGJta2Vkd mJteXgiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4OTE3Mjg2MiwiZXhwIjoyMTA0NzQ4ODYyfQ.2K26FfRMPBcgIvLw-DKq74zgGEWfWUIgd9ni913Nbag'.replace(/\s+/g,'');
+const p=new URLSearchParams(location.search);
+const type=(p.get('type')||'employer').toLowerCase();
+const plan=(p.get('plan')||'essential').toLowerCase();
+const agency=(p.get('agency')||(type==='ctpa'?'CTPA':'FMCSA')).toUpperCase();
 const status=document.getElementById('checkout-status');
+const payButton=document.getElementById('stripe-pay-button');
+const errorBox=document.getElementById('stripe-errors');
 const accountLabel=type==='ctpa'?'C/TPA':'DOT Employer';
-document.getElementById('order-account').textContent=accountLabel;document.getElementById('order-agency').textContent=agency==='CTPA'?'Multiple / managed programs':agency;
+document.getElementById('order-account').textContent=accountLabel;
+document.getElementById('order-agency').textContent=agency==='CTPA'?'Multiple / managed programs':agency;
 const code=type==='ctpa'?`dot_ctpa_${plan}`:`dot_${agency.toLowerCase()}_${plan}`;
-async function api(path,opts={}){const r=await fetch(API+path,{...opts,headers:{'Content-Type':'application/json','apikey':ANON,'Authorization':'Bearer '+ANON,...(opts.headers||{})}});const d=await r.json().catch(()=>({}));if(!r.ok||d.error)throw Error(d.error||'Unable to continue checkout.');return d}
-async function start(){try{const cat=await api(`/workforce-checkout?surface=dot_marketing&agency=${encodeURIComponent(type==='ctpa'?'CTPA':agency)}`,{method:'GET'});const selected=(cat.plans||[]).find(x=>x.code===code);if(!selected)throw Error('The selected plan is not currently available.');document.getElementById('order-plan').textContent=selected.name;document.getElementById('order-price').textContent=`$${Number(selected.monthly_price||0).toFixed(0)} / month`;status.textContent='Secure payment powered by Stripe.';const session=await api('/workforce-checkout',{method:'POST',body:JSON.stringify({surface:'dot_marketing',embedded:true,plan_code:code})});if(!session.stripe_publishable_key||!session.client_secret)throw Error('Secure checkout is not configured for this plan.');const stripe=Stripe(session.stripe_publishable_key);const checkout=await stripe.initEmbeddedCheckout({fetchClientSecret:async()=>session.client_secret});checkout.mount('#stripe-checkout')}catch(e){status.textContent=e.message;status.classList.add('checkout-error')}}
+
+async function api(path,opts={}){
+  const r=await fetch(API+path,{...opts,headers:{'Content-Type':'application/json','apikey':ANON,'Authorization':'Bearer '+ANON,...(opts.headers||{})}});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok||d.error)throw Error(d.error||'Unable to continue checkout.');
+  return d;
+}
+function showError(message){
+  status.textContent='Checkout could not be loaded.';
+  status.classList.add('checkout-error');
+  errorBox.textContent=message||'Unable to load secure checkout.';
+  errorBox.hidden=false;
+}
+async function start(){
+  try{
+    if(typeof window.Stripe!=='function')throw Error('Stripe.js did not load. Refresh the page and try again.');
+    const cat=await api(`/workforce-checkout?surface=dot_marketing&agency=${encodeURIComponent(type==='ctpa'?'CTPA':agency)}`,{method:'GET'});
+    const selected=(cat.plans||[]).find(x=>x.code===code);
+    if(!selected)throw Error('The selected plan is not currently available.');
+    document.getElementById('order-plan').textContent=selected.name;
+    document.getElementById('order-price').textContent=`$${Number(selected.monthly_price||0).toFixed(0)} / month`;
+
+    status.textContent='Loading secure payment form…';
+    const session=await api('/workforce-checkout',{method:'POST',body:JSON.stringify({surface:'dot_marketing',embedded:true,plan_code:code})});
+    if(!session.stripe_publishable_key)throw Error('Stripe publishable key is not configured in the checkout service.');
+    if(!session.client_secret)throw Error('Stripe did not return a Checkout Session client secret.');
+
+    const stripe=window.Stripe(session.stripe_publishable_key);
+    if(typeof stripe.initCheckoutElementsSdk!=='function')throw Error('The loaded Stripe.js version does not support Checkout Elements.');
+
+    const checkout=stripe.initCheckoutElementsSdk({
+      clientSecret:session.client_secret,
+      elementsOptions:{
+        appearance:{
+          theme:'stripe',
+          variables:{
+            colorPrimary:'#ff6b00',
+            colorText:'#172033',
+            colorBackground:'#ffffff',
+            colorDanger:'#b42318',
+            borderRadius:'10px',
+            fontFamily:'Inter, system-ui, sans-serif'
+          }
+        }
+      }
+    });
+
+    const contact=checkout.createContactDetailsElement();
+    contact.mount('#stripe-contact-element');
+    const payment=checkout.createPaymentElement({layout:'accordion'});
+    payment.mount('#stripe-payment-element');
+
+    const loaded=await checkout.loadActions();
+    if(loaded.type!=='success')throw Error(loaded.error?.message||'Stripe checkout could not initialize.');
+    const actions=loaded.actions;
+
+    checkout.on('change',sessionState=>{
+      payButton.disabled=!sessionState.canConfirm;
+      if(sessionState.total?.total?.amount){
+        document.getElementById('order-price').textContent=`$${sessionState.total.total.amount} / month`;
+      }
+    });
+
+    payButton.addEventListener('click',async()=>{
+      payButton.disabled=true;
+      errorBox.hidden=true;
+      status.textContent='Confirming payment securely with Stripe…';
+      try{
+        const result=await actions.confirm();
+        if(result.type==='error'){
+          throw Error(result.error?.message||'Payment could not be completed.');
+        }
+      }catch(err){
+        errorBox.textContent=err.message||'Payment could not be completed.';
+        errorBox.hidden=false;
+        payButton.disabled=false;
+        status.textContent='Secure payment powered by Stripe.';
+      }
+    });
+
+    status.textContent='Secure payment powered by Stripe.';
+    payButton.hidden=false;
+  }catch(e){
+    showError(e.message);
+    console.error('screenings4u DOT checkout mount failed',e);
+  }
+}
 start();
 })();
