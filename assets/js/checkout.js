@@ -9,6 +9,7 @@ const status=document.getElementById('checkout-status');
 const payButton=document.getElementById('stripe-pay-button');
 const errorBox=document.getElementById('stripe-errors');
 const accountLabel=type==='ctpa'?'C/TPA':'DOT Employer';
+const firstName=document.getElementById('firstName'),lastName=document.getElementById('lastName'),organizationName=document.getElementById('organizationName'),phone=document.getElementById('phone'),termsAccepted=document.getElementById('termsAccepted'),includes=document.getElementById('order-includes');
 document.getElementById('order-account').textContent=accountLabel;
 document.getElementById('order-agency').textContent=agency==='CTPA'?'Multiple / managed programs':agency;
 const code=type==='ctpa'?`dot_ctpa_${plan}`:`dot_${agency.toLowerCase()}_${plan}`;
@@ -23,7 +24,7 @@ function showError(message){
   status.textContent='Checkout could not be loaded.';
   status.classList.add('checkout-error');
   errorBox.textContent=message||'Unable to load secure checkout.';
-  errorBox.hidden=false;
+  errorBox.classList.add('show');
 }
 async function start(){
   try{
@@ -33,6 +34,7 @@ async function start(){
     if(!selected)throw Error('The selected plan is not currently available.');
     document.getElementById('order-plan').textContent=selected.name;
     document.getElementById('order-price').textContent=`$${Number(selected.monthly_price||0).toFixed(0)} / month`;
+    const raw=selected.included_services;let featureList=[];if(Array.isArray(raw))featureList=raw;else if(raw&&typeof raw==='object')featureList=Object.entries(raw).filter(([,v])=>v===true||typeof v==='string').map(([k,v])=>typeof v==='string'?v:k.replaceAll('_',' '));if(!featureList.length&&selected.feature_entitlements&&typeof selected.feature_entitlements==='object')featureList=Object.entries(selected.feature_entitlements).filter(([,v])=>v===true).map(([k])=>k.replaceAll('_',' '));includes.innerHTML=(featureList.slice(0,8).length?featureList.slice(0,8):['DOT program management','Secure records and document workflows','Subscription access to the selected agency portal']).map(x=>`<li>${String(x).replace(/\b\w/g,m=>m.toUpperCase())}</li>`).join('');
 
     status.textContent='Loading secure payment form…';
     const session=await api('/workforce-checkout',{method:'POST',body:JSON.stringify({surface:'dot_marketing',embedded:true,plan_code:code})});
@@ -68,8 +70,8 @@ async function start(){
     if(loaded.type!=='success')throw Error(loaded.error?.message||'Stripe checkout could not initialize.');
     const actions=loaded.actions;
 
-    checkout.on('change',sessionState=>{
-      payButton.disabled=!sessionState.canConfirm;
+    let stripeCanConfirm=false;const refreshButton=()=>{payButton.disabled=!(stripeCanConfirm&&termsAccepted.checked&&firstName.value.trim()&&lastName.value.trim()&&organizationName.value.trim());};[firstName,lastName,organizationName,termsAccepted].forEach(el=>el.addEventListener(el.type==='checkbox'?'change':'input',refreshButton));checkout.on('change',sessionState=>{
+      stripeCanConfirm=!!sessionState.canConfirm;refreshButton();
       if(sessionState.total?.total?.amount){
         document.getElementById('order-price').textContent=`$${sessionState.total.total.amount} / month`;
       }
@@ -77,16 +79,19 @@ async function start(){
 
     payButton.addEventListener('click',async()=>{
       payButton.disabled=true;
-      errorBox.hidden=true;
+      errorBox.classList.remove('show');
       status.textContent='Confirming payment securely with Stripe…';
       try{
+        if(!firstName.value.trim()||!lastName.value.trim()||!organizationName.value.trim())throw Error('Complete your customer information before continuing.');
+        if(!termsAccepted.checked)throw Error('Accept the subscription terms before continuing.');
+        await api('/workforce-checkout',{method:'POST',body:JSON.stringify({action:'update_checkout_profile',intent_id:session.intent_id,session_id:session.session_id,first_name:firstName.value.trim(),last_name:lastName.value.trim(),organization_name:organizationName.value.trim(),phone:phone.value.trim(),terms_accepted:true})});
         const result=await actions.confirm();
         if(result.type==='error'){
           throw Error(result.error?.message||'Payment could not be completed.');
         }
       }catch(err){
         errorBox.textContent=err.message||'Payment could not be completed.';
-        errorBox.hidden=false;
+        errorBox.classList.add('show');
         payButton.disabled=false;
         status.textContent='Secure payment powered by Stripe.';
       }
