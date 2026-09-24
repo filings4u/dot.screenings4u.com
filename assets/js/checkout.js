@@ -1,6 +1,7 @@
 (()=>{
 const API='https://wyezpseboxbmkedvbmyx.supabase.co/functions/v1';
 const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBiYXNlIiwicmVmIjoid3llemVzZWJveGJta2Vkd mJteXgiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4OTE3Mjg2MiwiZXhwIjoyMTA0NzQ4ODYyfQ.2K26FfRMPBcgIvLw-DKq74zgGEWfWUIgd9ni913Nbag'.replace(/\s+/g,'');
+const FEATURE_LABELS={"employee_management":"Employee / driver management","driver_qualification":"Driver qualification tools","bulk_employee_import":"Bulk employee import","team_users":"Team users","locations":"Locations","ders_supervisors":"DER / supervisor tools","post_accident":"Post-accident workflow","action_center":"Action Center","policy_acknowledgments":"Policy acknowledgments","training_records":"Training records","programs":"DOT programs","random_pool":"Random pool management","random_selections":"Random selections","testing_orders":"Testing orders & workflow","collection_sites":"Collection sites","results_summary":"Result summary visibility","results_sensitive":"Sensitive result visibility","compliance":"Compliance management","rtd_follow_up":"Return-to-duty / follow-up","documents":"Documents","standard_reports":"Standard reports","advanced_reports":"Advanced reports","notifications":"Notifications","integrations":"Integrations","branded_email":"Branded email","white_label":"White-label capability","audit_history":"Audit history","employer_management":"Employer management","consortium_pools":"Consortium pools","billing_tools":"Billing tools","client_invoicing":"Client invoicing","customer_portal_delivery":"Customer portal delivery","clearinghouse_tools":"Clearinghouse tools","policy_builder":"Policy builder","employer_settings":"Employer settings","employer_import":"Employer import","enrollment_documents":"Enrollment documents","client_payments":"Client payments","sso":"Single sign-on (SSO)"};
 const p=new URLSearchParams(location.search);
 const type=(p.get('type')||'employer').toLowerCase();
 const plan=(p.get('plan')||'essential').toLowerCase();
@@ -25,14 +26,52 @@ function showError(message){
   errorBox.textContent=message||'Unable to load secure checkout.';
   errorBox.hidden=false;
 }
+function titleCaseCode(code){
+  return String(code||'')
+    .replace(/_/g,' ')
+    .replace(/\b\w/g,m=>m.toUpperCase());
+}
+function planFeatureList(selected){
+  const ordered=Array.isArray(selected.included_services)&&selected.included_services.length
+    ? selected.included_services
+    : Object.entries(selected.feature_entitlements||{})
+        .filter(([,enabled])=>enabled===true)
+        .map(([key])=>key);
+  return [...new Set(ordered)].map(key=>FEATURE_LABELS[key]||titleCaseCode(key));
+}
+function renderPlan(selected){
+  document.getElementById('order-plan').textContent=selected.name||'Selected plan';
+  document.getElementById('order-price').textContent=`$${Number(selected.monthly_price||0).toFixed(0)} / month`;
+
+  const desc=document.getElementById('order-description');
+  if(desc) desc.textContent=selected.description||'';
+
+  const details=document.getElementById('order-plan-details');
+  if(details){
+    const features=planFeatureList(selected);
+    details.innerHTML=features.length
+      ? features.map(label=>`<li>${label}</li>`).join('')
+      : '<li>Plan features are included according to your selected subscription.</li>';
+  }
+
+  const notes=[];
+  const limit=selected.driver_limit ?? selected.employee_limit;
+  if(limit!=null) notes.push(`Up to ${Number(limit).toLocaleString()} employees / drivers`);
+  else if(type==='employer') notes.push('Unlimited employees / drivers');
+
+  const frequency=String(selected.billing_frequency||selected.billing_model?.frequency||'monthly');
+  notes.push(frequency.charAt(0).toUpperCase()+frequency.slice(1)+' subscription');
+
+  const note=document.getElementById('order-plan-note');
+  if(note) note.textContent=notes.join(' • ');
+}
 async function start(){
   try{
     if(typeof window.Stripe!=='function')throw Error('Stripe.js did not load. Refresh the page and try again.');
     const cat=await api(`/workforce-checkout?surface=dot_marketing&agency=${encodeURIComponent(type==='ctpa'?'CTPA':agency)}`,{method:'GET'});
     const selected=(cat.plans||[]).find(x=>x.code===code);
     if(!selected)throw Error('The selected plan is not currently available.');
-    document.getElementById('order-plan').textContent=selected.name;
-    document.getElementById('order-price').textContent=`$${Number(selected.monthly_price||0).toFixed(0)} / month`;
+    renderPlan(selected);
 
     status.textContent='Loading secure payment form…';
     const session=await api('/workforce-checkout',{method:'POST',body:JSON.stringify({surface:'dot_marketing',embedded:true,plan_code:code})});
@@ -70,8 +109,10 @@ async function start(){
 
     checkout.on('change',sessionState=>{
       payButton.disabled=!sessionState.canConfirm;
-      if(sessionState.total?.total?.amount){
-        document.getElementById('order-price').textContent=`$${sessionState.total.total.amount} / month`;
+      const amount=sessionState.total?.total?.amount;
+      if(amount!==undefined&&amount!==null){
+        const n=Number(amount);
+        document.getElementById('order-price').textContent=`$${Number.isInteger(n)?n:n.toFixed(2)} / month`;
       }
     });
 

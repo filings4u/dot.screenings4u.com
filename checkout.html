@@ -198,6 +198,40 @@
   font-size:12px;
   text-align:right;
 }
+.plan-description{
+  color:#52657a;
+  font-size:12px;
+  line-height:1.55;
+  margin:10px 0 0;
+}
+.plan-details{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  gap:9px;
+}
+.plan-details li{
+  position:relative;
+  padding-left:20px;
+  color:#475467;
+  font-size:12px;
+  line-height:1.45;
+}
+.plan-details li:before{
+  content:"✓";
+  position:absolute;
+  left:0;
+  top:0;
+  color:var(--blue);
+  font-weight:900;
+}
+.plan-detail-note{
+  color:#667085;
+  font-size:11px;
+  line-height:1.5;
+  margin-top:10px;
+}
 .checkout-price{
   display:flex;
   justify-content:space-between;
@@ -295,6 +329,7 @@
         <div class="checkout-pad">
           <span class="eyebrow">DOT SUBSCRIPTION</span>
           <h3 id="order-plan">Selected plan</h3>
+          <p id="order-description" class="plan-description"></p>
 
           <hr class="summary-rule">
 
@@ -304,6 +339,14 @@
             <li><span>DOT agency</span><strong id="order-agency">—</strong></li>
             <li><span>Billing</span><strong>Monthly</strong></li>
           </ul>
+
+          <hr class="summary-rule">
+
+          <div class="summary-label">Everything included in this plan</div>
+          <ul id="order-plan-details" class="plan-details">
+            <li>Loading plan details…</li>
+          </ul>
+          <div id="order-plan-note" class="plan-detail-note"></div>
 
           <hr class="summary-rule">
 
@@ -331,6 +374,6 @@
 <footer id="siteFooter" class="site-footer" data-site-footer></footer>
 <script src="assets/js/navigation.js"></script>
 <script src="assets/js/footer.js"></script>
-<script src="assets/js/checkout.js?v=20260923-dot-summary-1"></script>
+<script src="assets/js/checkout.js?v=20260923-dot-plan-details-2"></script>
 </body>
 </html>
