@@ -1,1 +1,336 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Secure Checkout | screenings4u DOT</title><meta name="description" content="Secure checkout for screenings4u DOT software subscriptions."><meta name="theme-color" content="#24467f"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/css/site.css"><script src="https://js.stripe.com/dahlia/stripe.js"></script></head><body data-page="checkout"><div data-site-header></div><main><section class="page-hero"><div class="container"><div class="page-hero-copy" style="max-width:820px"><span class="eyebrow">SECURE CHECKOUT</span><h1>Complete your screenings4u DOT purchase.</h1><p>Review your selected plan and complete payment securely. After payment, you will continue to account creation.</p></div></div></section><section class="section section-soft"><div class="container checkout-shell"><div class="checkout-panel"><div id="checkout-status" class="checkout-status">Loading your selected plan…</div><div class="stripe-checkout-stack"><div id="stripe-contact-element"></div><div id="stripe-payment-element"></div><div id="stripe-errors" class="checkout-error-message" hidden></div><button id="stripe-pay-button" class="btn btn-primary stripe-pay-button" type="button" hidden disabled>Subscribe securely</button></div></div><aside class="checkout-summary"><span class="eyebrow">ORDER SUMMARY</span><h3 id="order-plan">Selected plan</h3><div class="checkout-summary-row"><span>Account</span><strong id="order-account">—</strong></div><div class="checkout-summary-row"><span>DOT agency</span><strong id="order-agency">—</strong></div><div class="checkout-summary-row"><span>Billing</span><strong>Monthly</strong></div><div class="checkout-summary-row"><span>Subscription</span><strong id="order-price">—</strong></div><p class="small" style="margin-top:16px">Testing and other fulfillment services are separate unless specifically included in your plan.</p></aside></div></section></main><footer id="siteFooter" class="site-footer" data-site-footer></footer><script src="assets/js/navigation.js"></script><script src="assets/js/footer.js"></script><script src="assets/js/checkout.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DOT Subscription Checkout | screenings4u</title>
+<meta name="description" content="Secure subscription checkout for screenings4u DOT compliance software.">
+<meta name="theme-color" content="#24467f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css?v=20260923-dot-checkout-summary-1">
+<script src="https://js.stripe.com/dahlia/stripe.js"></script>
+<style>
+.checkout-page{
+  padding:55px 0 90px;
+  background:#fff;
+}
+.checkout-page>.container{
+  width:min(100% - 32px,1440px);
+  margin-inline:auto;
+}
+.checkout-top-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  margin-bottom:18px;
+}
+.checkout-top-row .eyebrow{margin-bottom:0}
+.checkout-back{
+  display:inline-flex;
+  align-items:center;
+  font-size:13px;
+  font-weight:800;
+  color:var(--blue);
+  text-decoration:none;
+  white-space:nowrap;
+}
+.checkout-back:hover{text-decoration:underline}
+.checkout-page h1{
+  color:var(--blue-dark);
+  font-size:clamp(36px,5vw,54px);
+  line-height:1.02;
+  letter-spacing:-.045em;
+  margin:0 0 10px;
+}
+.checkout-intro{
+  color:var(--muted);
+  font-size:14px;
+  margin:0 0 30px;
+  max-width:760px;
+}
+.checkout-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.65fr) minmax(340px,.65fr);
+  gap:28px;
+  align-items:start;
+}
+.checkout-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:0 14px 40px rgba(23,51,95,.08);
+}
+.checkout-pad{padding:30px}
+.checkout-card h2{
+  color:var(--blue-dark);
+  font-size:21px;
+  margin:0 0 7px;
+}
+.checkout-sub{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55;
+  margin:0 0 22px;
+}
+.stripe-element-shell{
+  padding:18px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fbfcfe;
+}
+.stripe-element-shell + .stripe-element-shell{margin-top:18px}
+#stripe-contact-element,
+#stripe-payment-element{min-height:54px}
+.checkout-divider{
+  border:0;
+  border-top:1px solid var(--line);
+  margin:24px 0;
+}
+.checkout-status{
+  margin:14px 0 0;
+  padding:12px;
+  border-radius:8px;
+  background:#f6f8fb;
+  color:#667085;
+  font-size:12px;
+  line-height:1.5;
+}
+.checkout-status.checkout-error{
+  color:#b42318;
+  background:#fff1f0;
+  border:1px solid #f4c7c3;
+}
+.checkout-error-message{
+  margin-top:12px;
+  padding:12px;
+  border-radius:8px;
+  background:#fff1f0;
+  color:#b42318;
+  border:1px solid #f4c7c3;
+  font-size:12px;
+  line-height:1.5;
+}
+.stripe-pay-button{
+  width:100%;
+  min-height:52px;
+  margin-top:18px;
+  padding:0 22px;
+  border:0;
+  border-radius:8px;
+  background:var(--orange);
+  color:#fff;
+  font-family:inherit;
+  font-size:14px;
+  font-weight:800;
+  line-height:1;
+  cursor:pointer;
+  transition:background .2s ease,transform .2s ease,box-shadow .2s ease;
+}
+.stripe-pay-button:hover:not(:disabled){
+  background:var(--orange-dark);
+  transform:translateY(-1px);
+  box-shadow:0 8px 20px rgba(255,107,0,.20);
+}
+.stripe-pay-button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+  box-shadow:none;
+}
+.checkout-secure{
+  text-align:center;
+  color:#7b8da3;
+  font-size:10px;
+  line-height:1.5;
+  margin-top:10px;
+}
+.checkout-summary{
+  position:sticky;
+  top:20px;
+}
+.checkout-summary .eyebrow{
+  color:var(--orange);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.09em;
+  margin:0;
+}
+.checkout-summary h3{
+  color:var(--blue-dark);
+  font-size:20px;
+  line-height:1.2;
+  margin:6px 0 0;
+}
+.summary-rule{
+  border:0;
+  border-top:1px solid var(--line);
+  margin:22px 0;
+}
+.summary-label{
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#667085;
+  margin-bottom:10px;
+}
+.summary-list{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  gap:11px;
+}
+.summary-list li{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  color:#475467;
+  font-size:12px;
+}
+.summary-list li span:first-child{color:#667085}
+.summary-list strong{
+  color:var(--blue-dark);
+  font-size:12px;
+  text-align:right;
+}
+.checkout-price{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+.checkout-price span{
+  font-size:13px;
+  color:var(--muted);
+}
+.checkout-price strong{
+  color:var(--blue-dark);
+  font-size:27px;
+  letter-spacing:-.035em;
+}
+.checkout-next{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  gap:8px;
+}
+.checkout-next li{
+  position:relative;
+  padding-left:20px;
+  color:#475467;
+  font-size:12px;
+  line-height:1.45;
+}
+.checkout-next li:before{
+  content:"✓";
+  position:absolute;
+  left:0;
+  top:0;
+  color:var(--blue);
+  font-weight:900;
+}
+@media(max-width:900px){
+  .checkout-page{padding:32px 0 64px}
+  .checkout-grid{grid-template-columns:1fr}
+  .checkout-summary{position:static;order:-1}
+  .checkout-pad{padding:24px}
+}
+@media(max-width:640px){
+  .checkout-page>.container{width:min(100% - 22px,1440px)}
+  .checkout-top-row{align-items:flex-start;gap:12px}
+  .checkout-page h1{font-size:34px}
+  .checkout-pad{padding:18px}
+  .stripe-element-shell{padding:14px}
+}
+</style>
+</head>
+<body data-page="checkout">
+<div data-site-header></div>
+
+<main class="checkout-page">
+  <div class="container">
+    <div class="checkout-top-row">
+      <span class="eyebrow">SECURE DOT SUBSCRIPTION CHECKOUT</span>
+      <a class="checkout-back" href="javascript:history.back()">← Back to plan comparison</a>
+    </div>
+
+    <h1>Complete Your DOT Subscription.</h1>
+    <p class="checkout-intro">Review your selected DOT software plan, enter your billing information, and complete your subscription securely through Stripe.</p>
+
+    <div class="checkout-grid">
+      <section class="checkout-card">
+        <div class="checkout-pad">
+          <h2>Billing Information</h2>
+          <p class="checkout-sub">Enter the customer and billing details for this subscription.</p>
+
+          <div class="stripe-element-shell">
+            <div id="stripe-contact-element"></div>
+          </div>
+
+          <hr class="checkout-divider">
+
+          <h2>Payment</h2>
+          <p class="checkout-sub">Secure payment powered by Stripe.</p>
+
+          <div class="stripe-element-shell">
+            <div id="stripe-payment-element"></div>
+          </div>
+
+          <div id="stripe-errors" class="checkout-error-message" hidden></div>
+          <div id="checkout-status" class="checkout-status" aria-live="polite">Loading your selected plan…</div>
+
+          <button id="stripe-pay-button" class="stripe-pay-button" type="button" hidden disabled>Subscribe securely</button>
+
+          <div class="checkout-secure">Your card information is handled securely by Stripe and is not stored on this website.</div>
+        </div>
+      </section>
+
+      <aside class="checkout-card checkout-summary">
+        <div class="checkout-pad">
+          <span class="eyebrow">DOT SUBSCRIPTION</span>
+          <h3 id="order-plan">Selected plan</h3>
+
+          <hr class="summary-rule">
+
+          <div class="summary-label">Subscription Summary</div>
+          <ul class="summary-list">
+            <li><span>Account</span><strong id="order-account">—</strong></li>
+            <li><span>DOT agency</span><strong id="order-agency">—</strong></li>
+            <li><span>Billing</span><strong>Monthly</strong></li>
+          </ul>
+
+          <hr class="summary-rule">
+
+          <div class="checkout-price">
+            <span>Subscription</span>
+            <strong id="order-price">—</strong>
+          </div>
+
+          <hr class="summary-rule">
+
+          <div class="summary-label">What happens next</div>
+          <ul class="checkout-next">
+            <li>Stripe securely confirms the subscription payment.</li>
+            <li>You continue to screenings4u DOT account creation.</li>
+            <li>Your selected DOT software plan is provisioned to the new account.</li>
+          </ul>
+
+          <p class="checkout-sub" style="margin:18px 0 0">Testing and other fulfillment services are separate unless specifically included in your plan.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<footer id="siteFooter" class="site-footer" data-site-footer></footer>
+<script src="assets/js/navigation.js"></script>
+<script src="assets/js/footer.js"></script>
+<script src="assets/js/checkout.js?v=20260923-dot-summary-1"></script>
+</body>
+</html>
