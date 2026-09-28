@@ -1,6 +1,12 @@
 (()=>{
+<<<<<<< HEAD
 const API='https://wyezpseboxbmkedvbmyx.supabase.co/functions/v1';
 const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBiYXNlIiwicmVmIjoid3llemVzZWJveGJta2Vkd mJteXgiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4OTE3Mjg2MiwiZXhwIjoyMTA0NzQ4ODYyfQ.2K26FfRMPBcgIvLw-DKq74zgGEWfWUIgd9ni913Nbag'.replace(/\s+/g,'');
+=======
+const API='https://elpbnytpciqnbexiaebp.supabase.co/functions/v1';
+const ANON='sb_publishable_xVI6Mjkk1bNVMGHZCPuK6w_8FSHKdkC';
+const FEATURE_LABELS={"employee_management":"Employee / driver management","driver_qualification":"Driver qualification tools","bulk_employee_import":"Bulk employee import","team_users":"Team users","locations":"Locations","ders_supervisors":"DER / supervisor tools","post_accident":"Post-accident workflow","action_center":"Action Center","policy_acknowledgments":"Policy acknowledgments","training_records":"Training records","programs":"DOT programs","random_pool":"Random pool management","random_selections":"Random selections","testing_orders":"Testing orders & workflow","collection_sites":"Collection sites","results_summary":"Result summary visibility","results_sensitive":"Sensitive result visibility","compliance":"Compliance management","rtd_follow_up":"Return-to-duty / follow-up","documents":"Documents","standard_reports":"Standard reports","advanced_reports":"Advanced reports","notifications":"Notifications","integrations":"Integrations","branded_email":"Branded email","white_label":"White-label capability","audit_history":"Audit history","employer_management":"Employer management","consortium_pools":"Consortium pools","billing_tools":"Billing tools","client_invoicing":"Client invoicing","customer_portal_delivery":"Customer portal delivery","clearinghouse_tools":"Clearinghouse tools","policy_builder":"Policy builder","employer_settings":"Employer settings","employer_import":"Employer import","enrollment_documents":"Enrollment documents","client_payments":"Client payments","sso":"Single sign-on (SSO)"};
+>>>>>>> 8d31b796ec0dde86670c2cbd3224694eec05fa25
 const p=new URLSearchParams(location.search);
 const type=(p.get('type')||'employer').toLowerCase();
 const plan=(p.get('plan')||'essential').toLowerCase();
@@ -8,10 +14,10 @@ const agency=(p.get('agency')||(type==='ctpa'?'CTPA':'FMCSA')).toUpperCase();
 const status=document.getElementById('checkout-status');
 const payButton=document.getElementById('stripe-pay-button');
 const errorBox=document.getElementById('stripe-errors');
-const accountLabel=type==='ctpa'?'C/TPA':'DOT Employer';
+const accountLabel=type==='ctpa'?'C/TPA':type==='owner'?'Owner-Operator':'DOT Employer';
 document.getElementById('order-account').textContent=accountLabel;
 document.getElementById('order-agency').textContent=agency==='CTPA'?'Multiple / managed programs':agency;
-const code=type==='ctpa'?`dot_ctpa_${plan}`:`dot_${agency.toLowerCase()}_${plan}`;
+const code=type==='ctpa'?`dot_ctpa_${plan}`:type==='owner'?`owner_operator_${plan}`:`dot_${agency.toLowerCase()}_${plan}`;
 
 async function api(path,opts={}){
   const r=await fetch(API+path,{...opts,headers:{'Content-Type':'application/json','apikey':ANON,'Authorization':'Bearer '+ANON,...(opts.headers||{})}});

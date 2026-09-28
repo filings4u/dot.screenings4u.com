@@ -11,7 +11,7 @@
   if(pricingRoot){initPricing(pricingRoot)}
 })();
 
-function initPricing(root){
+async function initPricing(root){
   const plans = {
     employer:{label:'DOT Employer',plans:[['Essential',85,'Core DOT workforce administration for smaller organizations.'],['Professional',145,'Expanded administration, locations and reporting for growing DOT workforces.'],['Enterprise',245,'Advanced controls, integrations and audit visibility for larger operations.']],features:[
       ['Employee / driver records',[1,1,1]],['DOT programs',[1,1,1]],['Pools',[1,1,1]],['Random selections',[1,1,1]],['Testing workflows',[1,1,1]],['Results and documents',[1,1,1]],['Operational reports',[1,1,1]],['Notifications',[1,1,1]],['Locations',[0,1,1]],['Advanced reporting',[0,1,1]],['User roles',[0,1,1]],['Integrations',[0,0,1]],['Audit history',[0,0,1]],['White label',[0,0,1]],['Enterprise administration',[0,0,1]]
@@ -24,15 +24,33 @@ function initPricing(root){
     ]}
   };
 
+  try{
+    const r=await fetch('https://elpbnytpciqnbexiaebp.supabase.co/functions/v1/dot-public-catalog');
+    const live=await r.json();
+    if(r.ok&&!live.error){
+      const groups={employer:['dot_fmcsa_essential','dot_fmcsa_professional','dot_fmcsa_enterprise'],owner:['owner_operator_essential','owner_operator_plus','owner_operator_complete'],ctpa:['dot_ctpa_essential','dot_ctpa_professional','dot_ctpa_enterprise']};
+      const audience={employer:'employer',owner:'owner_operator',ctpa:'ctpa'};
+      for(const k of Object.keys(groups)){
+        const ps=groups[k].map(code=>(live.plans||[]).find(x=>x.code===code)).filter(Boolean);
+        if(ps.length===3){
+          const avail=f=>audience[k]==='ctpa'?f.ctpa_available:audience[k]==='owner_operator'?f.owner_operator_available:f.employer_available;
+          const features=(live.features||[]).filter(avail).map(f=>[f.name,ps.map(pl=>(live.plan_features||[]).some(x=>x.plan_id===pl.id&&x.feature_id===f.id&&x.enabled)?1:0)]);
+          plans[k]={label:k==='employer'?'DOT Employer':k==='owner'?'Owner-Operator':'C/TPA',plans:ps.map(pl=>[pl.name.replace(/^(FMCSA DOT|DOT C\/TPA|Owner-Operator)\s+/i,''),Number(pl.monthly_price||0),pl.description||'']),features};
+        }
+      }
+    }
+  }catch(e){console.warn('Using embedded DOT pricing fallback.',e)}
+  let selectedAgency='FMCSA';
   let type = root.dataset.pricingType || 'employer';
   let mobilePlan = 0;
   const tabs = root.querySelectorAll('[data-pricing-tab]');
   tabs.forEach(btn=>btn.addEventListener('click',()=>{type=btn.dataset.pricingTab;mobilePlan=0;render()}));
+  const agencyBox=document.createElement('div');agencyBox.className='pricing-agency-select';agencyBox.innerHTML='<label for="dotAgencyChoice"><strong>DOT agency</strong></label><select id="dotAgencyChoice"><option>FMCSA</option><option>FAA</option><option>FTA</option><option>FRA</option><option>PHMSA</option><option>USCG</option></select>';tabs[0]?.parentElement?.after(agencyBox);agencyBox.querySelector('select').addEventListener('change',e=>selectedAgency=e.target.value);
 
   function checkoutHref(plan){
     const page=(document.body.dataset.page||'').toLowerCase();
     const agencies={fmcsa:'FMCSA',faa:'FAA',fra:'FRA',fta:'FTA',phmsa:'PHMSA',uscg:'USCG'};
-    const agency=type==='ctpa'?'CTPA':(agencies[page]||'');
+    const agency=type==='ctpa'?'CTPA':(agencies[page]||selectedAgency);
     const q=new URLSearchParams({type,plan:plan.toLowerCase()});
     if(agency) q.set('agency',agency);
     return `checkout.html?${q.toString()}`;
@@ -40,6 +58,7 @@ function initPricing(root){
 
   function render(){
     const cfg=plans[type] || plans.employer;
+    agencyBox.style.display=type==='employer'?'flex':'none';
     tabs.forEach(btn=>btn.classList.toggle('active',btn.dataset.pricingTab===type));
 
     const sticky = root.querySelector('[data-sticky]');
