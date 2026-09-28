@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", initS4UFooter);
 
-const S4U_URL_CONFIG_API = 'https://wyezpseboxbmkedvbmyx.supabase.co/functions/v1/workforce-checkout-status';
+const S4U_URL_CONFIG_API = 'https://elpbnytpciqnbexiaebp.supabase.co/functions/v1/workforce-checkout-status';
 
 function s4uLoadUrlConfiguration(){
   if(window.S4UUrlConfigPromise) return window.S4UUrlConfigPromise;

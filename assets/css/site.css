@@ -479,3 +479,4 @@ p{margin:0;color:var(--muted);font-size:17px}
 @media(max-width:600px){.legal-sidebar,.login-grid{grid-template-columns:1fr}.legal-hero{padding-top:46px}.login-card{min-height:120px}}
 
 .hub-turnstile{margin-top:16px;min-height:67px;display:flex;align-items:center}.hub-turnstile>div{width:100%}.login-card[disabled]{opacity:.55;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+.pricing-agency-select{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px auto 20px}.pricing-agency-select select{border:1px solid #cfd9e6;border-radius:9px;background:#fff;color:#17365f;padding:10px 34px 10px 12px;font:inherit}
