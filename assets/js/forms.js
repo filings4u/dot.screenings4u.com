@@ -1,6 +1,6 @@
 (()=>{
-const API='https://elpbnytpciqnbexiaebp.supabase.co/functions/v1/workforce-checkout-status';
-const KEY='sb_publishable_xVI6Mjkk1bNVMGHZCPuK6w_8FSHKdkC';
+const API='https://wyezpseboxbmkedvbmyx.supabase.co/functions/v1/workforce-checkout-status';
+const KEY='sb_publishable__BLewZS6h2V4yUczky-BTQ_EemiOdDL';
 const forms=document.querySelectorAll('[data-marketing-form]');
 if(!forms.length)return;
 const clean=(v,n=10000)=>String(v??'').trim().slice(0,n);
