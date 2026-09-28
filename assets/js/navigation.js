@@ -1,5 +1,5 @@
 (function(){
-  const CONFIG_API = 'https://wyezpseboxbmkedvbmyx.supabase.co/functions/v1/workforce-checkout-status';
+  const CONFIG_API = 'https://elpbnytpciqnbexiaebp.supabase.co/functions/v1/workforce-checkout-status';
 
   function loadUrlConfiguration(){
     if(window.S4UUrlConfigPromise) return window.S4UUrlConfigPromise;
