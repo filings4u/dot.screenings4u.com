@@ -1,6 +1,9 @@
-document.addEventListener("DOMContentLoaded", initS4UFooter);
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>initS4UFooter(false),{once:true}); else initS4UFooter(false);
 
 const S4U_URL_CONFIG_API = 'https://wyezpseboxbmkedvbmyx.supabase.co/functions/v1/workforce-checkout-status';
+const S4U_URL_CACHE_KEY='s4u_dot_url_config_v2';
+function s4uReadUrlCache(){try{const x=JSON.parse(localStorage.getItem(S4U_URL_CACHE_KEY)||'null');return x&&Date.now()-x.at<3600000?x.urls:null}catch{return null}}
+function s4uWriteUrlCache(urls){try{localStorage.setItem(S4U_URL_CACHE_KEY,JSON.stringify({at:Date.now(),urls}))}catch{}}
 
 function s4uLoadUrlConfiguration(){
   if(window.S4UUrlConfigPromise) return window.S4UUrlConfigPromise;
@@ -12,6 +15,7 @@ function s4uLoadUrlConfiguration(){
     const d=await r.json();
     if(!r.ok||d.error||!d.urls) throw new Error(d.error||'URL configuration unavailable.');
     window.S4UUrlConfig=d.urls;
+    s4uWriteUrlCache(d.urls);
     return d.urls;
   }).catch(err=>{
     console.warn('screenings4u DOT URL configuration could not be loaded.',err);
@@ -33,11 +37,12 @@ function s4uSafeHref(raw,fallback){
   }catch{return fallback;}
 }
 
-async function initS4UFooter() {
+function initS4UFooter(refreshing=false) {
   const target=document.getElementById("siteFooter");
   if(!target) return;
 
-  const urls=await s4uLoadUrlConfiguration();
+  const urls=window.S4UUrlConfig||s4uReadUrlCache()||null;
+  if(!refreshing) s4uLoadUrlConfiguration().then(fresh=>{if(fresh) initS4UFooter(true)});
   const marketing=urls?.marketing_pages||{};
   const legal=urls?.legal_pages||{};
   const sites=urls?.sites||{};
@@ -144,4 +149,5 @@ async function initS4UFooter() {
   if(y) y.textContent=new Date().getFullYear();
 }
 
-window.refreshUniversalFooter=initS4UFooter;
+window.refreshUniversalFooter=()=>initS4UFooter(true);
+window.addEventListener('s4u:management-runtime-updated',()=>initS4UFooter(true));
