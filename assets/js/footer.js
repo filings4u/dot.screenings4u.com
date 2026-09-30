@@ -75,8 +75,10 @@ function initS4UFooter(refreshing=false) {
   target.innerHTML=cta+`
       <div class="container footer-shell">
         <div class="footer-brand-area">
-          <a class="footer-brand footer-brand-image" href="${home}" aria-label="screenings4u Workforce DOT home">
-            <img src="assets/img/logo2.png" alt="screenings4u Workforce DOT" width="376" height="96">
+          <a class="footer-brand" href="${home}" aria-label="screenings4u DOT home">
+            <span class="footer-brand-mark">screenings<span class="four">4</span>u</span>
+            <span class="footer-brand-divider" aria-hidden="true"></span>
+            <span class="footer-brand-product">DOT</span>
           </a>
           <p class="footer-about">DOT workforce compliance software for Employers, Owner-Operators, and C/TPAs managing regulated program workflows across FMCSA, FAA, FRA, FTA, PHMSA, and USCG.</p>
           <div class="footer-contact">
