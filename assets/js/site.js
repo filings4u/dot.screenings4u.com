@@ -1,102 +1,25 @@
-(function(){
-  document.querySelectorAll('[data-prototype-form]').forEach(form=>{
-    form.addEventListener('submit',e=>{
-      e.preventDefault();
-      const status = form.querySelector('.form-status');
-      if(status){status.textContent='Form captured in this static prototype. Connect this form to your production CRM, email, or checkout workflow before launch.';status.classList.add('show');}
-    });
-  });
-
-  const pricingRoot = document.querySelector('[data-pricing-root]');
-  if(pricingRoot){initPricing(pricingRoot)}
+(()=>{
+"use strict";
+const API='https://elpbnytpciqnbexiaebp.supabase.co/functions/v1/dot-marketing-catalog';
+const KEY='sb_publishable_xVI6Mjkk1bNVMGHZCPuK6w_8FSHKdkC';
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':'&quot;',"'":'&#39;'}[c]));
+const money=v=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:Number(v)%1?2:0}).format(Number(v||0));
+const FEATURE_LABELS={
+ employee_management:'Employee / driver records',employer_management:'Employer portfolio management',driver_qualification:'Driver qualification',bulk_employee_import:'Bulk employee import',team_users:'Staff / account users',locations:'Locations / terminals',ders_supervisors:'DERs & supervisors',post_accident:'Post-accident workflow',action_center:'Action center',policy_acknowledgments:'Policy acknowledgments',training_records:'Training records',programs:'DOT programs',random_pool:'Random pool',consortium_pools:'Consortium pools',random_selections:'Random selections',testing_orders:'Testing orders',collection_sites:'Collection-site tools',results_summary:'Results summary',results_sensitive:'Sensitive results',compliance:'Compliance workspace',rtd_follow_up:'Return-to-duty / follow-up',documents:'Documents',standard_reports:'Standard reports',advanced_reports:'Advanced reports',notifications:'Notifications',integrations:'Integrations',branded_email:'Branded email',white_label:'White label',audit_history:'Audit history',billing_tools:'Billing tools',client_invoicing:'Client invoicing',customer_portal_delivery:'Employer portal delivery',clearinghouse_tools:'Clearinghouse tools',policy_builder:'Policy builder',employer_settings:'Employer feature controls',employer_import:'Employer import',enrollment_documents:'Enrollment documents',client_payments:'Client payments',sso:'Single sign-on'
+};
+const ORDER=['employee_management','employer_management','programs','random_pool','consortium_pools','random_selections','testing_orders','results_summary','compliance','documents','standard_reports','team_users','locations','ders_supervisors','collection_sites','results_sensitive','advanced_reports','billing_tools','client_invoicing','customer_portal_delivery','integrations','branded_email','white_label','sso','audit_history'];
+const codes={employer:['dot_employer_essential','dot_employer_professional','dot_employer_enterprise'],owner:['owner_operator_essential','owner_operator_plus','owner_operator_complete'],ctpa:['dot_ctpa_essential','dot_ctpa_professional','dot_ctpa_enterprise']};
+let catalog=null;
+async function loadCatalog(){if(catalog)return catalog;const r=await fetch(API,{headers:{apikey:KEY},cache:'no-store'});const d=await r.json().catch(()=>({}));if(!r.ok||d.error)throw new Error(d.error||'Pricing catalog unavailable.');catalog=d;window.S4UDotCatalog=d;return d}
+function planSet(type){const map=new Map((catalog?.plans||[]).map(p=>[p.code,p]));return (codes[type]||codes.employer).map(c=>map.get(c)).filter(Boolean)}
+function checkoutHref(type,plan){const page=(document.body.dataset.page||'').toLowerCase(),agencies={fmcsa:'FMCSA',faa:'FAA',fra:'FRA',fta:'FTA',phmsa:'PHMSA',uscg:'USCG'},agency=type==='ctpa'?'CTPA':(agencies[page]||'');const tier=(plan.code||'').split('_').pop();const q=new URLSearchParams({type,plan:tier});if(agency)q.set('agency',agency);return `checkout.html?${q.toString()}`}
+function renderPricing(root){let type=root.dataset.pricingType||'employer',mobilePlan=0;const tabs=root.querySelectorAll('[data-pricing-tab]');tabs.forEach(btn=>btn.onclick=()=>{type=btn.dataset.pricingTab;mobilePlan=0;render()});
+ function features(plans){const union=new Set();plans.forEach(p=>Object.entries(p.feature_entitlements||{}).forEach(([k,v])=>{if(typeof v==='boolean')union.add(k)}));return ORDER.filter(k=>union.has(k)).concat([...union].filter(k=>!ORDER.includes(k))).slice(0,18).map(k=>[FEATURE_LABELS[k]||k.replaceAll('_',' '),plans.map(p=>(p.feature_entitlements||{})[k]===true)])}
+ function render(){const plans=planSet(type);if(plans.length<1)return;tabs.forEach(b=>b.classList.toggle('active',b.dataset.pricingTab===type));const fs=features(plans),sticky=root.querySelector('[data-sticky]'),head=root.querySelector('[data-table-head]'),body=root.querySelector('[data-table-body]');if(sticky)sticky.innerHTML=`<div class="cell"><strong>Subscription pricing</strong><span>Live from the DOT catalog</span></div>${plans.map((p,i)=>`<div class="cell"><div class="sticky-plan">${esc(p.name.replace(/^DOT (Employer|C\/TPA) /,'').replace(/^Owner-Operator /,''))}${i===1?'<span class="popular-inline"> • Most Popular</span>':''}</div><div class="sticky-price">${money(p.monthly_price)} <small>/month</small></div></div>`).join('')}`;if(head)head.innerHTML=`<tr><th scope="col">Feature</th>${plans.map(p=>`<th>${esc(p.name.replace(/^DOT (Employer|C\/TPA) /,'').replace(/^Owner-Operator /,''))}</th>`).join('')}</tr>`;if(body)body.innerHTML=fs.map(f=>`<tr><th>${esc(f[0])}</th>${f[1].map(v=>`<td>${v?'<span class="check">✓</span>':'<span class="dash">—</span>'}</td>`).join('')}</tr>`).join('')+`<tr class="comparison-price-row" data-final-price-row><th>Monthly Price</th>${plans.map((p,i)=>`<td><div class="price-stack"><strong>${money(p.monthly_price)}</strong><span>/month</span><a class="btn ${i===1?'btn-primary':'btn-secondary'}" href="${checkoutHref(type,p)}">Choose Plan</a></div></td>`).join('')}</tr>`;
+ const tabsBox=root.querySelector('[data-mobile-tabs]'),view=root.querySelector('[data-mobile-view]');if(tabsBox&&view){tabsBox.innerHTML=plans.map((p,i)=>`<button type="button" class="${i===mobilePlan?'active':''}" data-mobile-plan="${i}"><span>${esc(p.name.replace(/^DOT (Employer|C\/TPA) /,'').replace(/^Owner-Operator /,''))}</span><strong>${money(p.monthly_price)}</strong></button>`).join('');const p=plans[mobilePlan];view.innerHTML=fs.map(f=>`<div class="mobile-feature"><strong>${esc(f[0])}</strong><span>${f[1][mobilePlan]?'✓':'—'}</span></div>`).join('')+`<div class="mobile-price-box" data-mobile-final-price><div class="plan-name">${esc(p.name)}</div><div class="plan-price">${money(p.monthly_price)} <small>/month</small></div><a class="btn btn-primary" href="${checkoutHref(type,p)}">Choose Plan</a></div>`;root.querySelectorAll('[data-mobile-plan]').forEach(b=>b.onclick=()=>{mobilePlan=Number(b.dataset.mobilePlan);render()})}}
+ render();}
+function renderPlanCards(){document.querySelectorAll('[data-plan-price]').forEach(el=>{const p=(catalog.plans||[]).find(x=>x.code===el.dataset.planPrice);if(p)el.textContent=money(p.monthly_price)+'/month'});}
+function renderServices(){document.querySelectorAll('[data-service-catalog]').forEach(root=>{const groups={};(catalog.services||[]).forEach(s=>(groups[s.category||'DOT Services']??=[]).push(s));root.innerHTML=Object.entries(groups).map(([cat,list])=>`<details class="offer-group" open><summary><span>${esc(cat)}</span><span>${list.length} services</span></summary><div class="service-list">${list.map(s=>`<article class="service-row"><div><h4>${esc(s.name)}</h4><p>${esc(s.description||'')}</p></div><div class="service-price">${s.base_amount==null?'Contact us':money(s.base_amount)}</div></article>`).join('')}</div></details>`).join('')});document.querySelectorAll('[data-addon-catalog]').forEach(root=>{root.innerHTML=(catalog.addons||[]).map(a=>`<article class="offer-card addon-card"><div class="offer-card-top"><span class="offer-kicker">ADD-ON</span><span class="offer-price">${a.pricing_model==='quote'?'Custom quote':a.pricing_model==='usage'?'Usage based':a.monthly_price!=null?money(a.monthly_price)+'/mo':a.one_time_price!=null?money(a.one_time_price):'Contact us'}</span></div><h3>${esc(a.name)}</h3><p>${esc(a.description||'')}</p></article>`).join('')})}
+async function init(){try{await loadCatalog();renderPlanCards();document.querySelectorAll('[data-pricing-root]').forEach(renderPricing);renderServices()}catch(e){console.warn(e)}document.querySelectorAll('[data-prototype-form]').forEach(form=>form.removeAttribute('data-prototype-form'))}
+document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init,{once:true}):init();
 })();
-
-function initPricing(root){
-  const plans = {
-    employer:{label:'DOT Employer',plans:[['Essential',85,'Core DOT workforce administration for smaller organizations.'],['Professional',145,'Expanded administration, locations and reporting for growing DOT workforces.'],['Enterprise',245,'Advanced controls, integrations and audit visibility for larger operations.']],features:[
-      ['Employee / driver records',[1,1,1]],['DOT programs',[1,1,1]],['Pools',[1,1,1]],['Random selections',[1,1,1]],['Testing workflows',[1,1,1]],['Results and documents',[1,1,1]],['Operational reports',[1,1,1]],['Notifications',[1,1,1]],['Locations',[0,1,1]],['Advanced reporting',[0,1,1]],['User roles',[0,1,1]],['Integrations',[0,0,1]],['Audit history',[0,0,1]],['White label',[0,0,1]],['Enterprise administration',[0,0,1]]
-    ]},
-    owner:{label:'Owner-Operator',plans:[['Essential',45,'A focused compliance workspace for a single-driver business.'],['Plus',125,'More workflow visibility and program tools for an owner-operator.'],['Complete',225,'A broader software package with deeper records and reporting.']],features:[
-      ['Single-driver profile',[1,1,1]],['DOT program workspace',[1,1,1]],['Random pool participation',[1,1,1]],['Testing records',[1,1,1]],['Results and documents',[1,1,1]],['Compliance history',[1,1,1]],['Notifications',[0,1,1]],['Expanded reporting',[0,1,1]],['Document organization',[0,1,1]],['Priority support',[0,0,1]],['Advanced workflow tools',[0,0,1]],['Audit history',[0,0,1]]
-    ]},
-    ctpa:{label:'C/TPA',plans:[['Essential',125,'Core software for managing a growing client portfolio.'],['Professional',225,'Expanded portfolio administration, reporting and delivery tools.'],['Enterprise',375,'Advanced C/TPA operations with branding and broader controls.']],features:[
-      ['Employer portfolio management',[1,1,1]],['Covered worker records',[1,1,1]],['Consortium pools',[1,1,1]],['Random selections',[1,1,1]],['Testing oversight',[1,1,1]],['Portfolio reporting',[1,1,1]],['Client billing workflows',[0,1,1]],['Employer portal delivery',[0,1,1]],['Advanced reports',[0,1,1]],['White label',[0,0,1]],['Branded email',[0,0,1]],['Team administration',[0,0,1]]
-    ]}
-  };
-
-  let type = root.dataset.pricingType || 'employer';
-  let mobilePlan = 0;
-  const tabs = root.querySelectorAll('[data-pricing-tab]');
-  tabs.forEach(btn=>btn.addEventListener('click',()=>{type=btn.dataset.pricingTab;mobilePlan=0;render()}));
-
-  function checkoutHref(plan){
-    const page=(document.body.dataset.page||'').toLowerCase();
-    const agencies={fmcsa:'FMCSA',faa:'FAA',fra:'FRA',fta:'FTA',phmsa:'PHMSA',uscg:'USCG'};
-    const agency=type==='ctpa'?'CTPA':(agencies[page]||'');
-    const q=new URLSearchParams({type,plan:plan.toLowerCase()});
-    if(agency) q.set('agency',agency);
-    return `checkout.html?${q.toString()}`;
-  }
-
-  function render(){
-    const cfg=plans[type] || plans.employer;
-    tabs.forEach(btn=>btn.classList.toggle('active',btn.dataset.pricingTab===type));
-
-    const sticky = root.querySelector('[data-sticky]');
-    if(sticky){
-      sticky.innerHTML = `<div class="cell"><strong>Plan pricing</strong><span>Stays visible while you compare</span></div>${cfg.plans.map((p,i)=>`<div class="cell"><div class="sticky-plan">${p[0]} ${i===1?'<span class="popular-inline">• Most Popular</span>':''}</div><div class="sticky-price">$${p[1]} <small>/month</small></div></div>`).join('')}`;
-    }
-
-    const body = root.querySelector('[data-table-body]');
-    const head = root.querySelector('[data-table-head]');
-    if(body && head){
-      const rows = cfg.features.map(f=>`<tr><th scope="row">${f[0]}</th>${f[1].map(v=>`<td>${v?'<span class="check" aria-label="Included">✓</span>':'<span class="dash" aria-label="Not included">—</span>'}</td>`).join('')}</tr>`).join('');
-      const priceRow = `<tr class="comparison-price-row" data-final-price-row><th scope="row">Monthly Price</th>${cfg.plans.map((p,i)=>`<td><div class="price-stack"><strong>$${p[1]}</strong><span>/month</span><a class="btn ${i===1?'btn-primary':'btn-secondary'}" href="${checkoutHref(p[0])}">Choose ${p[0]}</a></div></td>`).join('')}</tr>`;
-      body.innerHTML=rows+priceRow;
-      head.innerHTML=`<tr><th scope="col">Feature</th>${cfg.plans.map(p=>`<th scope="col">${p[0]}</th>`).join('')}</tr>`;
-    }
-
-    renderMobile();
-    requestAnimationFrame(bindStickyStop);
-  }
-
-  function renderMobile(){
-    const cfg=plans[type] || plans.employer;
-    const tabsBox=root.querySelector('[data-mobile-tabs]');
-    const view=root.querySelector('[data-mobile-view]');
-    if(!tabsBox || !view) return;
-    const p=cfg.plans[mobilePlan];
-    tabsBox.innerHTML=cfg.plans.map((plan,i)=>`<button type="button" class="${i===mobilePlan?'active':''}" data-mobile-plan="${i}"><span>${plan[0]}</span><strong>$${plan[1]}</strong></button>`).join('');
-    view.innerHTML=cfg.features.map(f=>`<div class="mobile-feature"><strong>${f[0]}</strong><span>${f[1][mobilePlan]?'✓':'—'}</span></div>`).join('')+`<div class="mobile-price-box" data-mobile-final-price><div class="plan-name">${p[0]}</div><div class="plan-price">$${p[1]} <small>/month</small></div><a class="btn ${mobilePlan===1?'btn-primary':'btn-secondary'}" href="${checkoutHref(p[0])}">Choose ${p[0]}</a></div>`;
-    root.querySelectorAll('[data-mobile-plan]').forEach(btn=>btn.addEventListener('click',()=>{mobilePlan=Number(btn.dataset.mobilePlan);renderMobile();requestAnimationFrame(bindStickyStop)}));
-  }
-
-  let cleanupSticky=null;
-  function bindStickyStop(){
-    if(cleanupSticky){cleanupSticky();cleanupSticky=null;}
-    const sticky=root.querySelector('[data-sticky]');
-    const finalRow=root.querySelector('[data-final-price-row]');
-    const mobileTabs=root.querySelector('[data-mobile-tabs]');
-    const mobileFinal=root.querySelector('[data-mobile-final-price]');
-
-    const sync=()=>{
-      if(window.matchMedia('(max-width:760px)').matches){
-        if(mobileTabs && mobileFinal){
-          const stop = mobileFinal.getBoundingClientRect().top <= mobileTabs.getBoundingClientRect().bottom + 8;
-          mobileTabs.classList.toggle('is-at-bottom',stop);
-        }
-        return;
-      }
-      if(sticky && finalRow){
-        const stop = finalRow.getBoundingClientRect().top <= sticky.getBoundingClientRect().bottom + 8;
-        sticky.classList.toggle('is-at-bottom',stop);
-      }
-    };
-    window.addEventListener('scroll',sync,{passive:true});
-    window.addEventListener('resize',sync);
-    sync();
-    cleanupSticky=()=>{window.removeEventListener('scroll',sync);window.removeEventListener('resize',sync);};
-  }
-
-  render();
-}
