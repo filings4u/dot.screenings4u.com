@@ -12,14 +12,15 @@
 })();
 
 function initPricing(root){
+  const LIVE_PLAN_API='https://elpbnytpciqnbexiaebp.supabase.co/functions/v1/workforce-checkout';
   const plans = {
-    employer:{label:'DOT Employer',plans:[['Essential',85,'Core DOT workforce administration for smaller organizations.'],['Professional',145,'Expanded administration, locations and reporting for growing DOT workforces.'],['Enterprise',245,'Advanced controls, integrations and audit visibility for larger operations.']],features:[
+    employer:{label:'DOT Employer',plans:[['Essential',85,'Core DOT workforce administration for smaller organizations.','dot_employer_essential'],['Professional',145,'Expanded administration, locations and reporting for growing DOT workforces.','dot_employer_professional'],['Enterprise',245,'Advanced controls, integrations and audit visibility for larger operations.','dot_employer_enterprise']],features:[
       ['Employee / driver records',[1,1,1]],['DOT programs',[1,1,1]],['Pools',[1,1,1]],['Random selections',[1,1,1]],['Testing workflows',[1,1,1]],['Results and documents',[1,1,1]],['Operational reports',[1,1,1]],['Notifications',[1,1,1]],['Locations',[0,1,1]],['Advanced reporting',[0,1,1]],['User roles',[0,1,1]],['Integrations',[0,0,1]],['Audit history',[0,0,1]],['White label',[0,0,1]],['Enterprise administration',[0,0,1]]
     ]},
-    owner:{label:'Owner-Operator',plans:[['Essential',45,'A focused compliance workspace for a single-driver business.'],['Plus',125,'More workflow visibility and program tools for an owner-operator.'],['Complete',225,'A broader software package with deeper records and reporting.']],features:[
+    owner:{label:'Owner-Operator',plans:[['Essential',45,'A focused compliance workspace for a single-driver business.','owner_operator_essential'],['Plus',125,'More workflow visibility and program tools for an owner-operator.','owner_operator_plus'],['Complete',225,'A broader software package with deeper records and reporting.','owner_operator_complete']],features:[
       ['Single-driver profile',[1,1,1]],['DOT program workspace',[1,1,1]],['Random pool participation',[1,1,1]],['Testing records',[1,1,1]],['Results and documents',[1,1,1]],['Compliance history',[1,1,1]],['Notifications',[0,1,1]],['Expanded reporting',[0,1,1]],['Document organization',[0,1,1]],['Priority support',[0,0,1]],['Advanced workflow tools',[0,0,1]],['Audit history',[0,0,1]]
     ]},
-    ctpa:{label:'C/TPA',plans:[['Essential',125,'Core software for managing a growing client portfolio.'],['Professional',225,'Expanded portfolio administration, reporting and delivery tools.'],['Enterprise',375,'Advanced C/TPA operations with branding and broader controls.']],features:[
+    ctpa:{label:'C/TPA',plans:[['Essential',125,'Core software for managing a growing client portfolio.','dot_ctpa_essential'],['Professional',225,'Expanded portfolio administration, reporting and delivery tools.','dot_ctpa_professional'],['Enterprise',375,'Advanced C/TPA operations with branding and broader controls.','dot_ctpa_enterprise']],features:[
       ['Employer portfolio management',[1,1,1]],['Covered worker records',[1,1,1]],['Consortium pools',[1,1,1]],['Random selections',[1,1,1]],['Testing oversight',[1,1,1]],['Portfolio reporting',[1,1,1]],['Client billing workflows',[0,1,1]],['Employer portal delivery',[0,1,1]],['Advanced reports',[0,1,1]],['White label',[0,0,1]],['Branded email',[0,0,1]],['Team administration',[0,0,1]]
     ]}
   };
@@ -27,13 +28,60 @@ function initPricing(root){
   let type = root.dataset.pricingType || 'employer';
   let mobilePlan = 0;
   const tabs = root.querySelectorAll('[data-pricing-tab]');
-  tabs.forEach(btn=>btn.addEventListener('click',()=>{type=btn.dataset.pricingTab;mobilePlan=0;render()}));
+  const loadedTypes=new Set();
+  tabs.forEach(btn=>btn.addEventListener('click',()=>{type=btn.dataset.pricingTab;mobilePlan=0;render();hydrateType(type)}));
+
+  function currentAgency(){
+    const page=(document.body.dataset.page||'').toLowerCase();
+    const agencies={fmcsa:'FMCSA',faa:'FAA',fra:'FRA',fta:'FTA',phmsa:'PHMSA',uscg:'USCG'};
+    return agencies[page]||'';
+  }
+
+  function shortName(plan){
+    const code=String(plan.code||'').toLowerCase();
+    const suffix=code.split('_').pop();
+    if(suffix==='essential') return 'Essential';
+    if(suffix==='professional') return 'Professional';
+    if(suffix==='enterprise') return 'Enterprise';
+    if(suffix==='plus') return 'Plus';
+    if(suffix==='complete') return 'Complete';
+    return String(plan.name||'Plan').replace(/^(DOT\s+)?(FMCSA|FAA|FRA|FTA|PHMSA|USCG|C\/TPA|Employer|Owner-Operator)\s+/i,'').trim()||'Plan';
+  }
+
+  async function hydrateType(which){
+    const agency=which==='employer'?currentAgency():'';
+    const cacheKey=which+'|'+agency;
+    if(loadedTypes.has(cacheKey)) return;
+    loadedTypes.add(cacheKey);
+    const params=new URLSearchParams();
+    if(which==='ctpa') params.set('type','ctpa');
+    else if(which==='owner') params.set('type','owner_operator');
+    else {params.set('type','employer');if(agency)params.set('agency',agency)}
+    try{
+      const response=await fetch(LIVE_PLAN_API+'?'+params.toString(),{method:'GET',cache:'no-store',headers:{'Accept':'application/json'}});
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok||data.error||!Array.isArray(data.plans)) throw new Error(data.error||'Plan pricing is unavailable.');
+      const cfg=plans[which]||plans.employer;
+      const live=data.plans.filter(p=>p&&p.active!==false);
+      const order=which==='owner'?['essential','plus','complete']:['essential','professional','enterprise'];
+      const mapped=order.map(tier=>live.find(p=>String(p.code||'').toLowerCase().endsWith('_'+tier))).filter(Boolean);
+      if(mapped.length){
+        cfg.plans=mapped.map(p=>[shortName(p),Number(p.monthly_price||0),p.description||'',p.code]);
+        if(type===which)render();
+      }
+    }catch(err){
+      loadedTypes.delete(cacheKey);
+      console.warn('Live DOT plan pricing could not be refreshed; existing page values remain visible.',err);
+    }
+  }
 
   function checkoutHref(plan){
     const page=(document.body.dataset.page||'').toLowerCase();
     const agencies={fmcsa:'FMCSA',faa:'FAA',fra:'FRA',fta:'FTA',phmsa:'PHMSA',uscg:'USCG'};
     const agency=type==='ctpa'?'CTPA':(agencies[page]||'');
-    const q=new URLSearchParams({type,plan:plan.toLowerCase()});
+    const code=String((plans[type]||plans.employer).plans.find(p=>p[0]===plan)?.[3]||'');
+    const tier=(code.split('_').pop()||plan).toLowerCase();
+    const q=new URLSearchParams({type,plan:tier});
     if(agency) q.set('agency',agency);
     return `checkout.html?${q.toString()}`;
   }
@@ -99,4 +147,5 @@ function initPricing(root){
   }
 
   render();
+  hydrateType(type);
 }

@@ -479,3 +479,8 @@ p{margin:0;color:var(--muted);font-size:17px}
 @media(max-width:600px){.legal-sidebar,.login-grid{grid-template-columns:1fr}.legal-hero{padding-top:46px}.login-card{min-height:120px}}
 
 .hub-turnstile{margin-top:16px;min-height:67px;display:flex;align-items:center}.hub-turnstile>div{width:100%}.login-card[disabled]{opacity:.55;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+/* Production logo image sizing only */
+.brand-logo-image{display:block;width:auto;height:34px;max-width:210px;object-fit:contain}
+.site-footer .footer-logo-image{display:block;width:auto;height:42px;max-width:250px;object-fit:contain}
+@media(max-width:760px){.brand-logo-image{height:29px;max-width:175px}.site-footer .footer-logo-image{height:38px;max-width:220px}}
