@@ -99,15 +99,32 @@
   if(sideLinks.length&&sectionMap.length){const setActive=()=>{let current=sectionMap[0].id;const offset=window.scrollY+160;sectionMap.forEach(section=>{if(section.offsetTop<=offset)current=section.id;});sideLinks.forEach(link=>link.classList.toggle('active',link.getAttribute('href')===`#${current}`));};window.addEventListener('scroll',setActive,{passive:true});setActive();}
 
   const floatingStack=document.querySelector('[data-floating-stack]');
-  const comparison=document.querySelector('[data-comparison-shell]');
-  if(floatingStack&&comparison){
+  const comparisonWrap=document.querySelector('.comparison-wrap');
+  if(floatingStack&&comparisonWrap){
     const updateFloating=()=>{
-      const rect=comparison.getBoundingClientRect();
-      const fadeLine=window.innerHeight*0.82;
-      const fade=rect.bottom<=fadeLine;
-      floatingStack.classList.toggle('is-fading',fade);
+      if(window.innerWidth<=700){
+        floatingStack.style.opacity='1';
+        floatingStack.style.transform='none';
+        floatingStack.classList.remove('is-fading');
+        return;
+      }
+      const wrapRect=comparisonWrap.getBoundingClientRect();
+      const stackRect=floatingStack.getBoundingClientRect();
+      const remaining=wrapRect.bottom-stackRect.bottom;
+      const fadeStart=620;
+      const fadeEnd=250;
+      let opacity=1;
+      if(remaining<fadeStart){
+        opacity=(remaining-fadeEnd)/(fadeStart-fadeEnd);
+        opacity=Math.max(0,Math.min(1,opacity));
+      }
+      floatingStack.style.opacity=String(opacity);
+      floatingStack.style.transform=opacity<1?`translateY(${-12*(1-opacity)}px)`:'translateY(0)';
+      floatingStack.classList.toggle('is-fading',opacity<.08);
     };
-    window.addEventListener('scroll',updateFloating,{passive:true});window.addEventListener('resize',updateFloating);updateFloating();
+    window.addEventListener('scroll',updateFloating,{passive:true});
+    window.addEventListener('resize',updateFloating);
+    updateFloating();
   }
 
   const faqs=Array.from(document.querySelectorAll('#faq details'));
