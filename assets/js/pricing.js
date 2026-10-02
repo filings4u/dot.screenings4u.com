@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  const target = document.getElementById('siteHeader');
+  const target = document.getElementById('__legacySiteHeaderDisabled');
   if (target) {
     const fallback = {home:'index.html',platform:'platform.html',employers:'employers.html',owner_operator:'fmcsa-dot-random-consortium-49-cfr-part-382.html',ctpa:'ctpa.html',fmcsa:'fmcsa.html',faa:'faa.html',fra:'fra.html',fta:'fta.html',phmsa:'phmsa.html',uscg:'uscg.html',resources:'resources.html',blog:'blog.html',contact:'contact.html',login_directory:'login.html',demo:'demo.html'};
     function render(urls){

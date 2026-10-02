@@ -1,90 +1,14 @@
-(function(){
-  'use strict';
-  const target=document.getElementById('siteHeader');
-  if(target){
-    const fallback={home:'index.html',platform:'platform.html',employers:'employers.html',owner_operator:'fmcsa-dot-random-consortium-49-cfr-part-382.html',ctpa:'ctpa.html',fmcsa:'fmcsa.html',faa:'faa.html',fra:'fra.html',fta:'fta.html',phmsa:'phmsa.html',uscg:'uscg.html',resources:'resources.html',blog:'blog.html',contact:'contact.html',login_directory:'login.html',demo:'demo.html'};
-    function render(urls){
-      const marketing=urls?.marketing_pages||{};
-      const U=(k)=>k==='owner_operator'?fallback.owner_operator:(marketing[k]||fallback[k]);
-      const plans='pricing.html';
-      target.innerHTML=`<header class="site-header"><div class="container nav-wrap">
-        <a class="brand" href="${U('home')}" aria-label="Workforce DOT by screenings4u home"><img src="images/logo.png" alt="Workforce DOT by screenings4u"></a>
-        <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primaryNav"><span></span></button>
-        <nav class="primary-nav" id="primaryNav" aria-label="Primary navigation">
-          <a href="${U('platform')}">Platform</a>
-          <details><summary>Solutions <i></i></summary><div class="dropdown"><a href="${U('employers')}">Employers</a><a href="${U('owner_operator')}">FMCSA Owner-Operator Drivers</a><a href="${U('ctpa')}">C/TPAs</a></div></details>
-          <details><summary>DOT Agencies <i></i></summary><div class="dropdown agency-dropdown"><a href="${U('fmcsa')}">FMCSA</a><a href="${U('faa')}">FAA</a><a href="${U('fra')}">FRA</a><a href="${U('fta')}">FTA</a><a href="${U('phmsa')}">PHMSA</a><a href="${U('uscg')}">USCG</a></div></details>
-          <details open><summary>Resources <i></i></summary><div class="dropdown"><a href="${U('resources')}">Resource Center</a><a class="active-drop" href="${U('blog')}">Blog</a><a href="${U('contact')}">Contact</a></div></details>
-          <a href="${plans}">Pricing</a>
-          <div class="mobile-actions"><a href="${U('login_directory')}">Sign In</a><a class="btn btn-secondary" href="${U('demo')}">Request Demo</a><a class="btn btn-primary" href="${plans}">View Plans</a></div>
-        </nav>
-        <div class="nav-actions"><a class="signin" href="${U('login_directory')}">Sign In</a><a class="btn btn-secondary" href="${U('demo')}">Request Demo</a><a class="btn btn-primary" href="${plans}">View Plans</a></div>
-      </div></header>`;
-      const details=target.querySelector('details[open]'); if(details) details.removeAttribute('open');
-      const toggle=target.querySelector('.nav-toggle'),nav=target.querySelector('.primary-nav');
-      if(toggle&&nav){toggle.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')==='true';toggle.setAttribute('aria-expanded',String(!open));nav.classList.toggle('open',!open);document.body.classList.toggle('nav-open',!open)});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{toggle.setAttribute('aria-expanded','false');nav.classList.remove('open');document.body.classList.remove('nav-open')}));}
-      document.addEventListener('click',e=>target.querySelectorAll('details[open]').forEach(d=>{if(!d.contains(e.target))d.removeAttribute('open')}));
-    }
-    render(null);
-    const state=()=>{const h=target.querySelector('.site-header');if(h)h.classList.toggle('is-scrolled',window.scrollY>18)};window.addEventListener('scroll',state,{passive:true});state();
-  }
-
-  const cards=[...document.querySelectorAll('.article-card')];
-  const buttons=[...document.querySelectorAll('.topic-btn')];
-  const search=document.getElementById('blogSearch');
-  const empty=document.getElementById('emptyState');
-  let active='all';
-  function apply(){
-    const q=(search?.value||'').trim().toLowerCase();
-    let shown=0;
-    cards.forEach(card=>{
-      const category=card.dataset.category;
-      const text=(card.dataset.search+' '+card.textContent).toLowerCase();
-      const matchCategory=active==='all'||category===active;
-      const matchSearch=!q||text.includes(q);
-      const show=matchCategory&&matchSearch;
-      card.hidden=!show; if(show) shown++;
-    });
-    if(empty) empty.hidden=shown>0;
-  }
-  buttons.forEach(btn=>btn.addEventListener('click',()=>{active=btn.dataset.filter;buttons.forEach(b=>b.classList.toggle('active',b===btn));apply()}));
-  search?.addEventListener('input',apply);
-
-
-
-  // Keep the topic selector visible while the article section is in view,
-  // then fade it out as the reader leaves that section.
-  const topicZone=document.getElementById('topicZone');
-  const topicStrip=document.getElementById('topicStrip');
-  if(topicZone&&topicStrip){
-    const updateTopicStrip=()=>{
-      const zone=topicZone.getBoundingClientRect();
-      const strip=topicStrip.getBoundingClientRect();
-      const desktop=window.innerWidth>980;
-      const stickyTop=desktop?98:(window.innerWidth>700?88:84);
-      const originalTop=topicZone.offsetTop;
-      const hasStuck=window.scrollY+stickyTop>originalTop;
-      topicStrip.classList.toggle('is-stuck',hasStuck);
-
-      // Start fading before the end of the article zone instead of waiting
-      // until the sticky container reaches its hard stop.
-      const fadeStart=stickyTop+strip.height+260;
-      const fadeEnd=stickyTop+strip.height+90;
-      let opacity=1;
-      if(zone.bottom<fadeStart){
-        opacity=(zone.bottom-fadeEnd)/(fadeStart-fadeEnd);
-        opacity=Math.max(0,Math.min(1,opacity));
-      }
-      topicStrip.style.opacity=String(opacity);
-      topicStrip.style.transform=opacity<1?`translateY(${-8*(1-opacity)}px)`:'translateY(0)';
-      topicStrip.classList.toggle('is-fading',opacity<.15);
-    };
-    window.addEventListener('scroll',updateTopicStrip,{passive:true});
-    window.addEventListener('resize',updateTopicStrip);
-    updateTopicStrip();
-  }
-
-  const form=document.getElementById('newsletterForm');
-  const msg=document.getElementById('newsletterMessage');
-  form?.addEventListener('submit',e=>{e.preventDefault();const email=document.getElementById('newsletterEmail')?.value.trim();if(!email)return;if(msg)msg.textContent='Thanks — this placeholder form is ready to connect to your newsletter workflow.';});
+(()=>{
+'use strict';
+const API='https://elpbnytpciqnbexiaebp.supabase.co/functions/v1/dot-blog-public';
+const grid=document.getElementById('articleGrid'),buttons=[...document.querySelectorAll('.topic-btn')],search=document.getElementById('blogSearch'),empty=document.getElementById('emptyState');let posts=[],active='all';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const categoryKey=s=>{s=String(s||'').toLowerCase();if(s.includes('random')||s.includes('pool'))return'random';if(s.includes('testing'))return'testing';if(s.includes('document')||s.includes('report'))return'records';if(s.includes('c/tpa')||s.includes('ctpa'))return'ctpa';if(s.includes('agenc'))return'agencies';return'programs'};
+function card(p){const m=p.metadata||{},cat=categoryKey(m.category),query=[p.title,p.excerpt,m.category,m.audience].filter(Boolean).join(' ').toLowerCase(),href=`article.html?slug=${encodeURIComponent(p.slug)}`;return `<article class="article-card" data-category="${cat}" data-search="${esc(query)}"><a class="article-image" href="${href}"><img alt="${esc(p.featured_image_alt||p.title)}" src="${esc(p.featured_image_url||'images/platform-dashboard.webp')}" loading="lazy"/></a><div class="article-body"><span class="post-tag">${esc(m.category||'Workforce DOT')}</span><h3><a href="${href}">${esc(p.title)}</a></h3><p>${esc(p.excerpt||'')}</p><div class="post-meta">${m.read_time?`<span>${esc(m.read_time)}</span>`:''}${m.audience?`<span>${esc(m.audience)}</span>`:''}</div><a class="text-link" href="${href}">Read article <span>→</span></a></div></article>`}
+function apply(){const q=(search?.value||'').trim().toLowerCase();let n=0;grid?.querySelectorAll('.article-card').forEach(c=>{const show=(active==='all'||c.dataset.category===active)&&(!q||(c.dataset.search+' '+c.textContent.toLowerCase()).includes(q));c.hidden=!show;if(show)n++});if(empty)empty.hidden=n>0}
+function render(list){posts=list||[];if(grid)grid.innerHTML=posts.map(card).join('');const f=posts.find(p=>p.metadata?.featured)||posts[0];if(f){const box=document.getElementById('featuredArticle');document.getElementById('featuredArticleImage').src=f.featured_image_url||'images/platform-dashboard.webp';document.getElementById('featuredArticleImage').alt=f.featured_image_alt||f.title;document.getElementById('featuredArticleTitle').textContent=f.title;document.getElementById('featuredArticleExcerpt').textContent=f.excerpt||'';document.getElementById('featuredArticleMeta').innerHTML=[f.metadata?.category,f.metadata?.read_time].filter(Boolean).map(x=>`<span>${esc(x)}</span>`).join('');document.getElementById('featuredArticleLink').href=`article.html?slug=${encodeURIComponent(f.slug)}`;box.hidden=false}apply()}
+buttons.forEach(b=>b.addEventListener('click',()=>{active=b.dataset.filter;buttons.forEach(x=>x.classList.toggle('active',x===b));apply()}));search?.addEventListener('input',apply);
+const topicZone=document.getElementById('topicZone'),topicStrip=document.getElementById('topicStrip');if(topicZone&&topicStrip){const update=()=>{const z=topicZone.getBoundingClientRect(),r=topicStrip.getBoundingClientRect(),top=window.innerWidth>980?98:(window.innerWidth>700?88:84),stuck=window.scrollY+top>topicZone.offsetTop;topicStrip.classList.toggle('is-stuck',stuck);const fs=top+r.height+260,fe=top+r.height+90;let o=1;if(z.bottom<fs)o=Math.max(0,Math.min(1,(z.bottom-fe)/(fs-fe)));topicStrip.style.opacity=String(o);topicStrip.style.transform=o<1?`translateY(${-8*(1-o)}px)`:'translateY(0)';topicStrip.classList.toggle('is-fading',o<.15)};addEventListener('scroll',update,{passive:true});addEventListener('resize',update);update()}
+fetch(API,{headers:{Accept:'application/json'}}).then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>render(d.articles||[])).catch(()=>{if(grid)grid.innerHTML='<div class="blog-loading">Published articles are temporarily unavailable.</div>';if(empty)empty.hidden=true});
+const form=document.getElementById('newsletterForm'),msg=document.getElementById('newsletterMessage');form?.addEventListener('submit',e=>{e.preventDefault();const email=document.getElementById('newsletterEmail')?.value.trim();if(!email)return;if(msg)msg.textContent='Thanks — this placeholder form is ready to connect to your newsletter workflow.'});
 })();

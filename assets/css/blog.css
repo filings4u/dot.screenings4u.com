@@ -51,3 +51,5 @@ button.btn,.btn{
 .btn-primary{border:1px solid var(--orange)!important;background:var(--orange)!important;color:#fff!important;box-shadow:none!important}
 .btn-secondary{border:1px solid #c9d8ea!important;background:#fff!important;color:var(--ink)!important;box-shadow:none!important}
 button.btn:active,.btn:active{box-shadow:none!important;transform:none!important}
+
+.blog-loading{grid-column:1/-1;padding:34px;border:1px dashed var(--line);border-radius:14px;text-align:center;color:var(--muted);background:#fff}

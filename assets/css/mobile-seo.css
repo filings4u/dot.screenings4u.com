@@ -1,64 +1,56 @@
-/* Workforce DOT global responsive + footer pass — loaded after page CSS */
-html{overflow-x:hidden}body{overflow-x:hidden}img,video,svg,canvas{max-width:100%;height:auto}iframe{max-width:100%}
-[hidden]{display:none!important}
-:focus-visible{outline:3px solid rgba(255,107,0,.38);outline-offset:3px}
-
-/* Keep common layout primitives from overflowing narrow screens. */
-.container,.nav-wrap,.hero-shell,.hero-grid,.section-inner,.feature-split,.pricing-layout,.contact-layout,.checkout-layout,.legal-layout{min-width:0}
-.hero-copy,.feature-copy,.pricing-main,.contact-main,.checkout-main,.legal-content{min-width:0}
-input,select,textarea,button{max-width:100%;font:inherit}textarea{resize:vertical}
-table{max-width:100%}
+/* Workforce DOT global mobile / SEO layout overrides */
+html,body{overflow-x:hidden}img,video,svg,canvas{max-width:100%;height:auto}iframe{max-width:100%}[hidden]{display:none!important}:focus-visible{outline:3px solid rgba(255,107,0,.38);outline-offset:3px}
+.container,.hero-grid,.hero-shell,.demo-hero-grid,.feature-split,.pricing-layout,.contact-layout,.checkout-layout,.legal-layout{min-width:0}
 .comparison-table-shell,.table-scroll,[data-table-scroll]{overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media(max-width:980px){
+  /* Every actual hero visual comes FIRST on mobile; copy follows below it. */
+  body:not([data-page="login"]):not([data-page="legal"]) .hero-grid,
+  body:not([data-page="login"]):not([data-page="legal"]) .hero-shell,
+  .demo-hero-grid{display:flex!important;flex-direction:column!important;gap:0!important}
+  body:not([data-page="login"]):not([data-page="legal"]) .hero-grid>.hero-media,
+  body:not([data-page="login"]):not([data-page="legal"]) .hero-shell>.hero-media,
+  .demo-hero-grid>.demo-hero-media{order:-10!important;width:100%!important;margin:0 0 20px!important}
+  body:not([data-page="login"]):not([data-page="legal"]) .hero-grid>.hero-copy,
+  body:not([data-page="login"]):not([data-page="legal"]) .hero-shell>.hero-copy,
+  .demo-hero-grid>.demo-hero-copy{order:10!important;width:100%!important;margin:0!important}
+  body[data-page="blog"] .hero-grid>.featured-hero-card{order:-10!important;width:100%!important;margin:0 0 20px!important}
 
-/* Footer: 2 x 2 navigation on mobile, then a clearly stacked legal footer. */
-@media (max-width:760px){
-  .site-footer .container{width:calc(100% - 32px)!important}
-  .footer-shell{display:grid!important;grid-template-columns:1fr!important;gap:34px!important;padding:42px 0 34px!important}
-  .footer-brand-area,.footer-brand{grid-column:auto!important;max-width:none!important}
-  .footer-logo-image{width:min(290px,88vw)!important}
-  .footer-links-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:30px 22px!important;width:100%!important}
-  .footer-col{min-width:0!important;gap:9px!important}
-  .footer-col h4{margin-bottom:7px!important;font-size:11px!important;line-height:1.35!important}
-  .footer-col a{font-size:12.5px!important;line-height:1.45!important;overflow-wrap:anywhere}
-  .footer-bottom{display:grid!important;grid-template-columns:1fr!important;gap:22px!important;align-items:start!important;padding:24px 0 30px!important}
-  .footer-bottom-copy{display:grid!important;gap:7px!important;line-height:1.55!important}
-  .footer-legal-links{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px 20px!important;justify-content:start!important;width:100%!important}
-  .footer-legal-links a{font-size:12px!important;line-height:1.45!important}
-  .footer-admin-login{justify-self:start!important;margin-top:1px!important}
-  .footer-cta{grid-template-columns:1fr!important;gap:24px!important;padding:36px 0!important}
-  .footer-cta-actions{display:grid!important;grid-template-columns:1fr 1fr!important;width:100%!important;gap:10px!important}
-  .footer-button{width:100%!important;min-width:0!important;text-align:center!important}
+  /* Mobile headings are intentionally smaller than desktop. */
+  .hero h1,.page-hero h1,.demo-hero h1,.login-hero h1,.legal-hero h1{font-size:clamp(30px,8vw,38px)!important;line-height:1.04!important;max-width:100%!important}
+  .hero .lead,.page-hero p,.demo-hero p{font-size:15px!important;line-height:1.58!important}
+  .hero,.page-hero,.demo-hero,.login-hero{padding-top:34px!important}
 }
-
-/* Shared mobile navigation fallback for every redesign page. */
-@media (max-width:980px){
-  #siteHeader{height:88px!important}
-  .site-header{top:8px!important}
-  .site-header .nav-wrap{width:calc(100% - 24px)!important;height:70px!important;border-radius:14px!important;padding:0 14px!important}
-  .brand img{max-width:min(238px,62vw)!important;height:auto!important}
-  .nav-toggle{display:flex!important;flex:0 0 44px!important}
-  .primary-nav{max-height:calc(100vh - 112px)!important;overflow-y:auto!important;overscroll-behavior:contain!important}
-  .primary-nav.open{display:flex!important}
-}
-
-@media (max-width:700px){
+@media(max-width:700px){
   .container{width:calc(100% - 32px)!important}
   .section{padding-left:0!important;padding-right:0!important}
-  .hero,.page-hero{overflow:hidden}
-  .hero-shell,.hero-grid,.feature-split,.feature-split.reverse,.pricing-layout,.contact-layout,.checkout-layout,.legal-hero-grid{grid-template-columns:1fr!important}
+  .hero h1,.page-hero h1,.demo-hero h1,.login-hero h1,.legal-hero h1{font-size:clamp(29px,8.4vw,34px)!important}
   .hero-actions,.cta-actions,.form-actions{flex-wrap:wrap!important}
-  .hero-actions .btn,.hero-actions a.btn,.cta-actions .btn{min-width:0}
-  .hero-proof,.hero-stats,.metric-grid,.proof-grid{grid-template-columns:1fr!important}
-  .plan-grid,.price-grid,.resource-agency-grid,.resource-guide-grid,.article-grid,.faq-grid,.contact-card-grid{grid-template-columns:1fr!important}
-  .feature-media,.hero-media{width:100%!important}
-  .product-frame,.browser-frame{max-width:100%!important}
+  .hero-proof,.hero-stats,.metric-grid,.proof-grid,.plan-grid,.price-grid,.resource-agency-grid,.resource-guide-grid,.article-grid,.faq-grid,.contact-card-grid{grid-template-columns:1fr!important}
   .legal-sidebar{position:static!important}
 }
 
-@media (max-width:460px){
-  .footer-links-grid{gap:26px 16px!important}
-  .footer-legal-links{gap:10px 14px!important}
-  .footer-cta-actions{grid-template-columns:1fr!important}
-  .brand img{max-width:210px!important}
+/* v12 — calmer mobile typography across the full site */
+@media(max-width:980px){
+  main h1{font-size:clamp(30px,6.8vw,36px)!important;line-height:1.05!important}
+  main h2{font-size:clamp(27px,5.8vw,32px)!important;line-height:1.08!important}
+  main h3{font-size:clamp(21px,4.8vw,25px)!important;line-height:1.12!important}
+  .metrics-grid strong,.metric-grid strong,.stats-grid strong,.hero-meta strong,.hero-stats strong{font-size:32px!important;line-height:1!important}
+  .metrics-grid>div,.metric-grid>div,.stats-grid>div{padding:22px 18px!important}
+  .showcase-copy>p,.section-intro p,.hero .lead,.page-hero p,.demo-hero p{font-size:15px!important;line-height:1.55!important}
 }
-\n\n/* 2026-10-02: mobile navigation must render above page/footer content. */\n#siteHeader{position:relative!important;z-index:100000!important}\n.saas-header{z-index:100001!important;isolation:isolate!important}\n.saas-nav,.saas-nav .container{position:relative!important;z-index:100002!important}\n@media (max-width:900px){\n  .saas-links{z-index:100003!important;background:#fff!important;isolation:isolate!important}\n  .saas-links.mobile-open{display:grid!important}\n}\n\n/* Centered legal footer: company, 3 x 2 legal links, then portal logins. */\n.footer-bottom{\n  display:flex!important;\n  flex-direction:column!important;\n  align-items:center!important;\n  justify-content:center!important;\n  gap:18px!important;\n  text-align:center!important;\n  padding:26px 0 30px!important;\n}\n.footer-bottom-copy{display:grid!important;gap:5px!important;justify-items:center!important;text-align:center!important}\n.footer-legal-links{\n  display:grid!important;\n  grid-template-columns:repeat(3,minmax(0,auto))!important;\n  justify-content:center!important;\n  gap:10px 28px!important;\n  width:100%!important;\n}\n.footer-login-links{display:flex!important;justify-content:center!important;align-items:center!important;gap:28px!important;width:100%!important}\n.footer-login-links a{color:#dbe6f2!important;font-size:12px!important;font-weight:800!important}\n.footer-subsidiary a,.footer-legal-links a{color:#dbe6f2!important}\n@media (max-width:760px){\n  .footer-bottom{gap:20px!important;padding:26px 0 32px!important}\n  .footer-legal-links{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px 12px!important}\n  .footer-legal-links a{font-size:11.5px!important;text-align:center!important}\n  .footer-login-links{gap:24px!important}\n}\n@media (max-width:430px){\n  .footer-legal-links{gap:12px 8px!important}\n  .footer-legal-links a,.footer-login-links a{font-size:11px!important}\n}\n
+@media(max-width:700px){
+  main h1{font-size:29px!important;line-height:1.06!important}
+  main h2{font-size:27px!important;line-height:1.08!important}
+  main h3{font-size:21px!important;line-height:1.12!important}
+  .metrics-grid strong,.metric-grid strong,.stats-grid strong,.hero-meta strong,.hero-stats strong{font-size:29px!important}
+  .metrics-grid>div,.metric-grid>div,.stats-grid>div{padding:18px 14px!important}
+  .metrics-grid span,.metric-grid span,.stats-grid span{font-size:11px!important;line-height:1.4!important;margin-top:6px!important}
+  .showcase-copy h2,.section-intro h2,.directory-intro h2,.security-card h2{font-size:27px!important}
+  .workspace-grid h3,.feature-card h3,.workflow-grid h3,.resource-grid h3{font-size:21px!important}
+}
+@media(max-width:430px){
+  main h1{font-size:28px!important}
+  main h2{font-size:25px!important}
+  main h3{font-size:20px!important}
+  .metrics-grid strong,.metric-grid strong,.stats-grid strong,.hero-meta strong,.hero-stats strong{font-size:27px!important}
+}

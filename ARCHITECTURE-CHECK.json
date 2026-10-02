@@ -1,0 +1,299 @@
+[
+  {
+    "file": "accessibility.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "account-creation.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "blog-agency-first-workforce.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "blog-connected-workflow.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "blog-ctpa-portfolio-management.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "blog-document-management.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "blog-random-pool-eligibility.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "blog-testing-order-lifecycle.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "blog.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "checkout.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "contact.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "cookie-policy.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "ctpa.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "demo.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "design-shell.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "disclaimer.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "employers.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "faa.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "fmcsa-dot-random-consortium-49-cfr-part-382.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "fmcsa.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "fra.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "fta.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "index.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "login.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "owner-operator.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "phmsa.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "platform.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "pricing.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "privacy.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "refund-policy.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "resources.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "terms.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  },
+  {
+    "file": "uscg.html",
+    "header_targets": 1,
+    "footer_targets": 1,
+    "nav_scripts": 1,
+    "footer_scripts": 1,
+    "nav_css": 1,
+    "footer_css": 1
+  }
+]

@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  const target=document.getElementById('siteHeader');
+  const target=document.getElementById('__legacySiteHeaderDisabled');
   if(!target) return;
 
   const fallback={
