@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const TARGET_ID='siteHeader';
-const API='https://wyezpseboxbmkedvbmyx.supabase.co/functions/v1/workforce-checkout-status';
+const API='https://elpbnytpciqnbexiaebp.supabase.co/functions/v1/workforce-checkout-status';
 const CACHE='s4u_dot_url_config_v3';
 const fallback={home:'index.html',platform:'platform.html',employers:'employers.html',owner_operator:'fmcsa-dot-random-consortium-49-cfr-part-382.html',ctpa:'ctpa.html',fmcsa:'fmcsa.html',faa:'faa.html',fra:'fra.html',fta:'fta.html',phmsa:'phmsa.html',uscg:'uscg.html',resources:'resources.html',blog:'blog.html',contact:'contact.html',login_directory:'login.html',demo:'demo.html',pricing:'pricing.html'};
 const safe=(raw,fb)=>{if(!raw)return fb;try{const u=new URL(String(raw),location.href),h=u.hostname.toLowerCase();const ok=h==='screenings4u.com'||h.endsWith('.screenings4u.com')||h===location.hostname;return ((u.protocol==='https:'||u.origin===location.origin)&&ok)?u.href:fb}catch{return fb}};

@@ -60,7 +60,7 @@
   updateHeaderState();
 
   const cacheKey='s4u_dot_url_config_v2';
-  const api='https://wyezpseboxbmkedvbmyx.supabase.co/functions/v1/workforce-checkout-status';
+  const api='https://elpbnytpciqnbexiaebp.supabase.co/functions/v1/workforce-checkout-status';
   fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'url_configuration'})})
     .then(async r=>{const d=await r.json();if(!r.ok||!d.urls)throw new Error('URL config unavailable');window.S4UUrlConfig=d.urls;try{localStorage.setItem(cacheKey,JSON.stringify({at:Date.now(),urls:d.urls}))}catch{};render(d.urls);})
     .catch(()=>{});

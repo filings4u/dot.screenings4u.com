@@ -26,19 +26,42 @@ function renderNav(){
 renderNav();
 
 const p=new URLSearchParams(location.search);
-const rawType=(p.get('type')||'employer').toLowerCase();
-const type=['owner','owner_operator','owner-operator'].includes(rawType)?'owner_operator':rawType;
-let plan=(p.get('plan')||'essential').toLowerCase();
-const agency=(p.get('agency')||(type==='ctpa'?'CTPA':'FMCSA')).toUpperCase();
-if(type==='owner_operator'&&plan==='professional')plan='plus';
-if(type==='owner_operator'&&plan==='enterprise')plan='complete';
+const rawPlan=(p.get('plan')||'essential').trim().toLowerCase();
+const rawType=(p.get('type')||'').trim().toLowerCase();
+const rawAgency=(p.get('agency')||'').trim().toUpperCase();
+const FULL_PLAN_RE=/^(dot_(?:ctpa|employer|fmcsa|faa|fra|fta|phmsa|uscg)_(?:essential|professional|enterprise)|owner_operator_(?:essential|plus|complete))$/;
+
+function planContext(){
+  if(FULL_PLAN_RE.test(rawPlan)){
+    if(rawPlan.startsWith('owner_operator_')) return {type:'owner_operator',agency:'FMCSA',code:rawPlan};
+    if(rawPlan.startsWith('dot_ctpa_')) return {type:'ctpa',agency:'CTPA',code:rawPlan};
+    const m=rawPlan.match(/^dot_([a-z]+)_(essential|professional|enterprise)$/);
+    const prefix=m?.[1]||'employer';
+    if(prefix==='employer') return {type:'employer',agency:'',code:rawPlan};
+    return {type:'employer',agency:prefix.toUpperCase(),code:rawPlan};
+  }
+
+  let type=['owner','owner_operator','owner-operator'].includes(rawType)?'owner_operator':(rawType||'employer');
+  let tier=rawPlan;
+  let agency=rawAgency || (type==='owner_operator'?'FMCSA':type==='ctpa'?'CTPA':'');
+  if(type==='owner_operator'&&tier==='professional') tier='plus';
+  if(type==='owner_operator'&&tier==='enterprise') tier='complete';
+  const code=type==='ctpa'?`dot_ctpa_${tier}`:
+    type==='owner_operator'?`owner_operator_${tier}`:
+    agency?`dot_${agency.toLowerCase()}_${tier}`:`dot_employer_${tier}`;
+  return {type,agency,code};
+}
+
+const ctx=planContext();
+const type=ctx.type;
+const agency=ctx.agency;
+const code=ctx.code;
 const status=document.getElementById('checkout-status');
 const payButton=document.getElementById('stripe-pay-button');
 const errorBox=document.getElementById('stripe-errors');
 const accountLabel=type==='ctpa'?'C/TPA':type==='owner_operator'?'FMCSA Owner-Operator':'DOT Employer';
 document.getElementById('order-account').textContent=accountLabel;
-document.getElementById('order-agency').textContent=type==='ctpa'?'Multiple / managed programs':type==='owner_operator'?'FMCSA':agency;
-const code=type==='ctpa'?`dot_ctpa_${plan}`:type==='owner_operator'?`owner_operator_${plan}`:(agency?`dot_${agency.toLowerCase()}_${plan}`:`dot_employer_${plan}`);
+document.getElementById('order-agency').textContent=type==='ctpa'?'Multiple / managed programs':type==='owner_operator'?'FMCSA':(agency||'DOT');
 
 async function api(path,opts={}){const r=await fetch(API+path,{...opts,headers:{'Content-Type':'application/json',...(opts.headers||{})}});const d=await r.json().catch(()=>({}));if(!r.ok||d.error)throw Error(d.error||'Unable to continue checkout.');return d}
 function showError(message){status.textContent='Checkout could not be loaded.';status.classList.add('error');errorBox.textContent=message||'Unable to load secure checkout.';errorBox.hidden=false}
@@ -54,8 +77,9 @@ function renderPlan(selected){
 async function start(){
   try{
     if(typeof window.Stripe!=='function')throw Error('Stripe.js did not load. Refresh the page and try again.');
-    const surfaceAgency=type==='ctpa'?'CTPA':type==='owner_operator'?'FMCSA':agency;
-    const cat=await api(`/workforce-checkout?surface=dot_marketing&agency=${encodeURIComponent(surfaceAgency)}`,{method:'GET'});
+    const catalogParams=new URLSearchParams({type});
+    if(agency) catalogParams.set('agency',agency);
+    const cat=await api(`/workforce-checkout?${catalogParams.toString()}`,{method:'GET'});
     const selected=(cat.plans||[]).find(x=>x.code===code);
     if(!selected)throw Error('The selected plan is not currently available.');
     renderPlan(selected);

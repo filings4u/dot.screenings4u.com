@@ -70,7 +70,18 @@
   const description=document.querySelector('[data-audience-description]');
   let activeProduct='employer';
 
-  function checkoutLink(planCode){return `checkout.html?plan=${encodeURIComponent(planCode)}`;}
+  function checkoutLink(planCode){
+    const code=String(planCode||'').trim().toLowerCase();
+    const q=new URLSearchParams({plan:code});
+    if(code.startsWith('dot_ctpa_')) q.set('type','ctpa');
+    else if(code.startsWith('owner_operator_')) { q.set('type','owner_operator'); q.set('agency','FMCSA'); }
+    else if(code.startsWith('dot_employer_')) q.set('type','employer');
+    else {
+      const m=code.match(/^dot_(fmcsa|faa|fra|fta|phmsa|uscg)_/);
+      if(m){ q.set('type','employer'); q.set('agency',m[1].toUpperCase()); }
+    }
+    return `checkout.html?${q.toString()}`;
+  }
 
   function renderPricing(product){
     activeProduct=product;
@@ -100,31 +111,34 @@
 
   const floatingStack=document.querySelector('[data-floating-stack]');
   const comparisonWrap=document.querySelector('.comparison-wrap');
+  const comparisonTableShell=document.querySelector('[data-comparison-shell]');
   if(floatingStack&&comparisonWrap){
+    let floatingRaf=0;
     const updateFloating=()=>{
+      floatingRaf=0;
       if(window.innerWidth<=700){
         floatingStack.style.opacity='1';
         floatingStack.style.transform='none';
         floatingStack.classList.remove('is-fading');
         return;
       }
-      const wrapRect=comparisonWrap.getBoundingClientRect();
-      const stackRect=floatingStack.getBoundingClientRect();
-      const remaining=wrapRect.bottom-stackRect.bottom;
-      const fadeStart=620;
-      const fadeEnd=250;
-      let opacity=1;
-      if(remaining<fadeStart){
-        opacity=(remaining-fadeEnd)/(fadeStart-fadeEnd);
-        opacity=Math.max(0,Math.min(1,opacity));
-      }
+      const stopTarget=comparisonTableShell||comparisonWrap;
+      const targetBottom=stopTarget.getBoundingClientRect().bottom;
+      const stackBottom=floatingStack.getBoundingClientRect().bottom;
+      const remaining=targetBottom-stackBottom;
+      const fadeStart=560;
+      const fadeEnd=120;
+      const opacity=Math.max(0,Math.min(1,(remaining-fadeEnd)/(fadeStart-fadeEnd)));
       floatingStack.style.opacity=String(opacity);
-      floatingStack.style.transform=opacity<1?`translateY(${-12*(1-opacity)}px)`:'translateY(0)';
-      floatingStack.classList.toggle('is-fading',opacity<.08);
+      floatingStack.style.transform=opacity<1?`translate3d(0,${-10*(1-opacity)}px,0)`:'translate3d(0,0,0)';
+      floatingStack.classList.toggle('is-fading',opacity<=.04);
     };
-    window.addEventListener('scroll',updateFloating,{passive:true});
-    window.addEventListener('resize',updateFloating);
-    updateFloating();
+    const requestFloatingUpdate=()=>{
+      if(!floatingRaf) floatingRaf=requestAnimationFrame(updateFloating);
+    };
+    window.addEventListener('scroll',requestFloatingUpdate,{passive:true});
+    window.addEventListener('resize',requestFloatingUpdate);
+    requestFloatingUpdate();
   }
 
   const faqs=Array.from(document.querySelectorAll('#faq details'));

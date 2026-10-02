@@ -26,5 +26,5 @@
   }
   render(null);
   const state=()=>{const h=target.querySelector('.site-header');if(h)h.classList.toggle('is-scrolled',window.scrollY>18)};window.addEventListener('scroll',state,{passive:true});state();
-  fetch('https://wyezpseboxbmkedvbmyx.supabase.co/functions/v1/workforce-checkout-status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'url_configuration'})}).then(async r=>{const d=await r.json();if(!r.ok||!d.urls)throw 0;window.S4UUrlConfig=d.urls;render(d.urls)}).catch(()=>{});
+  fetch('https://elpbnytpciqnbexiaebp.supabase.co/functions/v1/workforce-checkout-status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'url_configuration'})}).then(async r=>{const d=await r.json();if(!r.ok||!d.urls)throw 0;window.S4UUrlConfig=d.urls;render(d.urls)}).catch(()=>{});
 })();

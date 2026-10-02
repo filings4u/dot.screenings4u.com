@@ -25,7 +25,18 @@
         const desc=node.querySelector('[data-plan-description]');
         if(desc&&plan.description) desc.textContent=plan.description;
         const link=node.querySelector('a[data-plan-checkout]');
-        if(link) link.href=`checkout.html?plan=${encodeURIComponent(plan.code)}`;
+        if(link){
+          const code=String(plan.code||'').trim().toLowerCase();
+          const q=new URLSearchParams({plan:code});
+          if(code.startsWith('dot_ctpa_')) q.set('type','ctpa');
+          else if(code.startsWith('owner_operator_')) { q.set('type','owner_operator'); q.set('agency','FMCSA'); }
+          else if(code.startsWith('dot_employer_')) q.set('type','employer');
+          else {
+            const m=code.match(/^dot_(fmcsa|faa|fra|fta|phmsa|uscg)_/);
+            if(m){ q.set('type','employer'); q.set('agency',m[1].toUpperCase()); }
+          }
+          link.href=`checkout.html?${q.toString()}`;
+        }
       });
       window.S4UDotCatalog=payload;
       window.dispatchEvent(new CustomEvent('s4u:catalog-loaded',{detail:payload}));

@@ -216,3 +216,36 @@ body[data-page="pricing"] .faq-grid details{align-self:start;height:auto}
   body[data-page="pricing"] .pricing-side-nav{position:sticky!important;top:112px!important;align-self:start!important;height:max-content!important}
   body[data-page="pricing"] .floating-stack{position:sticky!important;top:104px!important;z-index:40!important}
 }
+
+/* PRICING V5 — reliable floating controls */
+@media (min-width:701px){
+  body[data-page="pricing"] #compare,
+  body[data-page="pricing"] #compare .container,
+  body[data-page="pricing"] .pricing-layout,
+  body[data-page="pricing"] .pricing-main,
+  body[data-page="pricing"] .comparison-wrap{
+    overflow:visible!important;
+  }
+  body[data-page="pricing"] .pricing-layout{
+    align-items:start!important;
+  }
+  body[data-page="pricing"] .pricing-side-nav{
+    position:sticky!important;
+    top:112px!important;
+    align-self:start!important;
+    height:max-content!important;
+    z-index:30!important;
+  }
+  body[data-page="pricing"] .floating-stack{
+    position:sticky!important;
+    top:104px!important;
+    z-index:40!important;
+    opacity:1;
+    transform:translate3d(0,0,0);
+    transition:opacity .28s ease,transform .28s ease;
+    will-change:opacity,transform;
+  }
+  body[data-page="pricing"] .floating-stack.is-fading{
+    pointer-events:none;
+  }
+}

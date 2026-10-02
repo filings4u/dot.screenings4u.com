@@ -48,7 +48,7 @@
   const updateHeaderState=()=>{const header=target.querySelector('.site-header');if(header)header.classList.toggle('is-scrolled',window.scrollY>18)};
   window.addEventListener('scroll',updateHeaderState,{passive:true});updateHeaderState();
 
-  const api='https://wyezpseboxbmkedvbmyx.supabase.co/functions/v1/workforce-checkout-status';
+  const api='https://elpbnytpciqnbexiaebp.supabase.co/functions/v1/workforce-checkout-status';
   fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'url_configuration'})})
     .then(async r=>{const d=await r.json();if(!r.ok||!d.urls)throw new Error('URL config unavailable');window.S4UUrlConfig=d.urls;render(d.urls);})
     .catch(()=>{});
