@@ -249,3 +249,69 @@ body[data-page="pricing"] .faq-grid details{align-self:start;height:auto}
     pointer-events:none;
   }
 }
+
+
+/* PRICING V17 — mobile redesign */
+@media (max-width: 700px){
+  body[data-page="pricing"] #siteHeader{height:84px}
+  body[data-page="pricing"] .hero{padding:26px 0 22px}
+  body[data-page="pricing"] .hero-shell{grid-template-columns:1fr;gap:18px}
+  body[data-page="pricing"] .hero-media{order:1;min-height:210px;border-radius:18px}
+  body[data-page="pricing"] .hero-copy{order:2;padding:0}
+  body[data-page="pricing"] .hero-copy h1{font-size:clamp(28px,9vw,34px);line-height:1.05}
+  body[data-page="pricing"] .hero-copy .lead{font-size:15px;line-height:1.65;margin-top:14px}
+  body[data-page="pricing"] .hero-actions{flex-direction:column;gap:10px}
+  body[data-page="pricing"] .hero-actions .btn{width:100%}
+  body[data-page="pricing"] .section,body[data-page="pricing"] .section-soft{padding:28px 0}
+  body[data-page="pricing"] .pricing-layout{grid-template-columns:1fr;gap:14px}
+  body[data-page="pricing"] .pricing-side-nav{position:static!important;top:auto!important}
+  body[data-page="pricing"] .side-nav-card{display:flex;gap:10px;align-items:center;overflow-x:auto;padding:14px;border-radius:16px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+  body[data-page="pricing"] .side-nav-card::-webkit-scrollbar{display:none}
+  body[data-page="pricing"] .side-nav-label{display:none}
+  body[data-page="pricing"] .side-link{flex:0 0 auto;min-height:40px;padding:0 14px;border:1px solid var(--line);background:#fff;white-space:nowrap;scroll-snap-align:start}
+  body[data-page="pricing"] .pricing-note{margin-bottom:12px;font-size:14px;padding:14px 15px;border-radius:16px}
+  body[data-page="pricing"] .floating-stack{position:static!important;top:auto!important;filter:none!important}
+  body[data-page="pricing"] .floating-price-bar{display:none!important}
+  body[data-page="pricing"] .product-switcher{display:block;padding:0;margin:0 0 14px;border:0;background:transparent}
+  body[data-page="pricing"] .product-switcher-label{display:none}
+  body[data-page="pricing"] .product-switcher-buttons{display:grid;grid-template-columns:1fr;gap:10px;width:100%}
+  body[data-page="pricing"] .product-tab{width:100%;min-height:48px;font-size:14px;border-radius:12px;padding:0 14px}
+  body[data-page="pricing"] .comparison-heading{padding:6px 2px 16px}
+  body[data-page="pricing"] .comparison-heading .eyebrow{font-size:11px}
+  body[data-page="pricing"] .comparison-heading h2{font-size:clamp(26px,8.3vw,32px);line-height:1.06;margin-top:8px}
+  body[data-page="pricing"] .comparison-heading p{font-size:15px;line-height:1.62;margin-top:10px}
+  body[data-page="pricing"] .mobile-plan-cards{display:grid;gap:14px;margin:0 0 18px}
+  body[data-page="pricing"] .mobile-plan-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 12px 28px rgba(22,55,97,.06)}
+  body[data-page="pricing"] .mobile-plan-card.is-featured{border-color:#ffd0ae;background:linear-gradient(180deg,#fffaf6 0%,#fff 100%)}
+  body[data-page="pricing"] .mobile-plan-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  body[data-page="pricing"] .mobile-plan-name{display:block;font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+  body[data-page="pricing"] .mobile-plan-badge{display:inline-flex;align-items:center;min-height:22px;padding:0 8px;border-radius:999px;background:#fff1e6;color:var(--orange);font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-top:6px}
+  body[data-page="pricing"] .mobile-plan-price{display:flex;flex-direction:column;align-items:flex-end;line-height:1;text-align:right}
+  body[data-page="pricing"] .mobile-plan-price strong{font-family:'Lilita One',sans-serif;font-size:34px;font-weight:400;color:var(--ink)}
+  body[data-page="pricing"] .mobile-plan-price span{font-size:12px;color:var(--muted);margin-top:4px}
+  body[data-page="pricing"] .mobile-plan-cta{display:flex;align-items:center;justify-content:center;width:100%;min-height:42px;border-radius:12px;font-size:13px;font-weight:800;margin-top:14px;border:1px solid #b9cce3;background:#fff;color:var(--ink)}
+  body[data-page="pricing"] .mobile-plan-card.is-featured .mobile-plan-cta{background:var(--orange);border-color:var(--orange);color:#fff}
+  body[data-page="pricing"] .mobile-plan-details{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+  body[data-page="pricing"] .mobile-plan-details summary{list-style:none;cursor:pointer;font-size:13px;font-weight:800;color:var(--ink);display:flex;align-items:center;justify-content:space-between}
+  body[data-page="pricing"] .mobile-plan-details summary::-webkit-details-marker{display:none}
+  body[data-page="pricing"] .mobile-plan-details summary::after{content:'+';font-size:18px;font-weight:900;color:var(--orange)}
+  body[data-page="pricing"] .mobile-plan-details[open] summary::after{content:'−'}
+  body[data-page="pricing"] .mobile-feature-list{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:9px}
+  body[data-page="pricing"] .mobile-feature-list li{position:relative;padding-left:22px;font-size:14px;line-height:1.45;color:var(--ink)}
+  body[data-page="pricing"] .mobile-feature-list li::before{content:'✓';position:absolute;left:0;top:0;font-weight:900;color:var(--orange)}
+  body[data-page="pricing"] .comparison-table-shell{display:none!important}
+  body[data-page="pricing"] .section-intro h2{font-size:clamp(28px,9vw,36px);line-height:1.08}
+  body[data-page="pricing"] .section-intro p{font-size:15px;line-height:1.7}
+  body[data-page="pricing"] .addon-grid{grid-template-columns:1fr;gap:14px;margin-top:20px}
+  body[data-page="pricing"] .addon-card{min-height:0;padding:22px 18px}
+  body[data-page="pricing"] .addon-card h3{font-size:clamp(26px,9vw,34px);line-height:1.08}
+  body[data-page="pricing"] .addon-card p{font-size:15px}
+  body[data-page="pricing"] .faq-grid{grid-template-columns:1fr;gap:12px;margin-top:22px}
+}
+@media (min-width:701px){body[data-page="pricing"] .mobile-plan-cards{display:none!important}}
+
+
+/* PRICING V18 — restore mobile plan cards */
+@media (max-width:700px){
+  body[data-page="pricing"] .mobile-plan-cards{display:grid!important;visibility:visible!important;opacity:1!important}
+}

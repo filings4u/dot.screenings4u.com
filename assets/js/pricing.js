@@ -68,6 +68,15 @@
   const eyebrow=document.querySelector('[data-audience-eyebrow]');
   const title=document.querySelector('[data-audience-title]');
   const description=document.querySelector('[data-audience-description]');
+  const comparisonHeading=document.querySelector('.comparison-heading');
+  const comparisonShell=document.querySelector('[data-comparison-shell]');
+  let mobileCards=document.querySelector('[data-mobile-cards]');
+  if(!mobileCards&&comparisonHeading&&comparisonShell){
+    mobileCards=document.createElement('div');
+    mobileCards.className='mobile-plan-cards';
+    mobileCards.setAttribute('data-mobile-cards','');
+    comparisonShell.parentNode.insertBefore(mobileCards,comparisonShell);
+  }
   let activeProduct='employer';
 
   function checkoutLink(planCode){
@@ -100,6 +109,26 @@
     const row=(service)=>`<tr><th scope="row">${labels[service]||service}</th>${data.plans.map(plan=>`<td class="${plan.services.includes(service)?'yes':'no'}">${plan.services.includes(service)?'✓':'—'}</td>`).join('')}</tr>`;
     tableBody.innerHTML=`<tr class="section-row"><th colspan="4">Core included services</th></tr>${coreFeatures.map(row).join('')}${expanded.length?`<tr class="section-row"><th colspan="4">Expanded tools & administration</th></tr>${expanded.map(row).join('')}`:''}`;
     tableFoot.innerHTML=`<tr><th scope="row">Monthly price</th>${data.plans.map(plan=>`<td class="${plan.popular?'popular-col':''}"><strong>$${plan.price}</strong><small>/month</small><a href="${checkoutLink(plan.code)}" class="table-btn ${plan.popular?'primary':''}">Choose ${plan.name}</a></td>`).join('')}</tr>`;
+
+    if(mobileCards){
+      mobileCards.innerHTML=data.plans.map(plan=>{
+        const features=plan.services.map(service=>`<li>${labels[service]||service}</li>`).join('');
+        return `<article class="mobile-plan-card ${plan.popular?'is-featured':''}">
+          <div class="mobile-plan-head">
+            <div>
+              <span class="mobile-plan-name">${plan.name}</span>
+              ${plan.popular?'<span class="mobile-plan-badge">Most Popular</span>':''}
+            </div>
+            <div class="mobile-plan-price"><strong>$${plan.price}</strong><span>/month</span></div>
+          </div>
+          <a href="${checkoutLink(plan.code)}" class="mobile-plan-cta">Choose ${plan.name}</a>
+          <details class="mobile-plan-details" ${plan.popular?'open':''}>
+            <summary>Included services (${plan.services.length})</summary>
+            <ul class="mobile-feature-list">${features}</ul>
+          </details>
+        </article>`;
+      }).join('');
+    }
   }
 
   tabs.forEach(tab=>tab.addEventListener('click',()=>renderPricing(tab.dataset.product)));
