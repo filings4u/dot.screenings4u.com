@@ -127,7 +127,7 @@ function initS4UFooter(refreshing=false) {
 
       <div class="container footer-bottom">
         <div class="footer-bottom-copy">
-          <span class="footer-copyright">© <span id="footerYear"></span> Workforce DOT, LLC. All rights reserved.</span>
+          <span class="footer-copyright">© <span id="footerYear"></span> screenings4u DOT, LLC. All rights reserved.</span>
           <span class="footer-subsidiary">A Subsidiary of <a href="${S('roseland_companies','https://www.roselandcompanies.com/')}" target="_blank" rel="noopener noreferrer">Roseland Companies, LLC</a></span>
         </div>
 
@@ -140,7 +140,10 @@ function initS4UFooter(refreshing=false) {
           <a href="${L('disclaimer','disclaimer.html')}">Disclaimer</a>
         </nav>
 
-        <a href="${M('login_directory','login.html')}" class="footer-admin-login">DOT Sign In</a>
+        <nav class="footer-login-links" aria-label="Portal login links">
+          <a href="${M('login_directory','login.html')}">DOT Login</a>
+          <a href="https://dot-portal.screenings4u.com/login.html">Admin Login</a>
+        </nav>
       </div>`;
 
   const y=document.getElementById("footerYear");
