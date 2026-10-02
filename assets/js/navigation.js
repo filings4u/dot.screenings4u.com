@@ -14,7 +14,7 @@
       <button class="saas-toggle" type="button" aria-expanded="false" aria-controls="saasPrimary"><span></span></button>
       <div class="saas-links" id="saasPrimary">
         <a class="saas-link" href="${U('platform','platform.html')}">Platform</a>
-        <details class="saas-menu"><summary>Solutions <i class="saas-caret"></i></summary><div class="saas-menu-panel"><a href="${U('employers','employers.html')}">Employers</a><a href="${U('owner_operator','owner-operator.html')}">Owner-Operators</a><a href="${U('ctpa','ctpa.html')}">C/TPAs</a></div></details>
+        <details class="saas-menu"><summary>Solutions <i class="saas-caret"></i></summary><div class="saas-menu-panel"><a href="${U('employers','employers.html')}">Employers</a><a href="${U('owner_operator','fmcsa-dot-random-consortium-49-cfr-part-382.html')}">Owner-Operators</a><a href="${U('ctpa','ctpa.html')}">C/TPAs</a></div></details>
         <details class="saas-menu"><summary>DOT Agencies <i class="saas-caret"></i></summary><div class="saas-menu-panel"><a href="${U('fmcsa','fmcsa.html')}">FMCSA</a><a href="${U('faa','faa.html')}">FAA</a><a href="${U('fra','fra.html')}">FRA</a><a href="${U('fta','fta.html')}">FTA</a><a href="${U('phmsa','phmsa.html')}">PHMSA</a><a href="${U('uscg','uscg.html')}">USCG</a></div></details>
         <details class="saas-menu"><summary>Resources <i class="saas-caret"></i></summary><div class="saas-menu-panel"><a href="${U('resources','resources.html')}">Resource Center</a><a href="${U('blog','blog.html')}">Blog</a><a href="${U('contact','contact.html')}">Contact</a></div></details>
         <a class="saas-link" href="${plans}">Pricing</a>

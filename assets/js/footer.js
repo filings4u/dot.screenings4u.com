@@ -127,7 +127,7 @@ function initS4UFooter(refreshing=false) {
 
       <div class="container footer-bottom">
         <div class="footer-bottom-copy">
-          <span class="footer-copyright">© <span id="footerYear"></span> screenings4u DOT, LLC. All rights reserved.</span>
+          <span class="footer-copyright">© <span id="footerYear"></span> Workforce DOT, LLC. All rights reserved.</span>
           <span class="footer-subsidiary">A Subsidiary of <a href="${S('roseland_companies','https://www.roselandcompanies.com/')}" target="_blank" rel="noopener noreferrer">Roseland Companies, LLC</a></span>
         </div>
 
