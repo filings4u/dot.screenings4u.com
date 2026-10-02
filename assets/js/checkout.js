@@ -1,144 +1,77 @@
 (()=>{
+'use strict';
 const API='https://elpbnytpciqnbexiaebp.supabase.co/functions/v1';
-const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBiYXNlIiwicmVmIjoid3llemVzZWJveGJta2Vkd mJteXgiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4OTE3Mjg2MiwiZXhwIjoyMTA0NzQ4ODYyfQ.2K26FfRMPBcgIvLw-DKq74zgGEWfWUIgd9ni913Nbag'.replace(/\s+/g,'');
-const FEATURE_LABELS={"employee_management":"Employee / driver management","driver_qualification":"Driver qualification tools","bulk_employee_import":"Bulk employee import","team_users":"Team users","locations":"Locations","ders_supervisors":"DER / supervisor tools","post_accident":"Post-accident workflow","action_center":"Action Center","policy_acknowledgments":"Policy acknowledgments","training_records":"Training records","programs":"DOT programs","random_pool":"Random pool management","random_selections":"Random selections","testing_orders":"Testing orders & workflow","collection_sites":"Collection sites","results_summary":"Result summary visibility","results_sensitive":"Sensitive result visibility","compliance":"Compliance management","rtd_follow_up":"Return-to-duty / follow-up","documents":"Documents","standard_reports":"Standard reports","advanced_reports":"Advanced reports","notifications":"Notifications","integrations":"Integrations","branded_email":"Branded email","white_label":"White-label capability","audit_history":"Audit history","employer_management":"Employer management","consortium_pools":"Consortium pools","billing_tools":"Billing tools","client_invoicing":"Client invoicing","customer_portal_delivery":"Customer portal delivery","clearinghouse_tools":"Clearinghouse tools","policy_builder":"Policy builder","employer_settings":"Employer settings","employer_import":"Employer import","enrollment_documents":"Enrollment documents","client_payments":"Client payments","sso":"Single sign-on (SSO)"};
+const FEATURE_LABELS={employee_management:'Employee / driver management',driver_qualification:'Driver qualification tools',bulk_employee_import:'Bulk employee import',team_users:'Team users',locations:'Locations',ders_supervisors:'DER / supervisor tools',post_accident:'Post-accident workflow',action_center:'Action Center',policy_acknowledgments:'Policy acknowledgments',training_records:'Training records',programs:'DOT programs',random_pool:'Random pool management',random_selections:'Random selections',testing_orders:'Testing orders & workflow',collection_sites:'Collection sites',results_summary:'Result summary visibility',results_sensitive:'Sensitive result visibility',compliance:'Compliance management',rtd_follow_up:'Return-to-duty / follow-up',documents:'Documents',standard_reports:'Standard reports',advanced_reports:'Advanced reports',notifications:'Notifications',integrations:'Integrations',branded_email:'Branded email',white_label:'White-label capability',audit_history:'Audit history',employer_management:'Employer management',consortium_pools:'Consortium pools',billing_tools:'Billing tools',client_invoicing:'Client invoicing',customer_portal_delivery:'Customer portal delivery',clearinghouse_tools:'Clearinghouse tools',policy_builder:'Policy builder',employer_settings:'Employer settings',employer_import:'Employer import',enrollment_documents:'Enrollment documents',client_payments:'Client payments',sso:'Single sign-on (SSO)'};
+
+function renderNav(){
+  const target=document.getElementById('siteHeader'); if(!target)return;
+  target.innerHTML=`<header class="site-header"><div class="container nav-wrap">
+    <a class="brand" href="index.html"><img src="images/logo.png" alt="Workforce DOT by screenings4u"></a>
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><span></span></button>
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <a href="platform.html">Platform</a>
+      <details><summary>Solutions <i></i></summary><div class="dropdown"><a href="employers.html">Employers</a><a href="fmcsa-dot-random-consortium-49-cfr-part-382.html">FMCSA Owner-Operator Drivers</a><a href="ctpa.html">C/TPAs</a></div></details>
+      <details><summary>DOT Agencies <i></i></summary><div class="dropdown agency-dropdown"><a href="fmcsa.html">FMCSA</a><a href="faa.html">FAA</a><a href="fra.html">FRA</a><a href="fta.html">FTA</a><a href="phmsa.html">PHMSA</a><a href="uscg.html">USCG</a></div></details>
+      <details><summary>Resources <i></i></summary><div class="dropdown"><a href="resources.html">Resource Center</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a></div></details>
+      <a href="pricing.html">Pricing</a>
+      <div class="mobile-actions"><a href="login.html">Sign In</a><a class="btn btn-secondary" href="demo.html">Request Demo</a><a class="btn btn-primary" href="pricing.html">View Plans</a></div>
+    </nav>
+    <div class="nav-actions"><a class="signin" href="login.html">Sign In</a><a class="btn btn-secondary" href="demo.html">Request Demo</a><a class="btn btn-primary" href="pricing.html">View Plans</a></div>
+  </div></header>`;
+  const toggle=target.querySelector('.nav-toggle'),nav=target.querySelector('.primary-nav');
+  toggle?.addEventListener('click',()=>{const o=toggle.getAttribute('aria-expanded')==='true';toggle.setAttribute('aria-expanded',String(!o));nav.classList.toggle('open',!o);document.body.classList.toggle('nav-open',!o)});
+  document.addEventListener('click',e=>target.querySelectorAll('details[open]').forEach(d=>{if(!d.contains(e.target))d.removeAttribute('open')}));
+  const state=()=>target.querySelector('.site-header')?.classList.toggle('is-scrolled',scrollY>18); addEventListener('scroll',state,{passive:true}); state();
+}
+renderNav();
+
 const p=new URLSearchParams(location.search);
-const type=(p.get('type')||'employer').toLowerCase();
-const plan=(p.get('plan')||'essential').toLowerCase();
+const rawType=(p.get('type')||'employer').toLowerCase();
+const type=['owner','owner_operator','owner-operator'].includes(rawType)?'owner_operator':rawType;
+let plan=(p.get('plan')||'essential').toLowerCase();
 const agency=(p.get('agency')||(type==='ctpa'?'CTPA':'FMCSA')).toUpperCase();
+if(type==='owner_operator'&&plan==='professional')plan='plus';
+if(type==='owner_operator'&&plan==='enterprise')plan='complete';
 const status=document.getElementById('checkout-status');
 const payButton=document.getElementById('stripe-pay-button');
 const errorBox=document.getElementById('stripe-errors');
-const accountLabel=type==='ctpa'?'C/TPA':'DOT Employer';
+const accountLabel=type==='ctpa'?'C/TPA':type==='owner_operator'?'FMCSA Owner-Operator':'DOT Employer';
 document.getElementById('order-account').textContent=accountLabel;
-document.getElementById('order-agency').textContent=agency==='CTPA'?'Multiple / managed programs':agency;
-const code=type==='ctpa'?`dot_ctpa_${plan}`:`dot_${agency.toLowerCase()}_${plan}`;
+document.getElementById('order-agency').textContent=type==='ctpa'?'Multiple / managed programs':type==='owner_operator'?'FMCSA':agency;
+const code=type==='ctpa'?`dot_ctpa_${plan}`:type==='owner_operator'?`owner_operator_${plan}`:(agency?`dot_${agency.toLowerCase()}_${plan}`:`dot_employer_${plan}`);
 
-async function api(path,opts={}){
-  const r=await fetch(API+path,{...opts,headers:{'Content-Type':'application/json',...(opts.headers||{})}});
-  const d=await r.json().catch(()=>({}));
-  if(!r.ok||d.error)throw Error(d.error||'Unable to continue checkout.');
-  return d;
-}
-function showError(message){
-  status.textContent='Checkout could not be loaded.';
-  status.classList.add('checkout-error');
-  errorBox.textContent=message||'Unable to load secure checkout.';
-  errorBox.hidden=false;
-}
-function titleCaseCode(code){
-  return String(code||'')
-    .replace(/_/g,' ')
-    .replace(/\b\w/g,m=>m.toUpperCase());
-}
-function planFeatureList(selected){
-  const ordered=Array.isArray(selected.included_services)&&selected.included_services.length
-    ? selected.included_services
-    : Object.entries(selected.feature_entitlements||{})
-        .filter(([,enabled])=>enabled===true)
-        .map(([key])=>key);
-  return [...new Set(ordered)].map(key=>FEATURE_LABELS[key]||titleCaseCode(key));
-}
+async function api(path,opts={}){const r=await fetch(API+path,{...opts,headers:{'Content-Type':'application/json',...(opts.headers||{})}});const d=await r.json().catch(()=>({}));if(!r.ok||d.error)throw Error(d.error||'Unable to continue checkout.');return d}
+function showError(message){status.textContent='Checkout could not be loaded.';status.classList.add('error');errorBox.textContent=message||'Unable to load secure checkout.';errorBox.hidden=false}
+function titleCaseCode(v){return String(v||'').replace(/_/g,' ').replace(/\b\w/g,m=>m.toUpperCase())}
+function planFeatureList(selected){const ordered=Array.isArray(selected.included_services)&&selected.included_services.length?selected.included_services:Object.entries(selected.feature_entitlements||{}).filter(([,enabled])=>enabled===true).map(([key])=>key);return [...new Set(ordered)].map(key=>FEATURE_LABELS[key]||titleCaseCode(key))}
 function renderPlan(selected){
   document.getElementById('order-plan').textContent=selected.name||'Selected plan';
   document.getElementById('order-price').textContent=`$${Number(selected.monthly_price||0).toFixed(0)} / month`;
-
-  const desc=document.getElementById('order-description');
-  if(desc) desc.textContent=selected.description||'';
-
-  const details=document.getElementById('order-plan-details');
-  if(details){
-    const features=planFeatureList(selected);
-    details.innerHTML=features.length
-      ? features.map(label=>`<li>${label}</li>`).join('')
-      : '<li>Plan features are included according to your selected subscription.</li>';
-  }
-
-  const notes=[];
-  const limit=selected.driver_limit ?? selected.employee_limit;
-  if(limit!=null) notes.push(`Up to ${Number(limit).toLocaleString()} employees / drivers`);
-  else if(type==='employer') notes.push('Unlimited employees / drivers');
-
-  const frequency=String(selected.billing_frequency||selected.billing_model?.frequency||'monthly');
-  notes.push(frequency.charAt(0).toUpperCase()+frequency.slice(1)+' subscription');
-
-  const note=document.getElementById('order-plan-note');
-  if(note) note.textContent=notes.join(' • ');
+  document.getElementById('order-description').textContent=selected.description||'';
+  const features=planFeatureList(selected); document.getElementById('order-plan-details').innerHTML=features.length?features.map(label=>`<li>${label}</li>`).join(''):'<li>Plan features are included according to your selected subscription.</li>';
+  const notes=[]; const limit=selected.driver_limit??selected.employee_limit; if(limit!=null)notes.push(`Up to ${Number(limit).toLocaleString()} employees / drivers`); if(type==='owner_operator')notes.push('Single-driver FMCSA workspace'); notes.push('Monthly subscription'); document.getElementById('order-plan-note').textContent=notes.join(' • ');
 }
 async function start(){
   try{
     if(typeof window.Stripe!=='function')throw Error('Stripe.js did not load. Refresh the page and try again.');
-    const cat=await api(`/workforce-checkout?surface=dot_marketing&agency=${encodeURIComponent(type==='ctpa'?'CTPA':agency)}`,{method:'GET'});
+    const surfaceAgency=type==='ctpa'?'CTPA':type==='owner_operator'?'FMCSA':agency;
+    const cat=await api(`/workforce-checkout?surface=dot_marketing&agency=${encodeURIComponent(surfaceAgency)}`,{method:'GET'});
     const selected=(cat.plans||[]).find(x=>x.code===code);
     if(!selected)throw Error('The selected plan is not currently available.');
     renderPlan(selected);
-
     status.textContent='Loading secure payment form…';
     const session=await api('/workforce-checkout',{method:'POST',body:JSON.stringify({surface:'dot_marketing',embedded:true,plan_code:code})});
-    if(!session.stripe_publishable_key)throw Error('Stripe publishable key is not configured in the checkout service.');
-    if(!session.client_secret)throw Error('Stripe did not return a Checkout Session client secret.');
-
+    if(!session.stripe_publishable_key||!session.client_secret)throw Error('Stripe checkout configuration is unavailable.');
     const stripe=window.Stripe(session.stripe_publishable_key);
     if(typeof stripe.initCheckoutElementsSdk!=='function')throw Error('The loaded Stripe.js version does not support Checkout Elements.');
-
-    const checkout=stripe.initCheckoutElementsSdk({
-      clientSecret:session.client_secret,
-      elementsOptions:{
-        appearance:{
-          theme:'stripe',
-          variables:{
-            colorPrimary:'#ff6b00',
-            colorText:'#172033',
-            colorBackground:'#ffffff',
-            colorDanger:'#b42318',
-            borderRadius:'10px',
-            fontFamily:'Inter, system-ui, sans-serif'
-          }
-        }
-      }
-    });
-
-    const contact=checkout.createContactDetailsElement();
-    contact.mount('#stripe-contact-element');
-    const payment=checkout.createPaymentElement({layout:'accordion'});
-    payment.mount('#stripe-payment-element');
-
-    const loaded=await checkout.loadActions();
-    if(loaded.type!=='success')throw Error(loaded.error?.message||'Stripe checkout could not initialize.');
-    const actions=loaded.actions;
-
-    checkout.on('change',sessionState=>{
-      payButton.disabled=!sessionState.canConfirm;
-      const amount=sessionState.total?.total?.amount;
-      if(amount!==undefined&&amount!==null){
-        const n=Number(amount);
-        document.getElementById('order-price').textContent=`$${Number.isInteger(n)?n:n.toFixed(2)} / month`;
-      }
-    });
-
-    payButton.addEventListener('click',async()=>{
-      payButton.disabled=true;
-      errorBox.hidden=true;
-      status.textContent='Confirming payment securely with Stripe…';
-      try{
-        const result=await actions.confirm();
-        if(result.type==='error'){
-          throw Error(result.error?.message||'Payment could not be completed.');
-        }
-      }catch(err){
-        errorBox.textContent=err.message||'Payment could not be completed.';
-        errorBox.hidden=false;
-        payButton.disabled=false;
-        status.textContent='Secure payment powered by Stripe.';
-      }
-    });
-
-    status.textContent='Secure payment powered by Stripe.';
-    payButton.hidden=false;
-  }catch(e){
-    showError(e.message);
-    console.error('screenings4u DOT checkout mount failed',e);
-  }
+    const checkout=stripe.initCheckoutElementsSdk({clientSecret:session.client_secret,elementsOptions:{appearance:{theme:'stripe',variables:{colorPrimary:'#ff6b00',colorText:'#172033',colorBackground:'#ffffff',colorDanger:'#b42318',borderRadius:'10px',fontFamily:'Inter, system-ui, sans-serif'}}}});
+    checkout.createContactDetailsElement().mount('#stripe-contact-element');
+    checkout.createPaymentElement({layout:'accordion'}).mount('#stripe-payment-element');
+    const loaded=await checkout.loadActions(); if(loaded.type!=='success')throw Error(loaded.error?.message||'Stripe checkout could not initialize.'); const actions=loaded.actions;
+    checkout.on('change',sessionState=>{payButton.disabled=!sessionState.canConfirm;const amount=sessionState.total?.total?.amount;if(amount!==undefined&&amount!==null){const n=Number(amount);document.getElementById('order-price').textContent=`$${Number.isInteger(n)?n:n.toFixed(2)} / month`}});
+    payButton.addEventListener('click',async()=>{payButton.disabled=true;errorBox.hidden=true;status.textContent='Confirming payment securely with Stripe…';try{const result=await actions.confirm();if(result.type==='error')throw Error(result.error?.message||'Payment could not be completed.')}catch(err){errorBox.textContent=err.message||'Payment could not be completed.';errorBox.hidden=false;payButton.disabled=false;status.textContent='Secure payment powered by Stripe.'}});
+    status.textContent='Secure payment powered by Stripe.';payButton.hidden=false;
+  }catch(e){showError(e.message);console.error('screenings4u DOT checkout mount failed',e)}
 }
 start();
 })();

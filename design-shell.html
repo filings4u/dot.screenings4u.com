@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Workforce DOT by screenings4u | SaaS Homepage Shell</title>
+<meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"/>
+<meta content="#17335f" name="theme-color"/>
+<link href="assets/css/site.css" rel="stylesheet"/>
+<link href="images/fav.png" rel="icon" type="image/png"/>
+<style>
+    :root{--shell-navy:#17335f;--shell-orange:#f56713;--shell-ink:#102a4c;--shell-muted:#6e8199;--shell-soft:#f6f8fc;--shell-line:#dfe6ef}
+    .hero-saas{padding:64px 0 58px;background:linear-gradient(125deg,#fff 0%,#fff 52%,#f4f7fc 100%);overflow:hidden}
+    .hero-saas-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(520px,1.1fr);gap:60px;align-items:center}
+    .hero-saas-copy{display:grid;gap:17px}.hero-saas-copy h1{max-width:640px;font-size:clamp(40px,3.4vw,52px);line-height:1.04;letter-spacing:-.045em;color:var(--shell-ink)}
+    .hero-saas-copy p{max-width:620px;font-size:18px;line-height:1.62;color:var(--shell-muted)}
+    .brand-kicker{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--shell-orange)}
+    .brand-kicker:after{content:"";width:28px;height:2px;background:var(--shell-orange)}
+    .mini-proof{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:3px}
+    .mini-proof>div{padding:13px 14px;border:1px solid var(--shell-line);border-radius:12px;background:#fff;box-shadow:0 8px 22px rgba(23,51,95,.06)}
+    .mini-proof strong{display:block;color:var(--shell-navy);font-size:15px}.mini-proof span{display:block;color:var(--shell-muted);font-size:12px;margin-top:2px}
+    .hero-product{position:relative}.hero-product:after{content:"";position:absolute;left:8%;right:8%;bottom:-20px;height:36px;background:rgba(23,51,95,.14);filter:blur(24px);border-radius:50%;z-index:-1}
+
+    .agency-ribbon{background:#fff;border-block:1px solid var(--shell-line)}
+    .agency-ribbon .container{display:grid;grid-template-columns:220px 1fr;gap:28px;align-items:center;padding-top:22px;padding-bottom:22px}
+    .agency-ribbon strong{color:var(--shell-navy);font-size:14px}.agency-list{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+    .agency-pill{display:flex;align-items:center;justify-content:center;padding:10px;border-radius:10px;background:#f7f9fc;color:var(--shell-navy);font-weight:900;font-size:13px;border:1px solid var(--shell-line)}
+
+    .section-intro{max-width:800px;margin:0 auto 34px;text-align:center}.section-intro h2{font-size:clamp(32px,3vw,46px);line-height:1.08;letter-spacing:-.035em;margin-top:10px}.section-intro p{font-size:17px;line-height:1.65;margin-top:14px}
+    .feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.feature-card{background:#fff;border:1px solid var(--shell-line);border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(23,51,95,.05);display:grid;gap:10px}.feature-card h3{font-size:18px}.feature-card p{font-size:14px;line-height:1.6}.feature-icon{width:38px;height:38px;border-radius:10px;background:#eef3fb;display:grid;place-items:center;font-weight:900;color:var(--shell-navy)}
+
+    .showcase{display:grid;grid-template-columns:.86fr 1.14fr;gap:58px;align-items:center}.showcase.reverse{grid-template-columns:1.14fr .86fr}.showcase-copy{display:grid;gap:18px}.showcase-copy h2{font-size:clamp(31px,2.8vw,44px);line-height:1.08;letter-spacing:-.035em}.bullet-list{display:grid;gap:10px;margin-top:2px}.bullet-list div{display:flex;gap:10px;align-items:flex-start;color:var(--shell-muted);font-size:15px;line-height:1.5}.bullet-list div:before{content:"✓";color:var(--shell-orange);font-weight:900}
+
+    .workflow-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;counter-reset:step}.workflow-step{position:relative;background:#fff;border:1px solid var(--shell-line);border-radius:16px;padding:22px 18px;min-height:170px}.workflow-step:before{counter-increment:step;content:"0" counter(step);display:inline-grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--shell-navy);color:#fff;font-size:12px;font-weight:900;margin-bottom:18px}.workflow-step h3{font-size:17px}.workflow-step p{font-size:13px;line-height:1.55;margin-top:8px}
+
+    .workspace-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.workspace-card{border-radius:18px;padding:28px;background:linear-gradient(145deg,#17335f,#244a83);color:#fff;min-height:250px;display:flex;flex-direction:column}.workspace-card:nth-child(2){background:linear-gradient(145deg,#233d6a,#315994)}.workspace-card:nth-child(3){background:linear-gradient(145deg,#102949,#173b6c)}.workspace-card .label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:900;color:#ff9b5d}.workspace-card h3{font-size:27px;margin-top:12px}.workspace-card p{color:#dce6f5;line-height:1.6;margin-top:10px}.workspace-card a{margin-top:auto;color:#fff;font-weight:900;text-decoration:none}
+
+    .metrics-band{background:var(--shell-navy);color:#fff}.metrics-band .container{display:grid;grid-template-columns:repeat(4,1fr);gap:0}.metric-block{padding:30px 28px;border-right:1px solid rgba(255,255,255,.15)}.metric-block:last-child{border-right:0}.metric-block strong{display:block;font-size:30px;letter-spacing:-.03em}.metric-block span{display:block;color:#cbd8ea;margin-top:5px;font-size:13px}
+
+    .resource-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.resource-card{border:1px solid var(--shell-line);border-radius:16px;overflow:hidden;background:#fff}.resource-card .resource-top{height:8px;background:var(--shell-orange)}.resource-body{padding:24px}.resource-body .tag{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--shell-orange)}.resource-body h3{font-size:20px;margin-top:8px}.resource-body p{font-size:14px;line-height:1.6;margin-top:8px}
+
+    .final-cta{padding:72px 0;background:linear-gradient(135deg,#102949,#17335f 58%,#214f87);color:#fff}.final-cta .container{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}.final-cta h2{font-size:clamp(32px,3vw,46px);line-height:1.08;letter-spacing:-.035em}.final-cta p{color:#dbe6f5;max-width:720px;font-size:17px;line-height:1.6;margin-top:12px}.final-actions{display:flex;gap:12px;flex-wrap:wrap}
+
+    @media(max-width:1100px){.hero-saas-grid,.showcase,.showcase.reverse{grid-template-columns:1fr}.hero-product{max-width:900px}.feature-grid{grid-template-columns:repeat(2,1fr)}.workflow-grid{grid-template-columns:repeat(2,1fr)}.workspace-grid{grid-template-columns:1fr}.agency-ribbon .container{grid-template-columns:1fr}.agency-list{grid-template-columns:repeat(3,1fr)}.final-cta .container{grid-template-columns:1fr}}
+    @media(max-width:760px){.hero-saas{padding:44px 0 48px}.hero-saas-grid{gap:34px}.hero-saas-copy h1{font-size:clamp(35px,10vw,43px)}.hero-saas-copy p{font-size:16px}.mini-proof,.feature-grid,.workflow-grid,.resource-grid,.metrics-band .container{grid-template-columns:1fr}.agency-list{grid-template-columns:repeat(2,1fr)}.metric-block{border-right:0;border-bottom:1px solid rgba(255,255,255,.15)}.metric-block:last-child{border-bottom:0}.section-intro{text-align:left}.final-actions{width:100%}.final-actions .btn{flex:1;justify-content:center}}
+    /* v4: SaaS navigation + dark-section contrast fixes */
+    :root{--sticky-header-offset:86px}
+    body{padding-top:var(--sticky-header-offset)}
+    .workspace-card h3,.workspace-card a{color:#fff}
+    .workspace-card p{color:#dce6f5}
+    .metrics-band strong{color:#fff}
+    .saas-header{position:fixed;inset:0 0 auto 0;z-index:1000;background:rgba(255,255,255,.96);backdrop-filter:saturate(140%) blur(14px);border-bottom:1px solid #e3e9f2;box-shadow:0 8px 28px rgba(16,42,76,.06)}
+    .saas-nav{height:86px}.saas-nav .container{height:100%;display:flex;align-items:center;gap:28px;width:min(1450px,calc(100% - 64px))}
+    .saas-brand{display:flex;align-items:center;gap:13px;min-width:max-content;text-decoration:none}.saas-brand img{height:36px;width:auto}.product-lockup{display:flex;align-items:center;gap:10px;padding-left:13px;border-left:1px solid #d8e0eb}.product-lockup strong{font-size:14px;color:#16385f;letter-spacing:-.01em}.product-lockup span{font-size:10px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:#74879e}
+    .saas-links{display:flex;align-items:center;gap:3px;flex:1}.saas-link,.saas-menu summary{display:flex;align-items:center;gap:7px;padding:10px 11px;border-radius:10px;color:#18395e;font-size:14px;font-weight:800;cursor:pointer;list-style:none;text-decoration:none}.saas-link:hover,.saas-menu summary:hover{background:#f1f5fa;color:#17335f}.saas-menu{position:relative}.saas-menu summary::-webkit-details-marker{display:none}.saas-menu[open] summary{background:#edf3fa}.saas-menu-panel{position:absolute;top:calc(100% + 12px);left:0;min-width:260px;padding:10px;background:#fff;border:1px solid #dfe6ef;border-radius:14px;box-shadow:0 22px 60px rgba(16,42,76,.16);display:grid;gap:3px}.saas-menu-panel a{padding:11px 12px;border-radius:9px;color:#17335f;font-weight:750;font-size:13px;text-decoration:none}.saas-menu-panel a:hover{background:#f3f6fb;color:#f56713}.saas-caret{width:7px;height:7px;border-right:1.7px solid currentColor;border-bottom:1.7px solid currentColor;transform:rotate(45deg) translateY(-2px)}
+    .saas-actions{display:flex;align-items:center;gap:9px;margin-left:auto}.saas-signin{padding:10px 8px;color:#17335f;font-size:14px;font-weight:850;text-decoration:none}.saas-signin:hover{color:#f56713}
+    .saas-toggle{display:none;width:46px;height:46px;border:1px solid #dfe6ef;border-radius:11px;background:#fff;place-items:center;color:#17335f}.saas-toggle span,.saas-toggle span:before,.saas-toggle span:after{display:block;width:20px;height:2px;background:currentColor;border-radius:3px;position:relative}.saas-toggle span:before,.saas-toggle span:after{content:"";position:absolute;left:0}.saas-toggle span:before{top:-6px}.saas-toggle span:after{top:6px}
+    @media(max-width:1120px){.saas-nav .container{width:min(1450px,calc(100% - 40px));gap:18px}.product-lockup{display:none}.saas-links{gap:0}.saas-link,.saas-menu summary{padding:10px 8px}.saas-actions .btn{padding-inline:14px}}
+    @media(max-width:900px){:root{--sticky-header-offset:74px}.saas-nav{height:74px}.saas-nav .container{width:calc(100% - 28px)}.saas-brand img{height:31px}.saas-toggle{display:grid;margin-left:auto}.saas-links{position:fixed;top:74px;left:0;right:0;bottom:0;background:#fff;padding:18px 16px 28px;display:none;overflow:auto;align-content:start}.saas-links.mobile-open{display:grid}.saas-link,.saas-menu summary{padding:14px 12px;font-size:15px}.saas-menu-panel{position:static;box-shadow:none;border:0;border-left:2px solid #e1e8f1;border-radius:0;margin:2px 0 8px 12px;padding:4px 0 4px 10px}.saas-actions{display:none}.mobile-saas-actions{display:grid;gap:10px;margin-top:12px}.mobile-saas-actions .btn,.mobile-saas-actions .saas-signin{width:100%;justify-content:center;text-align:center}.product-lockup{display:flex}.product-lockup span{display:none}}
+    @media(min-width:901px){.mobile-saas-actions{display:none}}
+  </style>
+<meta content="Workforce DOT by screenings4u | SaaS Homepage Shell — Workforce DOT by screenings4u." name="description"/><link href="https://dot.screenings4u.com/design-shell.html" rel="canonical"/><meta content="website" property="og:type"/><meta content="Workforce DOT by screenings4u" property="og:site_name"/><meta content="Workforce DOT by screenings4u | SaaS Homepage Shell" property="og:title"/><meta content="Workforce DOT by screenings4u | SaaS Homepage Shell — Workforce DOT by screenings4u." property="og:description"/><meta content="https://dot.screenings4u.com/design-shell.html" property="og:url"/><meta content="https://dot.screenings4u.com/images/logo.png" property="og:image"/><meta content="summary_large_image" name="twitter:card"/><meta content="Workforce DOT by screenings4u | SaaS Homepage Shell" name="twitter:title"/><meta content="Workforce DOT by screenings4u | SaaS Homepage Shell — Workforce DOT by screenings4u." name="twitter:description"/><meta content="https://dot.screenings4u.com/images/logo.png" name="twitter:image"/><link crossorigin="anonymous" href="https://elpbnytpciqnbexiaebp.supabase.co" rel="preconnect"/><link href="assets/css/mobile-seo.css?v=20261002-1" rel="stylesheet"/><script id="s4u-static-jsonld" type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Workforce DOT by screenings4u | SaaS Homepage Shell","description":"Workforce DOT by screenings4u | SaaS Homepage Shell \u2014 Workforce DOT by screenings4u.","url":"https://dot.screenings4u.com/design-shell.html","isPartOf":{"@type":"WebSite","name":"Workforce DOT by screenings4u","url":"https://dot.screenings4u.com/"}}</script><script defer="" src="assets/js/management-runtime.js?v=20261002-reconnect1"></script></head>
+<body data-page="platform">
+<div id="siteHeader"></div>
+<script src="assets/js/navigation.js"></script>
+<main>
+<section class="hero-saas">
+<div class="container hero-saas-grid">
+<div class="hero-saas-copy">
+<span class="brand-kicker">Workforce DOT by screenings4u</span>
+<h1>One operating system for DOT workforce compliance.</h1>
+<p>Manage regulated employees, testing programs, random pools, results, documents and compliance workflows from one connected workspace.</p>
+<div class="hero-actions">
+<a class="btn btn-primary" href="index.html#agency-plans">View Plans</a>
+<a class="btn btn-secondary" href="demo.html">Request Demo</a>
+<a class="btn-link" href="platform.html">Explore Platform →</a>
+</div>
+<div class="mini-proof">
+<div><strong>6 DOT agencies</strong><span>Agency-ready workflows</span></div>
+<div><strong>3 workspaces</strong><span>Employer, Owner-Operator, C/TPA</span></div>
+<div><strong>1 connected system</strong><span>People, testing, records &amp; reporting</span></div>
+</div>
+</div>
+<div class="hero-product">
+<div class="product-frame hero-frame">
+<div class="browser-bar"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-label">WORKFORCE DOT / DASHBOARD</span></div>
+<img alt="Workforce DOT platform dashboard" height="612" src="assets/img/platform-dashboard.webp" width="1280"/>
+</div>
+</div>
+</div>
+</section>
+<section class="agency-ribbon">
+<div class="container">
+<strong>Built for DOT-regulated workforces</strong>
+<div class="agency-list"><div class="agency-pill">FMCSA</div><div class="agency-pill">FAA</div><div class="agency-pill">FRA</div><div class="agency-pill">FTA</div><div class="agency-pill">PHMSA</div><div class="agency-pill">USCG</div></div>
+</div>
+</section>
+<section class="section section-soft">
+<div class="container">
+<div class="section-intro"><span class="eyebrow">THE PLATFORM</span><h2>Everything your DOT compliance operation needs in one place.</h2><p>Instead of moving between spreadsheets, emails, testing portals and document folders, Workforce DOT connects the operational pieces your team uses every day.</p></div>
+<div class="feature-grid">
+<article class="feature-card"><div class="feature-icon">01</div><h3>Employers &amp; workforce</h3><p>Organize regulated companies, employees and driver records with clear program visibility.</p></article>
+<article class="feature-card"><div class="feature-icon">02</div><h3>Random programs</h3><p>Manage pools, eligibility, selections and program activity from one workspace.</p></article>
+<article class="feature-card"><div class="feature-icon">03</div><h3>Testing workflow</h3><p>Track testing orders from creation through collection, result and follow-up.</p></article>
+<article class="feature-card"><div class="feature-icon">04</div><h3>Compliance status</h3><p>Surface open items, program issues and records that need operational attention.</p></article>
+<article class="feature-card"><div class="feature-icon">05</div><h3>Documents</h3><p>Keep workforce and program records organized in the same connected system.</p></article>
+<article class="feature-card"><div class="feature-icon">06</div><h3>Reports</h3><p>Give teams a clearer view of testing, workforce and compliance activity.</p></article>
+<article class="feature-card"><div class="feature-icon">07</div><h3>Notifications</h3><p>Keep the right people informed when records, testing or program actions require attention.</p></article>
+<article class="feature-card"><div class="feature-icon">08</div><h3>Account billing</h3><p>Connect subscription, employer billing and operational services inside the platform.</p></article>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container showcase">
+<div class="showcase-copy"><span class="eyebrow">WORKFORCE OPERATIONS</span><h2>See the health of your regulated workforce at a glance.</h2><p>Managers can move from company-level status to individual employee records without losing the operational context around testing and compliance.</p><div class="bullet-list"><div>Connected employer and employee records</div><div>Program enrollment and agency context</div><div>Open testing and action visibility</div><div>Centralized documents and history</div></div><a class="btn-link" href="employers.html">Explore employer workflows →</a></div>
+<div class="product-frame"><div class="browser-bar"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-label">WORKFORCE / DRIVERS &amp; EMPLOYEES</span></div><img alt="Workforce DOT driver and employee management" height="612" src="assets/img/platform-drivers.webp" width="1280"/></div>
+</div>
+</section>
+<section class="section section-soft">
+<div class="container">
+<div class="section-intro"><span class="eyebrow">HOW IT WORKS</span><h2>From workforce setup to audit-ready records.</h2><p>Workforce DOT gives your team a repeatable operating flow instead of a collection of disconnected tasks.</p></div>
+<div class="workflow-grid">
+<article class="workflow-step"><h3>Add your workforce</h3><p>Organize employers, employees, agency coverage and program requirements.</p></article>
+<article class="workflow-step"><h3>Build programs</h3><p>Set up random pools and the compliance structure your workforce needs.</p></article>
+<article class="workflow-step"><h3>Order testing</h3><p>Create and track testing activity without losing the employee or program context.</p></article>
+<article class="workflow-step"><h3>Track results</h3><p>Keep result status and follow-up work connected to the original order.</p></article>
+<article class="workflow-step"><h3>Report &amp; retain</h3><p>Maintain the operational record your team needs for oversight and audits.</p></article>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container showcase reverse">
+<div class="product-frame"><div class="browser-bar"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-label">WORKFORCE DOT / RANDOM PROGRAMS</span></div><img alt="Workforce DOT random pool management" height="612" src="assets/img/platform-pools.webp" width="1280"/></div>
+<div class="showcase-copy"><span class="eyebrow">RANDOM PROGRAMS</span><h2>Manage eligibility, pools and selections without spreadsheet drift.</h2><p>Keep random program activity inside the same system as the workforce records that drive it.</p><div class="bullet-list"><div>Program and pool visibility</div><div>Employee eligibility context</div><div>Selection history and status</div><div>Connected testing workflow</div></div><a class="btn-link" href="platform.html">See the platform →</a></div>
+</div>
+</section>
+<section class="section section-soft">
+<div class="container">
+<div class="section-intro"><span class="eyebrow">BUILT FOR YOUR OPERATION</span><h2>One platform. Different ways to work.</h2><p>The product adapts to the role you play in the DOT testing and compliance ecosystem.</p></div>
+<div class="workspace-grid">
+<article class="workspace-card"><span class="label">Workspace 01</span><h3>Employers</h3><p>Manage regulated employees, program status, testing, records and compliance activity for your own workforce.</p><a href="employers.html">Explore Employers →</a></article>
+<article class="workspace-card"><span class="label">Workspace 02</span><h3>Owner-Operators</h3><p>Keep your individual compliance program, testing obligations and records organized in one place.</p><a href="owner-operator.html">Explore Owner-Operators →</a></article>
+<article class="workspace-card"><span class="label">Workspace 03</span><h3>C/TPAs</h3><p>Operate across multiple employer accounts with portfolio-level workforce and compliance visibility.</p><a href="ctpa.html">Explore C/TPAs →</a></article>
+</div>
+</div>
+</section>
+<section class="metrics-band">
+<div class="container"><div class="metric-block"><strong>6</strong><span>DOT agency workflows</span></div><div class="metric-block"><strong>3</strong><span>purpose-built workspaces</span></div><div class="metric-block"><strong>1</strong><span>connected operating system</span></div><div class="metric-block"><strong>24/7</strong><span>workspace access</span></div></div>
+</section>
+<section class="section">
+<div class="container showcase">
+<div class="showcase-copy"><span class="eyebrow">COMPLIANCE VISIBILITY</span><h2>Turn program activity into an operational view your team can act on.</h2><p>Bring together open testing, workforce records, document status and compliance actions so managers know where attention is needed.</p><div class="bullet-list"><div>Dashboard-level attention items</div><div>Program and employee drill-down</div><div>Central reporting and documents</div><div>Designed for ongoing operations</div></div><a class="btn-link" href="platform.html">Explore compliance tools →</a></div>
+<div class="product-frame"><div class="browser-bar"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-label">WORKFORCE DOT / COMPLIANCE</span></div><img alt="Workforce DOT compliance dashboard" height="612" src="assets/img/platform-compliance.webp" width="1280"/></div>
+</div>
+</section>
+<section class="section section-soft">
+<div class="container">
+<div class="section-intro"><span class="eyebrow">RESOURCES</span><h2>Practical guidance for DOT workforce operations.</h2><p>Use the resource center to understand workflows, program responsibilities and the operational details behind a compliant testing program.</p></div>
+<div class="resource-grid">
+<article class="resource-card"><div class="resource-top"></div><div class="resource-body"><span class="tag">Random Programs</span><h3>Who belongs in a random pool?</h3><p>Understand eligibility and the operational decisions that affect pool setup and maintenance.</p><a class="btn-link" href="blog-random-pool-eligibility.html">Read article →</a></div></article>
+<article class="resource-card"><div class="resource-top"></div><div class="resource-body"><span class="tag">Testing Operations</span><h3>The testing order lifecycle</h3><p>See how an order moves from creation through collection, result and completion.</p><a class="btn-link" href="blog-testing-order-lifecycle.html">Read article →</a></div></article>
+<article class="resource-card"><div class="resource-top"></div><div class="resource-body"><span class="tag">C/TPA Operations</span><h3>Managing a compliance portfolio</h3><p>Organize employers, programs and workforce activity across a multi-client operation.</p><a class="btn-link" href="blog-ctpa-portfolio-management.html">Read article →</a></div></article>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer" id="siteFooter"></footer>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/footer.js"></script>
+<script defer="" src="assets/js/site-enhancements.js?v=20261002-1"></script></body>
+</html>

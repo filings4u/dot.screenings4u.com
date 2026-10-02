@@ -91,7 +91,7 @@ function initS4UFooter(refreshing=false) {
             <h4>DOT Platform</h4>
             <a href="${M('platform','platform.html')}">Platform</a>
             <a href="${M('employers','employers.html')}">Employers</a>
-            <a href="${M('owner_operator','owner-operator.html')}">Owner-Operators</a>
+            <a href="${M('owner_operator','fmcsa-dot-random-consortium-49-cfr-part-382.html')}">Owner-Operators</a>
             <a href="${M('ctpa','ctpa.html')}">C/TPAs</a>
             <a href="${M('demo','demo.html')}">Request Demo</a>
           </div>

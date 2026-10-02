@@ -1,1 +1,104 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Create Your Account | screenings4u DOT</title><meta name="description" content="Create your screenings4u DOT account after purchase."><meta name="theme-color" content="#24467f"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/css/site.css?v=20260930-logo1"><link rel="icon" type="image/png" href="images/fav.png"><link rel="preconnect" href="https://elpbnytpciqnbexiaebp.supabase.co" crossorigin><script src="assets/js/management-runtime.js?v=20260929-prod1" defer></script></head><body data-page="account-creation"><div data-site-header></div><script src="assets/js/navigation.js?v=20260930-logo1"></script><main><section class="page-hero"><div class="container"><div class="page-hero-copy" style="max-width:820px"><span class="eyebrow">ACCOUNT CREATION</span><h1>Create your screenings4u DOT account.</h1><p>Your payment is complete. Enter your organization information below. When you submit, we will provision your purchased plan, grant portal access, and email your secure account invitation.</p></div></div></section><section class="section section-soft"><div class="container"><div class="account-panel"><div id="account-status" class="checkout-status">Confirming your purchase…</div><form id="account-form" hidden><div class="account-section"><h3>Account administrator</h3><div class="account-grid"><div class="field"><label>First name<input name="first_name" required></label></div><div class="field"><label>Last name<input name="last_name" required></label></div><div class="field"><label>Middle initial<input name="middle_initial" maxlength="1"></label></div><div class="field"><label>Phone<input name="contact_phone" type="tel" required></label></div><div class="field full"><label>Email<input id="purchase-email" disabled></label></div></div></div><div class="account-section"><h3>Organization</h3><div class="account-grid"><div class="field full"><label>Legal company name<input name="legal_name" required></label></div><div class="field"><label>DBA / trade name<input name="dba_name"></label></div><div class="field"><label>EIN<input name="ein"></label></div><div class="field" id="agency-field" hidden><label>DOT agency<select name="agency_code"><option value="">Choose agency</option><option>FMCSA</option><option>FAA</option><option>FRA</option><option>FTA</option><option>PHMSA</option><option>USCG</option></select></label></div><div class="field" id="dot-field"><label>USDOT number<input name="dot_number"></label></div><div class="field"><label>MC number<input name="mc_number"></label></div><div class="field full"><label>Website<input name="website" type="url"></label></div></div></div><div class="account-section"><h3>Company address</h3><div class="account-grid"><div class="field full"><label>Address<input name="address_line1" required></label></div><div class="field full"><label>Address line 2<input name="address_line2"></label></div><div class="field"><label>City<input name="city" required></label></div><div class="field"><label>State<input name="state" required></label></div><div class="field"><label>ZIP / postal code<input name="postal_code" required></label></div><div class="field"><label>Country<input name="country" value="US" required></label></div></div></div><div class="account-section"><h3>Billing contact</h3><div class="account-grid"><div class="field"><label>Billing email<input name="billing_contact_email" type="email"></label></div><div class="field"><label>Billing phone<input name="billing_contact_phone" type="tel"></label></div></div></div><div class="form-actions"><button id="create-account" class="btn btn-primary" type="submit">Create My Account</button></div></form><div id="account-success" class="account-success" hidden><span class="eyebrow">ACCOUNT READY</span><h2>Your account has been created.</h2><p>Your purchased plan is active. Check your email for the secure account invitation, then use that invitation to create your password and enter the portal you purchased.</p></div></div></div></section></main><footer id="siteFooter" class="site-footer" data-site-footer></footer><script src="assets/js/footer.js?v=20260930-logo1"></script><script src="assets/js/account-creation.js?v=20260922-email-invite-only-1"></script></body></html>
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Create Your Workforce DOT Account | screenings4u</title>
+<meta content="Create your Workforce DOT account after purchase and receive your secure branded account invitation." name="description"/>
+<meta content="#24467f" name="theme-color"/>
+<link href="images/fav.png" rel="icon" type="image/png"/>
+<link href="assets/css/checkout.css?v=1" rel="stylesheet"/>
+<link href="https://dot.screenings4u.com/account-creation.html" rel="canonical"/><meta content="noindex,nofollow" name="robots"/><meta content="website" property="og:type"/><meta content="Workforce DOT by screenings4u" property="og:site_name"/><meta content="Create Your Workforce DOT Account | screenings4u" property="og:title"/><meta content="Create your Workforce DOT account after purchase and receive your secure branded account invitation." property="og:description"/><meta content="https://dot.screenings4u.com/account-creation.html" property="og:url"/><meta content="https://dot.screenings4u.com/images/logo.png" property="og:image"/><meta content="summary_large_image" name="twitter:card"/><meta content="Create Your Workforce DOT Account | screenings4u" name="twitter:title"/><meta content="Create your Workforce DOT account after purchase and receive your secure branded account invitation." name="twitter:description"/><meta content="https://dot.screenings4u.com/images/logo.png" name="twitter:image"/><link crossorigin="anonymous" href="https://elpbnytpciqnbexiaebp.supabase.co" rel="preconnect"/><link href="assets/css/mobile-seo.css?v=20261002-1" rel="stylesheet"/><script id="s4u-static-jsonld" type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Create Your Workforce DOT Account | screenings4u","description":"Create your Workforce DOT account after purchase and receive your secure branded account invitation.","url":"https://dot.screenings4u.com/account-creation.html","isPartOf":{"@type":"WebSite","name":"Workforce DOT by screenings4u","url":"https://dot.screenings4u.com/"}}</script><script defer="" src="assets/js/management-runtime.js?v=20261002-reconnect1"></script></head>
+<body data-page="account-creation">
+<div id="siteHeader"></div>
+<main>
+<section class="account-hero">
+<div class="container account-hero-grid">
+<div>
+<span class="eyebrow">Account Creation</span>
+<h1>Finish setting up your Workforce DOT account.</h1>
+<p>Your payment is complete. Enter the organization and account administrator information below so Workforce DOT can provision the purchased plan and send your secure account invitation.</p>
+</div>
+<div class="delivery-panel">
+<span class="delivery-kicker">Included after purchase</span>
+<div><strong>✓</strong><span>Workforce DOT purchase receipt</span></div>
+<div><strong>✓</strong><span>Secure account activation email</span></div>
+<div><strong>✓</strong><span>Purchased plan provisioned to your portal</span></div>
+</div>
+</div>
+</section>
+<section class="account-section-wrap">
+<div class="container account-layout">
+<section class="account-panel">
+<div class="checkout-message" id="account-status">Confirming your purchase…</div>
+<form hidden="" id="account-form">
+<div class="account-form-section">
+<div class="form-section-head"><span>01</span><div><h2>Account administrator</h2><p>This person receives the secure account activation invitation.</p></div></div>
+<div class="field-grid">
+<label>First name<input autocomplete="given-name" name="first_name" required=""/></label>
+<label>Last name<input autocomplete="family-name" name="last_name" required=""/></label>
+<label>Middle initial<input maxlength="1" name="middle_initial"/></label>
+<label>Phone<input autocomplete="tel" name="contact_phone" required="" type="tel"/></label>
+<label class="full">Purchase email<input disabled="" id="purchase-email" type="email"/></label>
+</div>
+</div>
+<div class="account-form-section">
+<div class="form-section-head"><span>02</span><div><h2>Organization</h2><p>We use this information to create the purchased DOT workspace.</p></div></div>
+<div class="field-grid">
+<label class="full">Legal company name<input name="legal_name" required=""/></label>
+<label>DBA / trade name<input name="dba_name"/></label>
+<label>EIN<input name="ein"/></label>
+<label hidden="" id="agency-field">DOT agency<select name="agency_code"><option value="">Choose agency</option><option>FMCSA</option><option>FAA</option><option>FRA</option><option>FTA</option><option>PHMSA</option><option>USCG</option></select></label>
+<label id="dot-field">USDOT number<input name="dot_number"/></label>
+<label>MC number<input name="mc_number"/></label>
+<label class="full">Website<input name="website" type="url"/></label>
+</div>
+</div>
+<div class="account-form-section">
+<div class="form-section-head"><span>03</span><div><h2>Company address</h2><p>Used for account and billing records.</p></div></div>
+<div class="field-grid">
+<label class="full">Address<input autocomplete="address-line1" name="address_line1" required=""/></label>
+<label class="full">Address line 2<input autocomplete="address-line2" name="address_line2"/></label>
+<label>City<input autocomplete="address-level2" name="city" required=""/></label>
+<label>State<input autocomplete="address-level1" name="state" required=""/></label>
+<label>ZIP / postal code<input autocomplete="postal-code" name="postal_code" required=""/></label>
+<label>Country<input autocomplete="country" name="country" required="" value="US"/></label>
+</div>
+</div>
+<div class="account-form-section">
+<div class="form-section-head"><span>04</span><div><h2>Billing contact</h2><p>Receipts and billing-related notices can be sent here.</p></div></div>
+<div class="field-grid">
+<label>Billing email<input name="billing_contact_email" type="email"/></label>
+<label>Billing phone<input name="billing_contact_phone" type="tel"/></label>
+</div>
+</div>
+<div class="account-actions"><button class="pay-button" id="create-account" type="submit">Create My Account</button></div>
+</form>
+<div class="account-success" hidden="" id="account-success">
+<span class="eyebrow">Account Ready</span>
+<h2>Your account has been created.</h2>
+<p>Your purchased plan is active. Check your inbox for the branded screenings4u DOT activation invitation and use the secure link to create your password and enter your portal.</p>
+<div class="success-mail-row"><strong>Receipt</strong><span>Sent after successful payment</span></div>
+<div class="success-mail-row"><strong>Account invitation</strong><span>Sent after account provisioning</span></div>
+</div>
+</section>
+<aside class="account-help-card">
+<span class="eyebrow">Before you submit</span>
+<h2>Have your company details ready.</h2>
+<p>This setup form creates the organization record attached to your purchased Workforce DOT plan.</p>
+<ul>
+<li>Legal company name and business contact information</li>
+<li>USDOT and MC numbers, when applicable</li>
+<li>Company address and billing contact details</li>
+</ul>
+<p class="help-note">Use accurate company information so your portal records and billing profile are created correctly.</p>
+</aside>
+</div>
+</section>
+</main>
+<footer class="site-footer" data-site-footer="" id="siteFooter"></footer>
+<script src="assets/js/account-creation.js?v=1"></script>
+<script src="assets/js/footer.js?v=1"></script>
+<script defer="" src="assets/js/site-enhancements.js?v=20261002-1"></script></body>
+</html>
