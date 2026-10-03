@@ -1,0 +1,52 @@
+body[data-page="fmcsa-new-entrant-audit"] .hero{padding:70px 0 82px;background:#fff}
+body[data-page="fmcsa-new-entrant-audit"] .hero-grid{align-items:stretch}
+body[data-page="fmcsa-new-entrant-audit"] .hero-copy{display:flex;flex-direction:column;justify-content:center;align-self:stretch;padding:4px 0}
+body[data-page="fmcsa-new-entrant-audit"] .hero-copy h1{font-size:clamp(38px,3.05vw,49px);line-height:1.02;max-width:670px;margin-top:14px}
+body[data-page="fmcsa-new-entrant-audit"] .hero-copy .lead{font-size:16px;line-height:1.6;max-width:650px;margin-top:18px}
+body[data-page="fmcsa-new-entrant-audit"] .hero-actions{margin-top:20px}
+body[data-page="fmcsa-new-entrant-audit"] .hero-media{display:flex;align-items:center}
+body[data-page="fmcsa-new-entrant-audit"] .hero-media .product-frame{width:100%}
+body[data-page="fmcsa-new-entrant-audit"] .hero-proof{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+body[data-page="fmcsa-new-entrant-audit"] .hero-proof>div{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}
+body[data-page="fmcsa-new-entrant-audit"] .hero-proof strong{display:block;font-size:18px;color:var(--ink)}
+body[data-page="fmcsa-new-entrant-audit"] .hero-proof span{display:block;margin-top:4px;font-size:12px;color:var(--muted)}
+.nea-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
+.nea-card-grid article{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;min-height:185px}
+.nea-card-grid article>span{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--soft);color:var(--orange);font-weight:900;font-size:11px}
+.nea-card-grid h3{font-size:21px;margin:18px 0 8px}.nea-card-grid p{font-size:14px;line-height:1.62;color:var(--muted);margin:0}
+.nea-step-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px}
+.nea-step-grid article{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
+.nea-step-grid article>strong{display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:var(--blue);color:#fff;font-size:13px}
+.nea-step-grid h3{font-size:21px;margin:18px 0 8px}.nea-step-grid p{font-size:14px;line-height:1.6;color:var(--muted);margin:0}
+.nea-cta-section{padding-top:0}.nea-cta{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:30px;align-items:center;background:var(--blue);border-radius:20px;padding:34px 38px;box-shadow:0 18px 45px rgba(36,70,127,.15)}
+.nea-cta .eyebrow{color:#ffd3b3}.nea-cta h2{color:#fff;font-size:clamp(30px,3vw,42px);line-height:1.04;margin:8px 0 10px}.nea-cta p{color:#dfe9f7;max-width:760px;margin:0;line-height:1.65}.nea-cta-actions{display:flex;gap:10px}.nea-cta .btn-secondary{background:#fff;border-color:#fff}
+@media(max-width:1100px){.nea-card-grid{grid-template-columns:repeat(2,1fr)}.nea-step-grid{grid-template-columns:repeat(2,1fr)}.nea-cta{grid-template-columns:1fr}.nea-cta-actions{justify-content:flex-start}}
+@media(max-width:700px){body[data-page="fmcsa-new-entrant-audit"] .hero-copy h1{font-size:38px}.nea-card-grid,.nea-step-grid{grid-template-columns:1fr}.nea-cta{padding:26px 22px}.nea-cta-actions{display:grid}.nea-cta-actions .btn{width:100%}}
+
+
+/* Standalone New Entrant Audit pricing */
+.nea-pricing-section{background:#fff}
+.nea-pricing-section .section-intro.narrow{max-width:840px;margin-inline:auto}
+.nea-purchase-note{max-width:940px;margin:26px auto 0;padding:15px 18px;border:1px solid #f1d6c0;border-radius:14px;background:#fff8f2;color:var(--ink);font-size:14px;line-height:1.6;text-align:center}
+.nea-pricing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:stretch;margin-top:34px}
+.nea-price-card{position:relative;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:20px;background:#fff;padding:28px;box-shadow:0 14px 38px rgba(36,70,127,.08)}
+.nea-price-card.featured{border:2px solid var(--orange);transform:translateY(-6px);box-shadow:0 22px 48px rgba(36,70,127,.13)}
+.nea-popular{position:absolute;top:-14px;left:50%;transform:translateX(-50%);padding:7px 14px;border-radius:999px;background:var(--orange);color:#fff;font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.nea-plan-label{display:inline-block;color:var(--orange);font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.nea-price-card h3{font-size:24px;line-height:1.15;margin:10px 0 0;color:var(--ink)}
+.nea-price{margin:22px 0 12px;color:var(--blue);font-size:44px;line-height:1;font-weight:900;letter-spacing:-.03em}
+.nea-price sup{font-size:18px;vertical-align:top;position:relative;top:5px;margin-right:2px}
+.nea-price-top p{min-height:72px;margin:0;color:var(--muted);font-size:14px;line-height:1.65}
+.nea-price-card ul{list-style:none;margin:22px 0 26px;padding:18px 0 0;border-top:1px solid var(--line);display:grid;gap:12px}
+.nea-price-card li{position:relative;padding-left:24px;color:var(--ink);font-size:14px;line-height:1.5}
+.nea-price-card li:before{content:'✓';position:absolute;left:0;top:0;color:var(--orange);font-weight:900}
+.nea-buy{width:100%;margin-top:auto;text-align:center;justify-content:center}
+.nea-access-note{max-width:900px;margin:26px auto 0;text-align:center;color:var(--muted);font-size:14px;line-height:1.65}
+.nea-access-note strong{color:var(--ink)}
+@media(max-width:1000px){.nea-pricing-grid{grid-template-columns:1fr}.nea-price-card.featured{transform:none}.nea-price-top p{min-height:0}}
+@media(max-width:700px){.nea-price-card{padding:24px 20px}.nea-price{font-size:40px}.nea-purchase-note,.nea-access-note{text-align:left}}
+.nea-included-count{font-weight:800;color:var(--ink);margin:10px 0 6px!important}
+.nea-best-for{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-size:14px;line-height:1.55;color:var(--muted)}
+.nea-best-for strong{color:var(--ink)}
+.nea-extra-driver{margin-top:14px;font-size:14px;color:var(--ink)}
+.nea-extra-driver strong{color:var(--orange)}
