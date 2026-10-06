@@ -17,7 +17,7 @@ function initPricing(root){
     employer:{label:'DOT Employer',plans:[['Essential',85,'Core DOT workforce administration for smaller organizations.','dot_employer_essential'],['Professional',145,'Expanded administration, locations and reporting for growing DOT workforces.','dot_employer_professional'],['Enterprise',245,'Advanced controls, integrations and audit visibility for larger operations.','dot_employer_enterprise']],features:[
       ['Employee / driver records',[1,1,1]],['DOT programs',[1,1,1]],['Pools',[1,1,1]],['Random selections',[1,1,1]],['Testing workflows',[1,1,1]],['Results and documents',[1,1,1]],['Operational reports',[1,1,1]],['Notifications',[1,1,1]],['Locations',[0,1,1]],['Advanced reporting',[0,1,1]],['User roles',[0,1,1]],['Integrations',[0,0,1]],['Audit history',[0,0,1]],['White label',[0,0,1]],['Enterprise administration',[0,0,1]]
     ]},
-    owner:{label:'Owner-Operator',plans:[['Essential',45,'A focused compliance workspace for a single-driver business.','owner_operator_essential'],['Plus',125,'More workflow visibility and program tools for an owner-operator.','owner_operator_plus'],['Complete',225,'A broader software package with deeper records and reporting.','owner_operator_complete']],features:[
+    owner:{label:'Owner-Operator',plans:[['Essential',74.95,'Annual compliance workspace for a single-driver business.','owner_operator_essential'],['Plus',125.95,'Annual consortium and DOT testing workflow for an owner-operator.','owner_operator_plus'],['Complete',149.95,'Annual complete compliance package with deeper records and reporting.','owner_operator_complete']],features:[
       ['Single-driver profile',[1,1,1]],['DOT program workspace',[1,1,1]],['Random pool participation',[1,1,1]],['Testing records',[1,1,1]],['Results and documents',[1,1,1]],['Compliance history',[1,1,1]],['Notifications',[0,1,1]],['Expanded reporting',[0,1,1]],['Document organization',[0,1,1]],['Priority support',[0,0,1]],['Advanced workflow tools',[0,0,1]],['Audit history',[0,0,1]]
     ]},
     ctpa:{label:'C/TPA',plans:[['Essential',125,'Core software for managing a growing client portfolio.','dot_ctpa_essential'],['Professional',225,'Expanded portfolio administration, reporting and delivery tools.','dot_ctpa_professional'],['Enterprise',375,'Advanced C/TPA operations with branding and broader controls.','dot_ctpa_enterprise']],features:[
@@ -66,7 +66,7 @@ function initPricing(root){
       const order=which==='owner'?['essential','plus','complete']:['essential','professional','enterprise'];
       const mapped=order.map(tier=>live.find(p=>String(p.code||'').toLowerCase().endsWith('_'+tier))).filter(Boolean);
       if(mapped.length){
-        cfg.plans=mapped.map(p=>[shortName(p),Number(p.monthly_price||0),p.description||'',p.code]);
+        cfg.plans=mapped.map(p=>[shortName(p),Number(which==='owner'?(p.annual_price??p.billing_model?.amount??0):(p.monthly_price??p.billing_model?.amount??0)),p.description||'',p.code]);
         if(type===which)render();
       }
     }catch(err){
@@ -92,14 +92,14 @@ function initPricing(root){
 
     const sticky = root.querySelector('[data-sticky]');
     if(sticky){
-      sticky.innerHTML = `<div class="cell"><strong>Plan pricing</strong><span>Stays visible while you compare</span></div>${cfg.plans.map((p,i)=>`<div class="cell"><div class="sticky-plan">${p[0]} ${i===1?'<span class="popular-inline">• Most Popular</span>':''}</div><div class="sticky-price">$${p[1]} <small>/month</small></div></div>`).join('')}`;
+      sticky.innerHTML = `<div class="cell"><strong>Plan pricing</strong><span>Stays visible while you compare</span></div>${cfg.plans.map((p,i)=>`<div class="cell"><div class="sticky-plan">${p[0]} ${i===1?'<span class="popular-inline">• Most Popular</span>':''}</div><div class="sticky-price">$${p[1]} <small>${type==='owner'?'/year':'/month'}</small></div></div>`).join('')}`;
     }
 
     const body = root.querySelector('[data-table-body]');
     const head = root.querySelector('[data-table-head]');
     if(body && head){
       const rows = cfg.features.map(f=>`<tr><th scope="row">${f[0]}</th>${f[1].map(v=>`<td>${v?'<span class="check" aria-label="Included">✓</span>':'<span class="dash" aria-label="Not included">—</span>'}</td>`).join('')}</tr>`).join('');
-      const priceRow = `<tr class="comparison-price-row" data-final-price-row><th scope="row">Monthly Price</th>${cfg.plans.map((p,i)=>`<td><div class="price-stack"><strong>$${p[1]}</strong><span>/month</span><a class="btn ${i===1?'btn-primary':'btn-secondary'}" href="${checkoutHref(p[0])}">Choose ${p[0]}</a></div></td>`).join('')}</tr>`;
+      const priceRow = `<tr class="comparison-price-row" data-final-price-row><th scope="row">${type==='owner'?'Annual Price':'Monthly Price'}</th>${cfg.plans.map((p,i)=>`<td><div class="price-stack"><strong>$${p[1]}</strong><span>${type==='owner'?'/year':'/month'}</span><a class="btn ${i===1?'btn-primary':'btn-secondary'}" href="${checkoutHref(p[0])}">Choose ${p[0]}</a></div></td>`).join('')}</tr>`;
       body.innerHTML=rows+priceRow;
       head.innerHTML=`<tr><th scope="col">Feature</th>${cfg.plans.map(p=>`<th scope="col">${p[0]}</th>`).join('')}</tr>`;
     }
@@ -115,7 +115,7 @@ function initPricing(root){
     if(!tabsBox || !view) return;
     const p=cfg.plans[mobilePlan];
     tabsBox.innerHTML=cfg.plans.map((plan,i)=>`<button type="button" class="${i===mobilePlan?'active':''}" data-mobile-plan="${i}"><span>${plan[0]}</span><strong>$${plan[1]}</strong></button>`).join('');
-    view.innerHTML=cfg.features.map(f=>`<div class="mobile-feature"><strong>${f[0]}</strong><span>${f[1][mobilePlan]?'✓':'—'}</span></div>`).join('')+`<div class="mobile-price-box" data-mobile-final-price><div class="plan-name">${p[0]}</div><div class="plan-price">$${p[1]} <small>/month</small></div><a class="btn ${mobilePlan===1?'btn-primary':'btn-secondary'}" href="${checkoutHref(p[0])}">Choose ${p[0]}</a></div>`;
+    view.innerHTML=cfg.features.map(f=>`<div class="mobile-feature"><strong>${f[0]}</strong><span>${f[1][mobilePlan]?'✓':'—'}</span></div>`).join('')+`<div class="mobile-price-box" data-mobile-final-price><div class="plan-name">${p[0]}</div><div class="plan-price">$${p[1]} <small>${type==='owner'?'/year':'/month'}</small></div><a class="btn ${mobilePlan===1?'btn-primary':'btn-secondary'}" href="${checkoutHref(p[0])}">Choose ${p[0]}</a></div>`;
     root.querySelectorAll('[data-mobile-plan]').forEach(btn=>btn.addEventListener('click',()=>{mobilePlan=Number(btn.dataset.mobilePlan);renderMobile();requestAnimationFrame(bindStickyStop)}));
   }
 

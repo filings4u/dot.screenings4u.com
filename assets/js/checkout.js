@@ -68,11 +68,14 @@ function showError(message){status.textContent='Checkout could not be loaded.';s
 function titleCaseCode(v){return String(v||'').replace(/_/g,' ').replace(/\b\w/g,m=>m.toUpperCase())}
 function planFeatureList(selected){const ordered=Array.isArray(selected.included_services)&&selected.included_services.length?selected.included_services:Object.entries(selected.feature_entitlements||{}).filter(([,enabled])=>enabled===true).map(([key])=>key);return [...new Set(ordered)].map(key=>FEATURE_LABELS[key]||titleCaseCode(key))}
 function renderPlan(selected){
+  const yearly=type==='owner_operator';
+  const amount=yearly?Number(selected.annual_price??selected.billing_model?.amount??0):Number(selected.monthly_price??selected.billing_model?.amount??0);
   document.getElementById('order-plan').textContent=selected.name||'Selected plan';
-  document.getElementById('order-price').textContent=`$${Number(selected.monthly_price||0).toFixed(0)} / month`;
+  document.getElementById('order-price').textContent=`$${amount.toFixed(2)} / ${yearly?'year':'month'}`;
+  document.getElementById('order-billing').textContent=yearly?'Annual (12 months)':'Monthly';
   document.getElementById('order-description').textContent=selected.description||'';
   const features=planFeatureList(selected); document.getElementById('order-plan-details').innerHTML=features.length?features.map(label=>`<li>${label}</li>`).join(''):'<li>Plan features are included according to your selected subscription.</li>';
-  const notes=[]; const limit=selected.driver_limit??selected.employee_limit; if(limit!=null)notes.push(`Up to ${Number(limit).toLocaleString()} employees / drivers`); if(type==='owner_operator')notes.push('Single-driver FMCSA workspace'); notes.push('Monthly subscription'); document.getElementById('order-plan-note').textContent=notes.join(' • ');
+  const notes=[]; const limit=selected.driver_limit??selected.employee_limit; if(limit!=null)notes.push(`Up to ${Number(limit).toLocaleString()} employees / drivers`); if(yearly){notes.push('Single-driver FMCSA workspace');notes.push('12-month annual plan')}else notes.push('Monthly subscription'); document.getElementById('order-plan-note').textContent=notes.join(' • ');
 }
 async function start(){
   try{
@@ -92,7 +95,7 @@ async function start(){
     checkout.createContactDetailsElement().mount('#stripe-contact-element');
     checkout.createPaymentElement({layout:'accordion'}).mount('#stripe-payment-element');
     const loaded=await checkout.loadActions(); if(loaded.type!=='success')throw Error(loaded.error?.message||'Stripe checkout could not initialize.'); const actions=loaded.actions;
-    checkout.on('change',sessionState=>{payButton.disabled=!sessionState.canConfirm;const amount=sessionState.total?.total?.amount;if(amount!==undefined&&amount!==null){const n=Number(amount);document.getElementById('order-price').textContent=`$${Number.isInteger(n)?n:n.toFixed(2)} / month`}});
+    checkout.on('change',sessionState=>{payButton.disabled=!sessionState.canConfirm;const amount=sessionState.total?.total?.amount;if(amount!==undefined&&amount!==null){const n=Number(amount);document.getElementById('order-price').textContent=`$${Number.isInteger(n)?n:n.toFixed(2)} / ${type==='owner_operator'?'year':'month'}`}});
     payButton.addEventListener('click',async()=>{payButton.disabled=true;errorBox.hidden=true;status.textContent='Confirming payment securely with Stripe…';try{const result=await actions.confirm();if(result.type==='error')throw Error(result.error?.message||'Payment could not be completed.')}catch(err){errorBox.textContent=err.message||'Payment could not be completed.';errorBox.hidden=false;payButton.disabled=false;status.textContent='Secure payment powered by Stripe.'}});
     status.textContent='Secure payment powered by Stripe.';payButton.hidden=false;
   }catch(e){showError(e.message);console.error('screenings4u DOT checkout mount failed',e)}

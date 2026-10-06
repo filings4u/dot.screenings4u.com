@@ -18,9 +18,11 @@
         if(!plan) return;
         const price=node.querySelector('[data-plan-price]');
         if(price){
-          const fmt=price.dataset.priceFormat||'monthly';
-          const val=money(plan.monthly_price ?? plan.price ?? plan.billing_model?.amount);
-          price.textContent=fmt==='number'?val:`${val}/mo`;
+          const owner=String(plan.audience||'').toLowerCase()==='owner_operator'||String(plan.code||'').startsWith('owner_operator_');
+          const fmt=price.dataset.priceFormat||(owner?'yearly':'monthly');
+          const amount=owner?(plan.annual_price ?? plan.billing_model?.amount):(plan.monthly_price ?? plan.price ?? plan.billing_model?.amount);
+          const val=money(amount);
+          price.textContent=fmt==='number'?val:fmt==='yearly'?`${val}/year`:`${val}/mo`;
         }
         const desc=node.querySelector('[data-plan-description]');
         if(desc&&plan.description) desc.textContent=plan.description;

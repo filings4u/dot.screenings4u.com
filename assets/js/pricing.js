@@ -46,9 +46,9 @@
     owner_operator:{
       eyebrow:'FMCSA Owner-Operator Plans',title:'FMCSA Owner-Operator software plan comparison.',description:'Compare the active single-driver Owner-Operator Essential, Plus, and Complete plans.',
       plans:[
-        {code:'owner_operator_essential',name:'Essential',price:45,services:['employee_management','programs','random_pool','testing_orders','documents','standard_reports']},
-        {code:'owner_operator_plus',name:'Plus',price:125,popular:true,services:['employee_management','programs','random_pool','testing_orders','results_summary','results_sensitive','compliance','documents','standard_reports']},
-        {code:'owner_operator_complete',name:'Complete',price:225,services:['employee_management','programs','random_pool','testing_orders','results_summary','results_sensitive','compliance','documents','standard_reports','advanced_reports','audit_history']}
+        {code:'owner_operator_essential',name:'Essential',price:74.95,services:['employee_management','programs','random_pool','testing_orders','documents','standard_reports']},
+        {code:'owner_operator_plus',name:'Plus',price:125.95,popular:true,services:['employee_management','programs','random_pool','testing_orders','results_summary','results_sensitive','compliance','documents','standard_reports']},
+        {code:'owner_operator_complete',name:'Complete',price:149.95,services:['employee_management','programs','random_pool','testing_orders','results_summary','results_sensitive','compliance','documents','standard_reports','advanced_reports','audit_history']}
       ]
     },
     ctpa:{
@@ -99,7 +99,8 @@
     eyebrow.textContent=data.eyebrow;title.textContent=data.title;description.textContent=data.description;
     tabs.forEach(tab=>{const active=tab.dataset.product===product;tab.classList.toggle('active',active);tab.setAttribute('aria-selected',String(active));});
 
-    priceBar.innerHTML=`<div class="summary-intro"><span class="summary-kicker">${data.eyebrow}</span><p>Pricing stays visible while you compare</p></div>`+data.plans.map(plan=>`<article class="summary-plan ${plan.popular?'is-featured':''}"><span class="summary-plan-name">${plan.name}</span>${plan.popular?'<em>Most Popular</em>':''}<strong>$${plan.price}</strong><small>/month</small><a href="${checkoutLink(plan.code)}" class="mini-btn ${plan.popular?'primary':''}">Choose ${plan.name}</a></article>`).join('');
+    const yearly=product==='owner_operator';
+    priceBar.innerHTML=`<div class="summary-intro"><span class="summary-kicker">${data.eyebrow}</span><p>Pricing stays visible while you compare</p></div>`+data.plans.map(plan=>`<article class="summary-plan ${plan.popular?'is-featured':''}"><span class="summary-plan-name">${plan.name}</span>${plan.popular?'<em>Most Popular</em>':''}<strong>$${plan.price}</strong><small>${yearly?'/year':'/month'}</small><a href="${checkoutLink(plan.code)}" class="mini-btn ${plan.popular?'primary':''}">Choose ${plan.name}</a></article>`).join('');
 
     const featureOrder=[];
     data.plans.forEach(plan=>plan.services.forEach(service=>{if(!featureOrder.includes(service))featureOrder.push(service);}));
@@ -108,7 +109,7 @@
     const expanded=featureOrder.filter(x=>!core.includes(x));
     const row=(service)=>`<tr><th scope="row">${labels[service]||service}</th>${data.plans.map(plan=>`<td class="${plan.services.includes(service)?'yes':'no'}">${plan.services.includes(service)?'✓':'—'}</td>`).join('')}</tr>`;
     tableBody.innerHTML=`<tr class="section-row"><th colspan="4">Core included services</th></tr>${coreFeatures.map(row).join('')}${expanded.length?`<tr class="section-row"><th colspan="4">Expanded tools & administration</th></tr>${expanded.map(row).join('')}`:''}`;
-    tableFoot.innerHTML=`<tr><th scope="row">Monthly price</th>${data.plans.map(plan=>`<td class="${plan.popular?'popular-col':''}"><strong>$${plan.price}</strong><small>/month</small><a href="${checkoutLink(plan.code)}" class="table-btn ${plan.popular?'primary':''}">Choose ${plan.name}</a></td>`).join('')}</tr>`;
+    tableFoot.innerHTML=`<tr><th scope="row">${yearly?'Annual price':'Monthly price'}</th>${data.plans.map(plan=>`<td class="${plan.popular?'popular-col':''}"><strong>$${plan.price}</strong><small>${yearly?'/year':'/month'}</small><a href="${checkoutLink(plan.code)}" class="table-btn ${plan.popular?'primary':''}">Choose ${plan.name}</a></td>`).join('')}</tr>`;
 
     if(mobileCards){
       mobileCards.innerHTML=data.plans.map(plan=>{
@@ -119,7 +120,7 @@
               <span class="mobile-plan-name">${plan.name}</span>
               ${plan.popular?'<span class="mobile-plan-badge">Most Popular</span>':''}
             </div>
-            <div class="mobile-plan-price"><strong>$${plan.price}</strong><span>/month</span></div>
+            <div class="mobile-plan-price"><strong>$${plan.price}</strong><span>${yearly?'/year':'/month'}</span></div>
           </div>
           <a href="${checkoutLink(plan.code)}" class="mobile-plan-cta">Choose ${plan.name}</a>
           <details class="mobile-plan-details" ${plan.popular?'open':''}>
@@ -185,11 +186,11 @@
     };
     Object.entries(groups).forEach(([key,list])=>{
       if(list.length!==3)return;
-      list.sort((a,b)=>(Number(a.billing_model?.website_sort_order)||Number(a.monthly_price)||0)-(Number(b.billing_model?.website_sort_order)||Number(b.monthly_price)||0));
+      list.sort((a,b)=>(Number(a.billing_model?.website_sort_order)||Number(a.billing_model?.amount)||Number(a.monthly_price)||0)-(Number(b.billing_model?.website_sort_order)||Number(b.billing_model?.amount)||Number(b.monthly_price)||0));
       pricingData[key].plans=list.map((p,i)=>({
         code:p.code,
         name:String(p.name||'').replace(/^DOT\s+(Employer|C\/TPA)\s+/i,'').replace(/^Owner-Operator\s+/i,'') || ['Essential','Professional','Enterprise'][i],
-        price:Number(p.monthly_price ?? p.billing_model?.amount ?? 0),
+        price:Number(key==='owner_operator'?(p.annual_price ?? p.billing_model?.amount ?? 0):(p.monthly_price ?? p.billing_model?.amount ?? 0)),
         popular:i===1,
         services:Array.isArray(p.included_services)?p.included_services:[]
       }));
