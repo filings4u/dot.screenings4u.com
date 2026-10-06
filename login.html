@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>DOT Portal Login Directory | Workforce DOT</title>
+<meta name="description" content="Secure login directory for Workforce DOT C/TPA, employer, employee, driver and Owner-Operator portals."/>
+<meta name="theme-color" content="#24467f"/>
+<link href="images/fav.png" rel="icon" type="image/png"/>
+<link rel="canonical" href="https://dot.screenings4u.com/login.html"/>
+<meta name="robots" content="noindex,follow"/>
+<link rel="stylesheet" href="assets/css/site.css?v=20261005-login1"/>
+<link rel="stylesheet" href="assets/css/login.css?v=20261005-login2"/>
+<link rel="stylesheet" href="assets/css/navigation.css?v=20261002-2"/>
+<link rel="stylesheet" href="assets/css/footer.css?v=20261002-1"/>
+<link rel="stylesheet" href="assets/css/mobile-seo.css?v=20261002-4"/>
+<script defer src="assets/js/management-runtime.js?v=20261002-reconnect1"></script>
+<script defer src="assets/js/navigation.js?v=20261002-enterprise1"></script>
+<script defer src="assets/js/footer.js?v=20261002-enterprise1"></script>
+<script defer src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
+<script defer src="assets/js/login-hub.js?v=20261005-login2"></script>
+</head>
+<body data-page="login">
+<div id="siteHeader" data-site-header></div>
+<main>
+<section class="login-hero">
+  <div class="container login-hero-grid">
+    <div class="login-hero-copy">
+      <span class="eyebrow">Secure portal access</span>
+      <h1>Choose your Workforce DOT portal.</h1>
+      <p>Use this directory to open the portal assigned to your DOT program and account type. Complete the Cloudflare security check first, then select your portal.</p>
+      <div class="login-trust">
+        <span>Workforce DOT</span>
+        <span>Secure access</span>
+        <span>Agency-specific portals</span>
+      </div>
+    </div>
+    <aside class="security-card" aria-labelledby="securityTitle">
+      <span class="security-kicker">CLOUDFLARE SECURITY</span>
+      <h2 id="securityTitle">Verify before continuing</h2>
+      <p>Complete the security check below. Portal buttons remain locked until verification succeeds.</p>
+      <div id="turnstileHub" class="hub-turnstile" aria-live="polite"></div>
+      <div id="hubSecurityStatus" class="security-status">Waiting for security verification…</div>
+      <div class="security-reminder">For your protection, only use the portal assigned to your company, agency, or role.</div>
+    </aside>
+  </div>
+</section>
+
+<section class="section portal-directory">
+  <div class="container">
+    <div class="directory-intro">
+      <span class="eyebrow">DOT portals</span>
+      <h2>Portal login directory</h2>
+      <p>Select the portal that matches your account. The Admin Portal is intentionally not listed here and is available only from the Admin Login link in the footer.</p>
+    </div>
+
+    <section class="portal-section" aria-labelledby="ctpaHeading">
+      <div class="portal-section-head">
+        <span>C/TPA</span>
+        <h3 id="ctpaHeading">C/TPA portals</h3>
+        <p>For C/TPAs and their sponsored employer workforces.</p>
+      </div>
+      <div class="portal-grid">
+        <button class="portal-card featured" type="button" data-login-url="https://ctpa-dot.screenings4u.com/login.html" disabled><b>C/TPA Portal</b><span>ctpa-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+        <button class="portal-card" type="button" data-login-url="https://ctpa-employer-dot.screenings4u.com/login.html" disabled><b>C/TPA Sponsored Employer</b><span>ctpa-employer-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+        <button class="portal-card" type="button" data-login-url="https://ctpa-employee-dot.screenings4u.com/login.html" disabled><b>Sponsored Employer Employee</b><span>ctpa-employee-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+        <button class="portal-card" type="button" data-login-url="https://ctpa-driver-dot.screenings4u.com/login.html" disabled><b>Sponsored Employer Driver</b><span>ctpa-driver-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+      </div>
+    </section>
+
+    <section class="portal-section" aria-labelledby="fmcsaHeading">
+      <div class="portal-section-head">
+        <span>FMCSA</span>
+        <h3 id="fmcsaHeading">FMCSA portals</h3>
+        <p>For direct FMCSA employers, drivers, employees, and Owner-Operators.</p>
+      </div>
+      <div class="portal-grid">
+        <button class="portal-card" type="button" data-login-url="https://fmcsa-employer-dot.screenings4u.com/login.html" disabled><b>Direct Employer</b><span>fmcsa-employer-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+        <button class="portal-card" type="button" data-login-url="https://fmcsa-driver-dot.screenings4u.com/login.html" disabled><b>Driver Portal</b><span>fmcsa-driver-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+        <button class="portal-card" type="button" data-login-url="https://fmcsa-employee-dot.screenings4u.com/login.html" disabled><b>Employee Portal</b><span>fmcsa-employee-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+        <button class="portal-card featured" type="button" data-login-url="https://owner-operator.screenings4u.com/login.html" disabled><b>Owner-Operator Portal</b><span>owner-operator.screenings4u.com</span><strong>Open portal →</strong></button>
+      </div>
+    </section>
+
+    <section class="portal-section" aria-labelledby="faaHeading">
+      <div class="portal-section-head"><span>FAA</span><h3 id="faaHeading">FAA portals</h3><p>For direct FAA employer and employee accounts.</p></div>
+      <div class="portal-grid compact">
+        <button class="portal-card" type="button" data-login-url="https://faa-employer-dot.screenings4u.com/login.html" disabled><b>Direct Employer</b><span>faa-employer-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+        <button class="portal-card" type="button" data-login-url="https://faa-employee-dot.screenings4u.com/login.html" disabled><b>Employee Portal</b><span>faa-employee-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+      </div>
+    </section>
+
+    <section class="portal-section" aria-labelledby="fraHeading">
+      <div class="portal-section-head"><span>FRA</span><h3 id="fraHeading">FRA portals</h3><p>For direct FRA employer and employee accounts.</p></div>
+      <div class="portal-grid compact">
+        <button class="portal-card" type="button" data-login-url="https://fra-employer-dot.screenings4u.com/login.html" disabled><b>Direct Employer</b><span>fra-employer-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+        <button class="portal-card" type="button" data-login-url="https://fra-employee-dot.screenings4u.com/login.html" disabled><b>Employee Portal</b><span>fra-employee-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+      </div>
+    </section>
+
+    <section class="portal-section" aria-labelledby="ftaHeading">
+      <div class="portal-section-head"><span>FTA</span><h3 id="ftaHeading">FTA portals</h3><p>For direct FTA employer and employee accounts.</p></div>
+      <div class="portal-grid compact">
+        <button class="portal-card" type="button" data-login-url="https://fta-employer-dot.screenings4u.com/login.html" disabled><b>Direct Employer</b><span>fta-employer-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+        <button class="portal-card" type="button" data-login-url="https://fta-employee-dot.screenings4u.com/login.html" disabled><b>Employee Portal</b><span>fta-employee-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+      </div>
+    </section>
+
+    <section class="portal-section" aria-labelledby="phmsaHeading">
+      <div class="portal-section-head"><span>PHMSA</span><h3 id="phmsaHeading">PHMSA portals</h3><p>For direct PHMSA employer and employee accounts.</p></div>
+      <div class="portal-grid compact">
+        <button class="portal-card" type="button" data-login-url="https://phmsa-employer-dot.screenings4u.com/login.html" disabled><b>Direct Employer</b><span>phmsa-employer-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+        <button class="portal-card" type="button" data-login-url="https://phmsa-employee-dot.screenings4u.com/login.html" disabled><b>Employee Portal</b><span>phmsa-employee-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+      </div>
+    </section>
+
+    <section class="portal-section" aria-labelledby="uscgHeading">
+      <div class="portal-section-head"><span>USCG</span><h3 id="uscgHeading">USCG portals</h3><p>For direct USCG employer and employee accounts.</p></div>
+      <div class="portal-grid compact">
+        <button class="portal-card" type="button" data-login-url="https://uscg-employer-dot.screenings4u.com/login.html" disabled><b>Direct Employer</b><span>uscg-employer-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+        <button class="portal-card" type="button" data-login-url="https://uscg-employee-dot.screenings4u.com/login.html" disabled><b>Employee Portal</b><span>uscg-employee-dot.screenings4u.com</span><strong>Open portal →</strong></button>
+      </div>
+    </section>
+
+    <section class="portal-section" aria-labelledby="siteHeading">
+      <div class="portal-section-head"><span>WORKFORCE DOT</span><h3 id="siteHeading">Main website</h3><p>Return to the Workforce DOT public website.</p></div>
+      <div class="portal-grid single">
+        <button class="portal-card" type="button" data-login-url="https://dot.screenings4u.com/" disabled><b>Workforce DOT Main Website</b><span>dot.screenings4u.com</span><strong>Open website →</strong></button>
+      </div>
+    </section>
+  </div>
+</section>
+</main>
+<footer id="siteFooter" class="site-footer" data-site-footer></footer>
+<script defer src="assets/js/site-enhancements.js?v=20261002-2"></script>
+</body>
+</html>

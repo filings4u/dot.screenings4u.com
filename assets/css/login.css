@@ -11,3 +11,12 @@
 body[data-page="login"]{padding-top:0!important}
 body[data-page="login"] .login-hero{padding-top:30px!important}
 @media(max-width:760px){body[data-page="login"] .login-hero{padding-top:24px!important}}
+
+/* 2026-10-05 restored secure DOT login directory */
+.portal-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.portal-grid.compact{grid-template-columns:repeat(2,minmax(0,1fr));max-width:760px}
+.portal-card[disabled]{position:relative;opacity:.52}
+.portal-card[disabled]::after{content:"Locked until verified";font-size:10px;font-weight:800;color:#6b809c;text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+.portal-card:not(:disabled)::after{content:"Verified";font-size:10px;font-weight:800;color:#2c7a4b;text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+@media(max-width:1180px){.portal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.portal-grid,.portal-grid.compact{grid-template-columns:1fr}}
