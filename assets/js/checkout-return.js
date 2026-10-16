@@ -23,15 +23,15 @@ function ready(url){
   note.textContent='You can continue now.';
   continueLink.href=url;
   actions.hidden=false;
-  setTimeout(()=>location.replace(url),900);
+  location.replace(url);
 }
-function completed(){
+function completed(data={}){
   card.classList.add('is-ready');
   title.textContent='Your account is ready.';
   message.textContent='Your Workforce DOT account has already been provisioned.';
   note.textContent='Use the secure sign-in page to access your portal.';
   continueLink.textContent='Go to sign in';
-  continueLink.href='login.html';
+  continueLink.href='https://portal.screenings4u.com/';
   actions.hidden=false;
 }
 function fail(text){
@@ -49,7 +49,7 @@ async function start(){
     for(let i=0;i<40;i++){
       const data=await status();
       if(data.intake_url){ready(data.intake_url);return;}
-      if(data.status==='provisioned'){completed();return;}
+      if(data.status==='provisioned'){completed(data);return;}
       if(['failed','cancelled','expired'].includes(String(data.status||'').toLowerCase())){fail('The checkout could not be completed. Please contact support if you believe payment was submitted.');return;}
       if(i===8) message.textContent='Payment is confirmed. We are finishing the account setup link now.';
       await sleep(1500);
