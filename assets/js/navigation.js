@@ -14,7 +14,7 @@ function render(urls){
  const active=(k)=>key===k?' is-active':'';
  const dropActive=(keys)=>keys.includes(key)?' is-active':'';
  target.innerHTML=`<header class="s4u-header"><nav class="s4u-nav" aria-label="Primary navigation">
- <a class="s4u-brand" href="${U('home')}" aria-label="Workforce DOT by screenings4u home"><img src="images/logo.png" alt="Workforce DOT by screenings4u"></a>
+ <a class="s4u-brand" href="${U('home')}" aria-label="Workforce by screenings4u home"><img src="images/logo.png" alt="Workforce by screenings4u"></a>
  <button class="s4u-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="s4uPrimary"><span></span></button>
  <div class="s4u-links" id="s4uPrimary">
    <a class="s4u-link${active('platform')}" href="${U('platform')}">Platform</a>
@@ -30,14 +30,14 @@ function render(urls){
          </div>
          <div class="s4u-mega-col">
            <span class="s4u-mega-eyebrow">Platform</span>
-           <a href="${U('platform')}"><strong>Workforce DOT Platform</strong><small>One connected workspace for DOT workforce compliance.</small></a>
+           <a href="${U('platform')}"><strong>Workforce Platform</strong><small>One connected workspace for workforce programs, including DOT and non-DOT services.</small></a>
            <a href="${U('pricing')}"><strong>Plans & Pricing</strong><small>Compare Employer, Owner-Operator and C/TPA plans.</small></a>
            <a href="${U('demo')}"><strong>Request a Demo</strong><small>See the platform and workflows with our team.</small></a>
          </div>
          <a class="s4u-mega-feature" href="${U('platform')}">
-           <span>Workforce DOT</span>
-           <strong>Connected compliance software for regulated programs.</strong>
-           <small>Employees, random programs, testing orders, documents, reporting and audit history in one system.</small>
+           <span>Workforce</span>
+           <strong>One Workforce platform for regulated and non-regulated programs.</strong>
+           <small>DOT and non-DOT testing, employees, programs, documents, reports and audit history in one system.</small>
            <b>Explore the platform →</b>
          </a>
        </div>
@@ -76,13 +76,13 @@ function render(urls){
            <span class="s4u-mega-eyebrow">Resources</span>
            <a class="${active('resources').trim()}" href="${U('resources')}"><strong>Resource Center</strong><small>DOT compliance guides, program resources and platform help.</small></a>
            <a class="${active('blog').trim()}" href="${U('blog')}"><strong>Blog</strong><small>Updates, operational guidance and workforce compliance topics.</small></a>
-           <a class="${active('contact').trim()}" href="${U('contact')}"><strong>Contact</strong><small>Talk with the Workforce DOT team.</small></a>
+           <a class="${active('contact').trim()}" href="${U('contact')}"><strong>Contact</strong><small>Talk with the Workforce team.</small></a>
          </div>
          <div class="s4u-mega-col">
            <span class="s4u-mega-eyebrow">Get Started</span>
            <a href="${U('demo')}"><strong>Request Demo</strong><small>Walk through the platform with our team.</small></a>
            <a href="${U('pricing')}"><strong>View Plans</strong><small>Compare plan depth and operating features.</small></a>
-           <a href="${U('login_directory')}"><strong>Sign In</strong><small>Access your Workforce DOT account.</small></a>
+           <a href="${U('login_directory')}"><strong>Sign In</strong><small>Access your Workforce account.</small></a>
          </div>
          <a class="s4u-mega-feature" href="${U('resources')}">
            <span>Resource Center</span>
