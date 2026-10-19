@@ -3,7 +3,7 @@
 const TARGET_ID='siteHeader';
 const API='https://elpbnytpciqnbexiaebp.supabase.co/functions/v1/workforce-checkout-status';
 const CACHE='s4u_dot_url_config_v3';
-const fallback={home:'index.html',platform:'platform.html',employers:'employers.html',owner_operator:'fmcsa-dot-random-consortium-49-cfr-part-382.html',ctpa:'ctpa.html',fmcsa:'fmcsa.html',faa:'faa.html',fra:'fra.html',fta:'fta.html',phmsa:'phmsa.html',uscg:'uscg.html',resources:'resources.html',blog:'blog.html',contact:'contact.html',login_directory:'login.html',demo:'demo.html',pricing:'pricing.html'};
+const fallback={home:'index.html',platform:'platform.html',employers:'employers.html',owner_operator:'fmcsa-dot-random-consortium-49-cfr-part-382.html',ctpa:'ctpa.html',fmcsa:'fmcsa.html',faa:'faa.html',fra:'fra.html',fta:'fta.html',phmsa:'phmsa.html',uscg:'uscg.html',services:'workforce-services.html',resources:'resources.html',blog:'blog.html',contact:'contact.html',login_directory:'login.html',demo:'demo.html',pricing:'pricing.html'};
 const safe=(raw,fb)=>{if(!raw)return fb;try{const u=new URL(String(raw),location.href),h=u.hostname.toLowerCase();const ok=h==='screenings4u.com'||h.endsWith('.screenings4u.com')||h===location.hostname;return ((u.protocol==='https:'||u.origin===location.origin)&&ok)?u.href:fb}catch{return fb}};
 const read=()=>{try{const x=JSON.parse(localStorage.getItem(CACHE)||'null');return x&&Date.now()-x.at<3600000?x.urls:null}catch{return null}};
 const save=urls=>{try{localStorage.setItem(CACHE,JSON.stringify({at:Date.now(),urls}))}catch{}};
@@ -93,6 +93,7 @@ function render(urls){
        </div>
      </div>
    </details>
+   <a class="s4u-link${active('services')}" href="${U('services')}">Services</a>
    <a class="s4u-link${active('pricing')}" href="${pricing}">Pricing</a>
    <div class="s4u-mobile-actions"><a class="s4u-signin" href="${U('login_directory')}">Sign In</a><a class="s4u-nav-btn secondary" href="${U('demo')}">Request Demo</a><a class="s4u-nav-btn primary" href="${pricing}">View Plans</a></div>
  </div>
