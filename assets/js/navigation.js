@@ -14,7 +14,7 @@ function render(urls){
  const active=(k)=>key===k?' is-active':'';
  const dropActive=(keys)=>keys.includes(key)?' is-active':'';
  target.innerHTML=`<header class="s4u-header"><nav class="s4u-nav" aria-label="Primary navigation">
- <a class="s4u-brand" href="${U('home')}" aria-label="Workforce by screenings4u home"><img src="images/logo.png" alt="Workforce by screenings4u"></a>
+ <a class="s4u-brand" href="${U('home')}" aria-label="Workforce by screenings4u home"><span class="workforce-wordmark" aria-label="Workforce | screenings4u"><b>Workforce</b><i aria-hidden="true"></i><b>screenings<span>4</span>u</b></span></a>
  <button class="s4u-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="s4uPrimary"><span></span></button>
  <div class="s4u-links" id="s4uPrimary">
    <a class="s4u-link${active('platform')}" href="${U('platform')}">Platform</a>
