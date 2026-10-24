@@ -133,6 +133,8 @@
   }
 
   tabs.forEach(tab=>tab.addEventListener('click',()=>renderPricing(tab.dataset.product)));
+  const requestedAudience=new URLSearchParams(window.location.search).get('type');
+  if(['employer','ctpa','owner_operator'].includes(requestedAudience)) activeProduct=requestedAudience;
   renderPricing(activeProduct);
 
   const sideLinks=Array.from(document.querySelectorAll('.side-link'));
