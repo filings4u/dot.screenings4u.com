@@ -144,3 +144,17 @@
   .hero-media>.product-frame{width:100%;height:100%;display:flex;flex-direction:column;}
   .hero-media>.product-frame>img{flex:1 1 auto;width:100%;height:100%;min-height:0;object-fit:cover;object-position:top left;}
 }
+
+
+/* Unified Workforce SaaS subscription entry point. */
+.workforce-logo-lockup{display:block;width:min(440px,100%);height:auto;object-fit:contain;margin-bottom:20px}
+.workforce-subscriptions{padding:80px 0;background:#f4f7fc}
+.workforce-subscription-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:30px}
+.workforce-subscription-card{display:flex;flex-direction:column;align-items:flex-start;gap:16px;min-width:0;padding:38px;border:1px solid #d9e3f0;border-radius:16px;background:#fff;box-shadow:0 12px 30px rgba(36,70,127,.06)}
+.workforce-subscription-card h3{font-size:clamp(26px,3vw,34px);line-height:1.15;letter-spacing:-.03em;color:#24467f;margin:0}
+.workforce-subscription-card p{margin:0 0 10px;color:#536781;line-height:1.7;flex:1}
+.workforce-subscription-label{font-size:12px;letter-spacing:.11em;text-transform:uppercase;font-weight:800;color:#ff6b00}
+.workforce-subscription-card .btn{min-height:48px}
+.workforce-subscription-card .text-link{color:#24467f;font-weight:750}
+.workforce-subscription-note{margin:22px 0 0;color:#536781;font-size:13px}
+@media(max-width:760px){.workforce-logo-lockup{width:min(330px,100%)}.workforce-subscriptions{padding:46px 0}.workforce-subscription-grid{grid-template-columns:1fr;gap:14px}.workforce-subscription-card{padding:26px 22px}}
