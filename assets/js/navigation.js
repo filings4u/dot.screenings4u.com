@@ -3,7 +3,7 @@
 const TARGET_ID='siteHeader';
 const API='https://elpbnytpciqnbexiaebp.supabase.co/functions/v1/workforce-checkout-status';
 const CACHE='s4u_dot_url_config_v3';
-const fallback={home:'index.html',platform:'platform.html',employers:'employers.html',owner_operator:'fmcsa-dot-random-consortium-49-cfr-part-382.html',ctpa:'ctpa.html',fmcsa:'fmcsa.html',faa:'faa.html',fra:'fra.html',fta:'fta.html',phmsa:'phmsa.html',uscg:'uscg.html',resources:'resources.html',blog:'blog.html',contact:'contact.html',login_directory:'login.html',demo:'demo.html',pricing:'pricing.html'};
+const fallback={home:'index.html',platform:'platform.html',employers:'employers.html',owner_operator:'fmcsa-dot-random-consortium-49-cfr-part-382.html',ctpa:'ctpa.html',fmcsa:'fmcsa.html',faa:'faa.html',fra:'fra.html',fta:'fta.html',phmsa:'phmsa.html',uscg:'uscg.html',resources:'resources.html',blog:'blog.html',contact:'contact.html',login_directory:'login.html',demo:'demo.html',pricing:'pricing.html',services:'services.html',testing:'testing.html',background_screening:'background-screening.html',occupational_health:'occupational-health.html',compliance_services:'compliance-services.html'};
 const safe=(raw,fb)=>{if(!raw)return fb;try{const u=new URL(String(raw),location.href),h=u.hostname.toLowerCase();const ok=h==='screenings4u.com'||h.endsWith('.screenings4u.com')||h===location.hostname;return ((u.protocol==='https:'||u.origin===location.origin)&&ok)?u.href:fb}catch{return fb}};
 const read=()=>{try{const x=JSON.parse(localStorage.getItem(CACHE)||'null');return x&&Date.now()-x.at<3600000?x.urls:null}catch{return null}};
 const save=urls=>{try{localStorage.setItem(CACHE,JSON.stringify({at:Date.now(),urls}))}catch{}};
@@ -92,6 +92,21 @@ function render(urls){
          </a>
        </div>
      </div>
+   </details>
+   <details class="s4u-menu s4u-mega${dropActive(['services','testing','background_screening','occupational_health','compliance_services'])}">
+     <summary>Workforce Services <i class="s4u-caret"></i></summary>
+     <div class="s4u-menu-panel s4u-mega-panel"><div class="s4u-mega-grid">
+       <div class="s4u-mega-col"><span class="s4u-mega-eyebrow">Workforce Services</span>
+         <a href="${U('services')}"><strong>All Services</strong><small>Browse the unified workforce services catalog.</small></a>
+         <a href="${U('testing')}"><strong>DOT &amp; Non-DOT Testing</strong><small>Testing orders, programs and result tracking.</small></a>
+         <a href="${U('background_screening')}"><strong>Background Screening</strong><small>Employment checks and onboarding verification.</small></a>
+       </div>
+       <div class="s4u-mega-col"><span class="s4u-mega-eyebrow">Programs &amp; Compliance</span>
+         <a href="${U('occupational_health')}"><strong>Occupational Health</strong><small>Physicals, fit testing and workplace health services.</small></a>
+         <a href="${U('compliance_services')}"><strong>Compliance Services</strong><small>Policy, documentation and program reviews.</small></a>
+       </div>
+       <a class="s4u-mega-feature" href="${U('pricing')}"><span>One Workforce subscription</span><strong>C/TPA, Employer or Owner-Operator.</strong><small>Existing subscription plans and pricing. DOT and non-DOT services in one website.</small><b>View Workforce Plans →</b></a>
+     </div></div>
    </details>
    <a class="s4u-link${active('pricing')}" href="${pricing}">Pricing</a>
    <div class="s4u-mobile-actions"><a class="s4u-signin" href="${U('login_directory')}">Sign In</a><a class="s4u-nav-btn secondary" href="${U('demo')}">Request Demo</a><a class="s4u-nav-btn primary" href="${pricing}">View Plans</a></div>
